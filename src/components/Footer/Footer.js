@@ -1,16 +1,22 @@
 import React from "react";
-import { MDBContainer, MDBFooter } from "mdbreact";
+import s from "./Footer.css";
+import { Link } from "react-router-dom";
 
 const FooterPage = () => {
   return (
-    <MDBFooter color="blue" className="font-small pt-4 mt-4">
-      <div className="footer-copyright text-center py-3">
-        <MDBContainer fluid>
-          &copy; {new Date().getFullYear()} Copyright:{" "}
-          <a href="/home"> WikiFlight </a>
-        </MDBContainer>
+    <div className={s.root}>
+      <div className={s.container}>
+        <span className={s.text}>© Your Company</span>
+        <span className={s.spacer}>·</span>
+        <Link to="/">Home</Link>
+        <span className={s.spacer}>·</span>
+        <Link to="/about">About</Link>
+        <span className={s.spacer}>·</span>
+        <Link to="/privacy">Privacy</Link>
+        <span className={s.spacer}>·</span>
+        <Link to="/not-found">Not Found</Link>
       </div>
-    </MDBFooter>
+    </div>
   );
 };
 
