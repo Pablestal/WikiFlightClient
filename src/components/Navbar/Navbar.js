@@ -1,47 +1,35 @@
 import React from "react";
-import { NavLink, withRouter } from "react-router-dom";
-class Navbar extends React.Component {
+import { Nav, NavDropdown } from "react-bootstrap";
+import Navbar from "react-bootstrap/Navbar";
+
+class Navibar extends React.Component {
   getNavLinkClass = path => {
     return this.props.location.pathname === path ? "active" : "";
   };
   render() {
     return (
-      <nav className="navbar navbar-inverse">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <button
-              type="button"
-              className="navbar-toggle collapsed"
-              data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-            </button>
-            <a className="navbar-brand" href="/">
-              Al trote
-            </a>
-          </div>
-          <div
-            className="collapse navbar-collapse"
-            id="bs-example-navbar-collapse-1"
-          >
-            <ul className="nav navbar-nav navbar-right">
-              <li className={this.getNavLinkClass("/")}>
-                <NavLink to="/">Listar</NavLink>
-              </li>
-              <li className={this.getNavLinkClass("/agregar")}>
-                <NavLink to="/agregar">Agregar</NavLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/">WikiFlight</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="/about">About</Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
-Navbar = withRouter(Navbar);
-export default Navbar;
+
+export default Navibar;
