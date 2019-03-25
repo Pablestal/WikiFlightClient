@@ -4,7 +4,7 @@ import Navbar from "./Navbar/Navbar";
 import Content from "./Content";
 import PropTypes from "prop-types";
 //import Header from "./global/Header";
-//import "../App.css";
+import "../App.css";
 
 class App extends Component {
   static propTypes = {

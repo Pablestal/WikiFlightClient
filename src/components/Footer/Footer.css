@@ -1,16 +1,11 @@
 .root {
-  background: #333;
+  background: #bc986a;
   color: #fff;
-  text-align: center;
 }
 
 .container {
   margin: 0 auto;
   padding: 20px 15px;
-}
-
-.text {
-  color: rgba(255, 255, 255, 0.5);
 }
 
 .spacer {
@@ -19,14 +14,10 @@
 
 .text,
 .link {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
   padding: 2px 5px;
   font-size: 1em;
-}
-
-.link,
-.link:active,
-.link:visited {
-  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
 }
 

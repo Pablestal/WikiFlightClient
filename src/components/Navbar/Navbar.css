@@ -1,0 +1,15 @@
+.navbar {
+  background-color: #fbeec1;
+}
+
+.links {
+  color: #8d8741;
+}
+
+.linkslog {
+  color: #8d8741;
+  float: right;
+}
+.links:hover {
+  color: #927550;
+}
