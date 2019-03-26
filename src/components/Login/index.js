@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import auth from "../../common/auth";
+import { withRouter } from "react-router";
+
 import "./Login.css";
 
 class Login extends Component {
@@ -22,6 +24,10 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    const {
+      history: { push }
+    } = this.props;
+
     auth
       .login({
         login: this.state.userName,
@@ -29,6 +35,7 @@ class Login extends Component {
       })
       .then(function(response) {
         console.log(response);
+        push("/");
       })
       .catch(function(error) {
         console.log(error);
@@ -64,4 +71,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

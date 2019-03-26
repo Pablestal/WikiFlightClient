@@ -8,8 +8,13 @@
 
 .linkslog {
   color: #8d8741;
-  float: right;
+  padding-right: 5%;
 }
+
+.linkslog:hover {
+  color: #927550;
+}
+
 .links:hover {
   color: #927550;
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "./AircraftList.css";
 import { HTTP } from "../../../common/http-common";
+import { withRouter } from "react-router";
 import { notify } from "react-notify-toast";
 
 class AircraftList extends Component {
@@ -15,30 +16,29 @@ class AircraftList extends Component {
   }
 
   componentDidMount() {
-    HTTP.get(`/aircrafts`).then(res => {
+    HTTP.get("/aircrafts").then(res => {
       const aircrafts = res.data;
       this.setState({ aircrafts });
     });
   }
 
-  // handleDelete = id => {
-  //   event.preventDefault();
-  //   axios.delete("http://localhost:8080/api/aircrafts/", { params: { id } });
-  //   console.log(event);
-  // };
+  updateAircrafts(aircraft) {
+    const aircrafts = this.state.aircrafts.filter(p => p.id !== aircraft.id);
+    this.setState({ aircrafts });
+  }
 
   handleDelete = async aircraft => {
-    await HTTP.delete("/aircrafts", {
+    await HTTP.delete("/aircrafts/$(aircraft.id)", {
       params: { id: aircraft.id }
     })
       .then(function(response) {
+        notify.show("Aircraft removed", "success");
         console.log(response);
+        this.updateAircrafts(aircraft);
       })
       .catch(function(error) {
-        notify.show("Aircraft cannot be removed", error);
+        notify.show("Aircraft cannot be removed", "error");
       });
-    // const aircrafts = this.state.aircrafts.filter(p => p.id !== aircraft.id);
-    // this.setState({ aircrafts });
   };
 
   render() {
@@ -66,4 +66,4 @@ class AircraftList extends Component {
   }
 }
 
-export default AircraftList;
+export default withRouter(AircraftList);

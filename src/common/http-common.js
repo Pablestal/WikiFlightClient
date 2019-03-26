@@ -37,4 +37,4 @@ const onRequest = config => {
 
 HTTP.interceptors.response.use(onResponseSuccess, onResponseFailure);
 HTTP.interceptors.request.use(onRequest);
-export { HTTP };
+export { HTTP, baseURL };

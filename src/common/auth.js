@@ -56,6 +56,7 @@ function logout() {
   store.user.login = "";
   store.user.authority = "";
   store.user.logged = false;
+  console.log("User logged out");
 }
 
 function isAdmin() {
@@ -66,7 +67,7 @@ function getLogin() {
   return store.user.login;
 }
 function isUser() {
-  return store.user.authority === "USER";
+  return store.user.authority === "PILOT";
 }
 
 export default store;

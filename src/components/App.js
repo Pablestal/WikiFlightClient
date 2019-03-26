@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import Footer from "./Footer/Footer";
+// import Footer from "./Footer/Footer";
 import Navbar from "./Navbar/Navbar";
 import Content from "./Content";
 import PropTypes from "prop-types";
 //import Header from "./global/Header";
 import "../App.css";
+import Notifications from "react-notify-toast";
 
 class App extends Component {
   static propTypes = {
@@ -19,10 +20,11 @@ class App extends Component {
         <header className="App-header">
           <Navbar />
         </header>
+        <Notifications />
         <Content body={children} />
-        <footer>
+        {/* <footer>
           <Footer />
-        </footer>
+        </footer> */}
       </div>
     );
   }
