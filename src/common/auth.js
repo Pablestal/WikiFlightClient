@@ -12,7 +12,7 @@ const store = {
   logout,
   getToken,
   isAdmin,
-  isUser,
+  isPilot,
   getLogin,
   authenticate
 };
@@ -66,7 +66,7 @@ function isAdmin() {
 function getLogin() {
   return store.user.login;
 }
-function isUser() {
+function isPilot() {
   return store.user.authority === "PILOT";
 }
 
