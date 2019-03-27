@@ -79,13 +79,6 @@ class AircraftForm extends Component {
           <Button className="btn m-3" variant="primary" type="submit">
             Submit
           </Button>
-          <Button
-            className="btn m-3"
-            variant="primary"
-            onClick={this.handlePush}
-          >
-            Push
-          </Button>
         </Form>
       </div>
     );

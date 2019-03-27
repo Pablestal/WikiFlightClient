@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import auth from "../../common/auth";
+//import { notify } from "react-notify-toast";
 import { withRouter } from "react-router";
 
 import "./Login.css";
@@ -11,8 +12,7 @@ class Login extends Component {
 
     this.state = {
       userName: "",
-      password: "",
-      error: null
+      password: ""
     };
   }
 
@@ -42,6 +42,10 @@ class Login extends Component {
       });
   };
 
+  // handleLogout() {
+  //   auth.logout();
+  // }
+
   render() {
     return (
       <div className="Login">
@@ -65,6 +69,9 @@ class Login extends Component {
           <Button block type="submit">
             Login
           </Button>
+          {/* <Button block onClick={this.handleLogout}>
+            Logout
+          </Button> */}
         </form>
       </div>
     );

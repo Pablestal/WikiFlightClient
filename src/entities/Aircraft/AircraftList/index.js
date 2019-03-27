@@ -13,6 +13,7 @@ class AircraftList extends Component {
       aircrafts: []
     };
     this.handleDelete = this.handleDelete.bind(this);
+    this.renderEmpty = this.renderEmpty.bind(this);
   }
 
   componentDidMount() {
@@ -41,26 +42,45 @@ class AircraftList extends Component {
       });
   };
 
+  renderList() {
+    return (
+      <ul className="list">
+        {this.state.aircrafts.map(function(aircraft, index) {
+          return (
+            <li key={index}>
+              <h3>
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  className="btn "
+                  onClick={() => this.handleDelete(aircraft)}
+                >
+                  Delete
+                </Button>
+                {aircraft.manufacturer} {aircraft.model}
+              </h3>
+            </li>
+          );
+        }, this)}
+      </ul>
+    );
+  }
+
+  renderEmpty() {
+    let rend;
+    this.state.aircrafts.length === 0
+      ? (rend = <h3 className="empty">List is empty, add some aircrafts.</h3>)
+      : (rend = this.renderList());
+    return rend;
+  }
+
   render() {
     return (
       <div className="container">
         <Link to="/aircrafts/new">
           <Button variant="light">New</Button>
         </Link>
-        <ul className="list">
-          {this.state.aircrafts.map(function(aircraft, index) {
-            return (
-              <li key={index}>
-                <h3>
-                  {aircraft.manufacturer} {aircraft.model}
-                  <Button onClick={() => this.handleDelete(aircraft)}>
-                    Delete
-                  </Button>
-                </h3>
-              </li>
-            );
-          }, this)}
-        </ul>
+        {this.renderEmpty()}
       </div>
     );
   }

@@ -13,7 +13,7 @@ class Navibar extends React.Component {
   }
 
   handleLogout = event => {
-    //console.log(event.target.name);
+    console.log("Logging out");
     auth.logout();
   };
 
@@ -33,10 +33,8 @@ class Navibar extends React.Component {
   renderLogout() {
     return (
       <Nav className="linkslog">
-        <Nav.Link href="/profile">Profile{this.state.username}</Nav.Link>
-        <Nav.Link name="logout" onSelect={this.handleLogout()}>
-          Logout
-        </Nav.Link>
+        <Nav.Link href="/profile">{auth.user.login}'s profile</Nav.Link>
+        <Nav.Link name="logout">Logout</Nav.Link>
       </Nav>
     );
   }

@@ -3,6 +3,7 @@ import { Form, Col, Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import history from "../../history";
 import { notify } from "react-notify-toast";
+import "./Register.css";
 
 class Register extends Component {
   constructor(props) {
@@ -11,12 +12,12 @@ class Register extends Component {
       name: "",
       surame1: "",
       surname2: "",
-      username: "",
+      login: "",
       email: "",
       password: "",
       country: "",
-      city: "",
-      birthdate: ""
+      birthDate: "",
+      city: ""
     };
   }
 
@@ -29,26 +30,27 @@ class Register extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    HTTP.post("users", {
+    HTTP.post("register", {
       name: this.state.name,
       surname1: this.state.surname1,
       surname2: this.state.surname2,
+      login: this.state.login,
       email: this.state.email,
       password: this.state.password,
-      counutry: this.state.counutry,
+      country: this.state.country,
       city: this.state.city,
-      birthdate: this.state.birthdate
+      birthDate: this.state.birthDate
     })
       .then(function(response) {
         console.log(response);
         history.push("/");
       })
-      .catch(err => (this.error = notify("Error")));
+      .catch(err => (this.error = notify.show("Error", "error")));
   };
 
   render() {
     return (
-      <Form className="form" onSubmit={this.handleSubmit}>
+      <Form className="m-5" onSubmit={this.handleSubmit}>
         <Form.Row>
           <Form.Group as={Col} controlId="formGridName">
             <Form.Label>Name</Form.Label>
@@ -83,7 +85,7 @@ class Register extends Component {
             <Form.Label>Username</Form.Label>
             <Form.Control
               placeholder="Enter username"
-              name="username"
+              name="login"
               onChange={this.handleInputChange}
             />
           </Form.Group>
@@ -133,7 +135,7 @@ class Register extends Component {
             <Form.Label>Birth date</Form.Label>
             <Form.Control
               type="date"
-              name="birthdate"
+              name="birthDate"
               onChange={this.handleInputChange}
             />
           </Form.Group>
