@@ -41,6 +41,7 @@ class Navibar extends React.Component {
 
   setLoginRender() {
     let login;
+    console.log(auth.user);
     !auth.user.logged
       ? (login = this.renderLogin())
       : (login = this.renderLogout());
