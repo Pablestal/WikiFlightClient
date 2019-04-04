@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import Footer from "./Footer/Footer";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "./Navbar";
 import Content from "./Content";
 import PropTypes from "prop-types";
 //import Header from "./global/Header";

@@ -3,6 +3,7 @@ import { Form, Col, Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import history from "../../history";
 import { notify } from "react-notify-toast";
+import { withRouter } from "react-router";
 import "./Register.css";
 
 class Register extends Component {
@@ -43,7 +44,8 @@ class Register extends Component {
     })
       .then(function(response) {
         console.log(response);
-        history.push("/");
+        notify.show("Successfully registered, you may log in.", "success");
+        history.push("/login");
       })
       .catch(err => (this.error = notify.show("Error", "error")));
   };
@@ -151,4 +153,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default withRouter(Register);

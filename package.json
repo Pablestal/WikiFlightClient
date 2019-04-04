@@ -33,6 +33,9 @@
   ],
   "devDependencies": {
     "react-redux": "^6.0.1",
-    "redux": "^4.0.1"
+    "react-redux-loading-bar": "^4.2.0",
+    "redux": "^4.0.1",
+    "redux-form": "^8.1.0",
+    "redux-thunk": "^2.3.0"
   }
 }

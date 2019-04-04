@@ -1,20 +1,13 @@
 import React from "react";
 import { Nav } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
-import auth from "../../common/auth";
+import { connect } from "react-redux";
+import { signOutAction } from "../../redux/creators";
 import "./Navbar.css";
 
 class Navibar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: ""
-    };
-  }
-
   handleLogout = event => {
-    console.log("Logging out");
-    auth.logout();
+    this.props.signOutAction();
   };
 
   renderLogin() {
@@ -33,18 +26,19 @@ class Navibar extends React.Component {
   renderLogout() {
     return (
       <Nav className="linkslog">
-        <Nav.Link href="/profile">{auth.user.login}'s profile</Nav.Link>
-        <Nav.Link name="logout">Logout</Nav.Link>
+        <Nav.Link href="/profile">'s profile</Nav.Link>
+        <Nav.Link onClick={this.handleLogout} name="logout">
+          Logout
+        </Nav.Link>
       </Nav>
     );
   }
 
   setLoginRender() {
     let login;
-    console.log(auth.user);
-    !auth.user.logged
-      ? (login = this.renderLogin())
-      : (login = this.renderLogout());
+    this.props.authenticated
+      ? (login = this.renderLogout())
+      : (login = this.renderLogin());
     return login;
   }
 
@@ -63,4 +57,13 @@ class Navibar extends React.Component {
   }
 }
 
-export default Navibar;
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { signOutAction }
+)(Navibar);
