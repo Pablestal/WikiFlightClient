@@ -1,9 +1,31 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class Home extends Component {
+  renderIf() {
+    return this.props.authenticated ? (
+      <h1>of {this.props.login}</h1>
+    ) : (
+      <h1>User is not authenticated.</h1>
+    );
+  }
+
   render() {
-    return <h1>HOME PAGE of </h1>;
+    return (
+      <div>
+        <h1>
+          HOME PAGE <span>{this.renderIf()}</span>
+        </h1>
+      </div>
+    );
   }
 }
 
-export default Home;
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    login: state.auth.login
+  };
+}
+
+export default connect(mapStateToProps)(Home);

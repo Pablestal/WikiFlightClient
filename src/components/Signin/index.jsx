@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { signInAction } from "../../redux/creators";
+import { signInAction } from "../../redux/actions";
 import { connect } from "react-redux";
+import "./Signin.css";
 
 class Signin extends Component {
   submit = values => {
@@ -17,29 +18,66 @@ class Signin extends Component {
   render() {
     const { handleSubmit } = this.props;
     return (
-      <div className="form">
-        <div className="container">
-          <h2>Sign In</h2>
-          <form onSubmit={handleSubmit(this.submit)}>
+      <form onSubmit={handleSubmit(this.submit)} className="formu">
+        <div>
+          {/* <label>First Name</label> */}
+          <div className="inputf">
             <Field
               name="login"
               component="input"
               type="text"
               placeholder="Username"
             />
+          </div>
+        </div>
+        <div>
+          {/* <label>Last Name</label> */}
+          <div className="inputf">
             <Field
               name="password"
               component="input"
               type="password"
               placeholder="Password"
             />
-            <button type="submit" className="blue">
-              Sign In
-            </button>
-          </form>
+          </div>
+        </div>
+        <div>
+          <button type="submit">Sign in</button>
           {this.errorMessage()}
         </div>
-      </div>
+      </form>
+
+      // <div className="form">
+      //   <div className="container">
+      //     <h2>Sign In</h2>
+      //     <form onSubmit={handleSubmit(this.submit)}>
+      //       <div>
+      //         <label>Username</label>
+      //         <div className="fields">
+      //           <Field
+      //             name="login"
+      //             component="input"
+      //             type="text"
+      //             placeholder="Username"
+      //           />
+      //         </div>
+      //         <label>Password</label>
+      //         <div>
+      //           <Field
+      //             name="password"
+      //             component="input"
+      //             type="password"
+      //             placeholder="Password"
+      //           />
+      //         </div>
+      //       </div>
+      //       <button type="submit" className="outline-blue">
+      //         Sign In
+      //       </button>
+      //     </form>
+      //     {this.errorMessage()}
+      //   </div>
+      // </div>
     );
   }
 }

@@ -1,0 +1,30 @@
+.formu {
+  padding-left: 30%;
+  padding-top: 8%;
+}
+
+input {
+  width: 60%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid lightslategrey;
+}
+
+.inputf {
+  margin-top: 2%;
+}
+
+label {
+  padding-top: 1.5%;
+}
+
+button {
+  background-color: #afbec0;
+  border: none;
+  color: white;
+  text-decoration: none;
+  margin: 2% 2px;
+  cursor: pointer;
+  width: 60%;
+}

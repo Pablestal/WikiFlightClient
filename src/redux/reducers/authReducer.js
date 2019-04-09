@@ -2,12 +2,21 @@ import {
   AUTHENTICATED,
   UNAUTHENTICATED,
   AUTHENTICATION_ERROR
-} from "../creators";
+} from "../actions";
 
-export default function(state = {}, action) {
+const initialState = {
+  login: "",
+  authority: ""
+};
+
+export default function(state = initialState, action) {
   switch (action.type) {
     case AUTHENTICATED:
-      return { ...state, authenticated: true };
+      return {
+        ...state,
+        authenticated: true,
+        login: action.login
+      };
     case UNAUTHENTICATED:
       return { ...state, authenticated: false };
     case AUTHENTICATION_ERROR:

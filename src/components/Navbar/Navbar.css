@@ -1,22 +1,27 @@
 .navbar {
   background-color: #fbeec1;
+  margin: 0 auto;
+  padding: 30px 0;
 }
+
+.brand {
+  font-size: 1.75em;
+  padding-left: 20px;
+}
+
 .nav-link {
   color: #8d8741;
+  display: inline-block;
+  padding: 3px 20px;
+  text-decoration: none;
+  font-size: 1.125em; /* ~18px */
+  margin: 6px 0 0;
 }
-.links {
+
+.log {
+  margin-right: 20px;
+}
+
+.separator {
   color: #8d8741;
-}
-
-.linkslog {
-  color: #8d8741;
-  padding-right: 5%;
-}
-
-.linkslog:hover {
-  color: #927550;
-}
-
-.links:hover {
-  color: #927550;
 }

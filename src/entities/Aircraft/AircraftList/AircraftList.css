@@ -5,7 +5,7 @@
 
 .list {
   padding-top: 5%;
-  list-style-type: circle;
+  list-style-type: inherit;
 }
 
 li {

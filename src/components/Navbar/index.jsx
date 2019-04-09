@@ -2,12 +2,15 @@ import React from "react";
 import { Nav } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import { connect } from "react-redux";
-import { signOutAction } from "../../redux/creators";
+import { signOutAction } from "../../redux/actions";
+import history from "../../history";
+
 import "./Navbar.css";
 
 class Navibar extends React.Component {
   handleLogout = event => {
     this.props.signOutAction();
+    history.push("/");
   };
 
   renderLogin() {
@@ -16,6 +19,7 @@ class Navibar extends React.Component {
         <Nav.Link name="login" href="/login">
           Login
         </Nav.Link>
+        <h2 className="separator">|</h2>
         <Nav.Link name="register" href="/register">
           Register
         </Nav.Link>
@@ -26,7 +30,8 @@ class Navibar extends React.Component {
   renderLogout() {
     return (
       <Nav className="linkslog">
-        <Nav.Link href="/profile">'s profile</Nav.Link>
+        <Nav.Link href="/profile">{this.props.login}'s profile</Nav.Link>
+        <h2 className="separator">|</h2>
         <Nav.Link onClick={this.handleLogout} name="logout">
           Logout
         </Nav.Link>
@@ -35,6 +40,8 @@ class Navibar extends React.Component {
   }
 
   setLoginRender() {
+    console.log(this.props.authenticated);
+    console.log(this.props.login);
     let login;
     this.props.authenticated
       ? (login = this.renderLogout())
@@ -45,13 +52,18 @@ class Navibar extends React.Component {
   render() {
     return (
       <Navbar expand="lg" className="navbar">
-        <Navbar.Brand href="/">WikiFlight</Navbar.Brand>
+        <Navbar.Brand className="brand" href="/">
+          WikiFlight
+        </Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link className="links" href="/aircrafts">
             Aircraft List
           </Nav.Link>
+          <Nav.Link className="links" href="/aerodromes">
+            Aerodrome List
+          </Nav.Link>
         </Nav>
-        {this.setLoginRender()}
+        <div className="log">{this.setLoginRender()}</div>
       </Navbar>
     );
   }
@@ -59,7 +71,8 @@ class Navibar extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
+    login: state.auth.login
   };
 }
 

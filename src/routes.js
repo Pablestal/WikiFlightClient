@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { AUTHENTICATED } from "./redux/creators";
+import { AUTHENTICATED } from "./redux/actions";
 import requireAuth from "./redux/requireAuth";
 import noRequireAuth from "./redux/noRequireAuth";
 
@@ -16,9 +16,9 @@ import AircraftForm from "./entities/Aircraft/AircraftForm";
 import AircraftList from "./entities/Aircraft/AircraftList";
 import history from "./history";
 
-const user = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-if (user) {
+if (token) {
   store.dispatch({ type: AUTHENTICATED });
 }
 
@@ -39,6 +39,7 @@ const AppRoutes = () => (
             path="/aircrafts/new"
             component={requireAuth(AircraftForm)}
           />
+          <Route path="/aircrafts/edit/:id" exact component={AircraftForm} />
           <Route exact path="/" component={Home} />
           {/* <Route component={Page404} /> */}
         </div>

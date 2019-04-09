@@ -49,6 +49,11 @@ class AircraftList extends Component {
           return (
             <li key={index}>
               <h3>
+                <Link to={`/aircrafts/edit/${aircraft.id}`}>
+                  <Button variant="outline-warning" size="sm" className="btn ">
+                    Edit
+                  </Button>
+                </Link>
                 <Button
                   variant="outline-danger"
                   size="sm"
