@@ -6,17 +6,24 @@ import {
 
 const initialState = {
   login: "",
-  authority: ""
+  authority: "",
+  authenticated: false
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case AUTHENTICATED:
+      //console.log(action.payload);
+      //console.log(action.payload.login);
+
+      let payload = action.payload;
+
       return {
         ...state,
-        authenticated: true,
-        login: action.login
+        ...payload,
+        authenticated: true
       };
+
     case UNAUTHENTICATED:
       return { ...state, authenticated: false };
     case AUTHENTICATION_ERROR:

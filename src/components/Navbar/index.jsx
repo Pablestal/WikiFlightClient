@@ -40,8 +40,8 @@ class Navibar extends React.Component {
   }
 
   setLoginRender() {
-    console.log(this.props.authenticated);
-    console.log(this.props.login);
+    // console.log(this.props.authenticated);
+    // console.log(this.props.login);
     let login;
     this.props.authenticated
       ? (login = this.renderLogout())
@@ -50,6 +50,7 @@ class Navibar extends React.Component {
   }
 
   render() {
+    //console.log(this.props);
     return (
       <Navbar expand="lg" className="navbar">
         <Navbar.Brand className="brand" href="/">
@@ -57,10 +58,10 @@ class Navibar extends React.Component {
         </Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link className="links" href="/aircrafts">
-            Aircraft List
+            Aircrafts
           </Nav.Link>
           <Nav.Link className="links" href="/aerodromes">
-            Aerodrome List
+            Aerodromes
           </Nav.Link>
         </Nav>
         <div className="log">{this.setLoginRender()}</div>
@@ -72,7 +73,8 @@ class Navibar extends React.Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    login: state.auth.login
+    login: state.auth.login,
+    authority: state.auth.authority
   };
 }
 

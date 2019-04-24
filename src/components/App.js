@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 //import Header from "./global/Header";
 import "../App.css";
 import Notifications from "react-notify-toast";
+import { connect } from "react-redux";
 
 class App extends Component {
   static propTypes = {
@@ -30,4 +31,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    authority: state.auth.authority
+  };
+}
+
+export default connect(mapStateToProps)(App);

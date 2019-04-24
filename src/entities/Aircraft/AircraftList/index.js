@@ -34,7 +34,6 @@ class AircraftList extends Component {
     })
       .then(function(response) {
         notify.show("Aircraft removed", "success");
-        console.log(response);
       })
       .catch(function(error) {
         notify.show("Aircraft cannot be removed", "error");

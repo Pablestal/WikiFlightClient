@@ -13,6 +13,22 @@ class AircraftForm extends Component {
       model: ""
     };
     this.handleSubmitNew = this.handleSubmitNew.bind(this);
+    // this.getCurrentAircraft = this.getCurrentAircraft.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.match.params.id)
+      return HTTP.get(`/aircrafts/${this.props.match.params.id}`)
+        .then(response => {
+          console.log(response);
+          this.setState({
+            manufacturer: response.data.manufacturer,
+            model: response.data.model
+          });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
   }
 
   handleSubmitNew = event => {
@@ -20,8 +36,7 @@ class AircraftForm extends Component {
     const {
       history: { push }
     } = this.props;
-
-    HTTP.post("/aircrafts/id", {
+    HTTP.post("/aircrafts", {
       manufacturer: this.state.manufacturer,
       model: this.state.model
     })
@@ -40,8 +55,8 @@ class AircraftForm extends Component {
     const {
       history: { push }
     } = this.props;
-
     HTTP.put(`aircrafts/${this.props.match.params.id}`, {
+      id: this.props.match.params.id,
       manufacturer: this.state.manufacturer,
       model: this.state.model
     })
@@ -61,6 +76,8 @@ class AircraftForm extends Component {
         {/* <p>Manufacturer: {manufacturer}</p>
     <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitNew}>
+          <h1>Create new aircraft</h1>
+
           <Form.Group className="m-3">
             <Form.Label>Manufacturer</Form.Label>
             <Form.Control
@@ -89,23 +106,22 @@ class AircraftForm extends Component {
   renderEdit() {
     return (
       <div>
-        <p>Manufacturer: {this.state.manufacturer}</p>
-        <p>Model: {this.state.model}</p>
+        {/* <p>Manufacturer: {this.state.manufacturer}</p>
+        <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitEdit}>
+          <h1>Edit aircraft with ID: {this.props.match.params.id}</h1>
           <Form.Group className="m-3">
-            <Form.Label>
-              New Manufacturer {this.props.match.params.id}
-            </Form.Label>
+            <Form.Label>Edit Manufacturer</Form.Label>
             <Form.Control
-              placeholder="Enter manufacturer"
+              defaultValue={this.state.manufacturer}
               name="manufacturer"
               onChange={this.handleInputChange}
             />
           </Form.Group>
           <Form.Group className="m-3">
-            <Form.Label>New Model</Form.Label>
+            <Form.Label>Edit Model</Form.Label>
             <Form.Control
-              placeholder="Enter model"
+              defaultValue={this.state.model}
               name="model"
               onChange={this.handleInputChange}
             />
@@ -118,8 +134,6 @@ class AircraftForm extends Component {
     );
   }
 
-  doSubmit() {}
-
   handleInputChange = event => {
     event.preventDefault();
     this.setState({
@@ -128,24 +142,20 @@ class AircraftForm extends Component {
   };
 
   //Ejemplo para comprobar event
-  handleInputChange = event => {
-    event.preventDefault();
-    console.log(event);
-    console.log(event.target.name);
-    console.log(event.target.value);
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-    console.log(this.state.manufacturer);
-    console.log(this.state.model);
-  };
+  // handleInputChange = event => {
+  //   event.preventDefault();
+  //   console.log(event);
+  //   console.log(event.target.name);
+  //   console.log(event.target.value);
+  //   this.setState({
+  //     [event.target.name]: event.target.value
+  //   });
+  //   console.log(this.state.manufacturer);
+  //   console.log(this.state.model);
+  // };
 
   render() {
-    return this.props.match.params.id === 0
-      ? this.renderNew()
-      : this.renderEdit();
-
-    // return this.renderEdit();
+    return this.props.match.params.id ? this.renderEdit() : this.renderNew();
   }
 }
 

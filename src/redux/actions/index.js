@@ -15,15 +15,16 @@ export function signInAction({ login, password }, history) {
         login,
         password
       });
-      HTTP.get("account").then(res => {
-        console.log(res.data);
-        dispatch({
-          type: AUTHENTICATED,
-          login: res.data.login,
-          authority: res.data.authority
-        });
-      });
       localStorage.setItem("token", res.data.token);
+      const req = await HTTP.get("account");
+      //console.log(req.data);
+      dispatch({
+        type: AUTHENTICATED,
+        payload: {
+          login: req.data.login,
+          authority: req.data.authority
+        }
+      });
       history.push("/");
     } catch (error) {
       dispatch({

@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 class Home extends Component {
   renderIf() {
     return this.props.authenticated ? (
-      <h1>of {this.props.login}</h1>
+      <h1>
+        of {this.props.login} as {this.props.authority}
+      </h1>
     ) : (
       <h1>User is not authenticated.</h1>
     );
@@ -24,7 +26,8 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    login: state.auth.login
+    login: state.auth.login,
+    authority: state.auth.authority
   };
 }
 
