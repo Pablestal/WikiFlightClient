@@ -47,21 +47,22 @@ class AircraftList extends Component {
         {this.state.aircrafts.map(function(aircraft, index) {
           return (
             <li key={index}>
-              <h3>
-                <Link to={`/aircrafts/edit/${aircraft.id}`}>
-                  <Button variant="outline-warning" size="sm" className="btn ">
-                    Edit
+              <h3 className="elem">
+                {aircraft.manufacturer} <b>{aircraft.model}</b>
+                <div className="btns">
+                  <Link to={`/aircrafts/edit/${aircraft.id}`}>
+                    <Button variant="ed" size="sm">
+                      Edit
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="ed"
+                    size="sm"
+                    onClick={() => this.handleDelete(aircraft)}
+                  >
+                    Delete
                   </Button>
-                </Link>
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  className="btn "
-                  onClick={() => this.handleDelete(aircraft)}
-                >
-                  Delete
-                </Button>
-                {aircraft.manufacturer} {aircraft.model}
+                </div>
               </h3>
             </li>
           );
@@ -81,9 +82,11 @@ class AircraftList extends Component {
   render() {
     return (
       <div className="container">
+        <h2 className="tittle">LIST OF REGISTERED AIRCRAFTS</h2>
         <Link to="/aircrafts/new">
-          <Button variant="light">New</Button>
+          <Button variant="new">New</Button>
         </Link>
+        <hr />
         {this.renderEmpty()}
       </div>
     );

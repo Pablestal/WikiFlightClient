@@ -76,7 +76,8 @@ class AircraftForm extends Component {
         {/* <p>Manufacturer: {manufacturer}</p>
     <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitNew}>
-          <h1>Create new aircraft</h1>
+          <h2 className="tittle">Create new aircraft</h2>
+          <hr />
 
           <Form.Group className="m-3">
             <Form.Label>Manufacturer</Form.Label>
@@ -105,11 +106,14 @@ class AircraftForm extends Component {
 
   renderEdit() {
     return (
-      <div>
+      <div className="content">
         {/* <p>Manufacturer: {this.state.manufacturer}</p>
         <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitEdit}>
-          <h1>Edit aircraft with ID: {this.props.match.params.id}</h1>
+          <h2 className="tittle">
+            Edit aircraft with ID: {this.props.match.params.id}
+          </h2>
+          <hr />
           <Form.Group className="m-3">
             <Form.Label>Edit Manufacturer</Form.Label>
             <Form.Control

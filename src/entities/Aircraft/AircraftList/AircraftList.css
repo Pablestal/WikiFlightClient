@@ -1,11 +1,15 @@
-.container {
-  margin: 0;
-  padding: 5% 15%;
+.list {
+  list-style-type: none;
+  justify-content: center;
+}
+.tittle {
+  padding-top: 2%;
+  padding-bottom: 2%;
+  color: #6b6630;
 }
 
-.list {
-  padding-top: 5%;
-  list-style-type: inherit;
+hr {
+  align: center;
 }
 
 li {
@@ -14,4 +18,52 @@ li {
 
 .empty {
   margin-top: 5%;
+}
+
+.elem {
+  background-color: #f5de8d;
+  padding: 1%;
+  transition: padding 200ms;
+  transition: box-shadow 0.3 ease-in-out;
+}
+
+.elem b {
+  font-size: 80%;
+}
+
+.btn-ed {
+  color: #bc986a;
+  border: 2px solid #bc986a;
+}
+
+.btn-new {
+  color: #bc986a;
+  border: 2px solid #bc986a;
+  margin: auto;
+}
+
+.btn-new:hover {
+  color: #836b4b;
+  border: 2px solid #bc986a;
+}
+
+.btns {
+  float: right;
+  margin: 0;
+  margin-right: 10%;
+}
+
+.elem:hover {
+  background-color: #fae9abfd;
+  padding: 2.5%;
+  box-shadow: 17px 14px 57px -15px #00000044;
+}
+
+.elem:hover .btns {
+  opacity: 1;
+}
+
+.elem .btns {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
 }
