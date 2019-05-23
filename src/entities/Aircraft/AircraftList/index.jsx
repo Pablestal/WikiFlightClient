@@ -10,17 +10,22 @@ class AircraftList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aircrafts: []
+      aircrafts: [],
+      selectedOption: []
     };
     this.handleDelete = this.handleDelete.bind(this);
     this.renderEmpty = this.renderEmpty.bind(this);
   }
 
   componentDidMount() {
-    HTTP.get("/aircrafts").then(res => {
-      const aircrafts = res.data;
-      this.setState({ aircrafts });
-    });
+    HTTP.get("/aircrafts")
+      .then(res => {
+        const aircrafts = res.data;
+        this.setState({ aircrafts });
+      })
+      .catch(function(error) {
+        notify.show("You are not allowed here", "error");
+      });
   }
 
   updateAircrafts(aircraft) {
@@ -56,7 +61,7 @@ class AircraftList extends Component {
                     </Button>
                   </Link>
                   <Button
-                    variant="ed"
+                    variant="del"
                     size="sm"
                     onClick={() => this.handleDelete(aircraft)}
                   >
@@ -83,6 +88,7 @@ class AircraftList extends Component {
     return (
       <div className="container">
         <h2 className="tittle">LIST OF REGISTERED AIRCRAFTS</h2>
+
         <Link to="/aircrafts/new">
           <Button variant="new">New</Button>
         </Link>

@@ -4,6 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import { connect } from "react-redux";
 import { signOutAction } from "../../redux/actions";
 import history from "../../history";
+import { Link } from "react-router-dom";
 
 import "./Navbar.css";
 
@@ -16,13 +17,13 @@ class Navibar extends React.Component {
   renderLogin() {
     return (
       <Nav className="linkslog">
-        <Nav.Link name="login" href="/login">
+        <Link className="navlinks" name="login" to="/login">
           Login
-        </Nav.Link>
+        </Link>
         <h2 className="separator">|</h2>
-        <Nav.Link name="register" href="/register">
+        <Link className="navlinks" name="register" to="/register">
           Register
-        </Nav.Link>
+        </Link>
       </Nav>
     );
   }
@@ -30,7 +31,9 @@ class Navibar extends React.Component {
   renderLogout() {
     return (
       <Nav className="linkslog">
-        <Nav.Link href="/profile">{this.props.login}'s profile</Nav.Link>
+        <Link className="navlinks" to="/profile">
+          {this.props.login}'s profile
+        </Link>
         <h2 className="separator">|</h2>
         <Nav.Link onClick={this.handleLogout} name="logout">
           Logout
@@ -40,8 +43,6 @@ class Navibar extends React.Component {
   }
 
   setLoginRender() {
-    // console.log(this.props.authenticated);
-    // console.log(this.props.login);
     let login;
     this.props.authenticated
       ? (login = this.renderLogout())
@@ -50,19 +51,21 @@ class Navibar extends React.Component {
   }
 
   render() {
-    //console.log(this.props);
     return (
       <Navbar expand="lg" className="navbar">
-        <Navbar.Brand className="brand" href="/">
+        <Link className="brand" to="/">
           WikiFlight
-        </Navbar.Brand>
+        </Link>
         <Nav className="mr-auto">
-          <Nav.Link className="links" href="/aircrafts">
+          <Link className="navlinks" to="/aircrafts">
             Aircrafts
-          </Nav.Link>
-          <Nav.Link className="links" href="/aerodromes">
+          </Link>
+          <Link className="navlinks" to="/aerodromes">
             Aerodromes
-          </Nav.Link>
+          </Link>
+          <Link className="navlinks" to="/routes">
+            Routes
+          </Link>
         </Nav>
         <div className="log">{this.setLoginRender()}</div>
       </Navbar>

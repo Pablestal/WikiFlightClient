@@ -12,6 +12,10 @@ hr {
   align: center;
 }
 
+.container {
+  margin-top: 2%;
+}
+
 li {
   line-height: 1.5;
 }
@@ -24,7 +28,7 @@ li {
   background-color: #f5de8d;
   padding: 1%;
   transition: padding 200ms;
-  transition: box-shadow 0.3 ease-in-out;
+  margin-right: 35px;
 }
 
 .elem b {
@@ -34,6 +38,11 @@ li {
 .btn-ed {
   color: #bc986a;
   border: 2px solid #bc986a;
+}
+
+.btn-del {
+  color: #bc986a;
+  border: 2px solid #bc7a6a;
 }
 
 .btn-new {
@@ -49,8 +58,9 @@ li {
 
 .btns {
   float: right;
-  margin: 0;
   margin-right: 10%;
+  position: relative;
+  transform: translateY(-15%);
 }
 
 .elem:hover {

@@ -3,6 +3,14 @@
   padding-top: 8%;
 }
 
+.formupass {
+  padding-left: 30%;
+}
+
+.panelpass {
+  margin-top: 1%;
+}
+
 input {
   width: 60%;
   border-top: none;

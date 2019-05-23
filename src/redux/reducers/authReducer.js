@@ -1,6 +1,7 @@
 import {
   AUTHENTICATED,
   UNAUTHENTICATED,
+  ISAUTHENTICATED,
   AUTHENTICATION_ERROR
 } from "../actions";
 
@@ -13,17 +14,13 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case AUTHENTICATED:
-      //console.log(action.payload);
-      //console.log(action.payload.login);
-
-      let payload = action.payload;
-
       return {
         ...state,
-        ...payload,
+        ...action.payload,
         authenticated: true
       };
-
+    case ISAUTHENTICATED:
+      return { ...state, ...action.payload };
     case UNAUTHENTICATED:
       return { ...state, authenticated: false };
     case AUTHENTICATION_ERROR:
