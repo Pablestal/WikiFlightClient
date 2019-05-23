@@ -50,23 +50,46 @@ class Navibar extends React.Component {
     return login;
   }
 
+  setUserRender() {
+    let links;
+    !this.props.authenticated
+      ? (links = this.anonymousRender())
+      : this.props.authority === "ADMIN"
+      ? (links = this.adminRender())
+      : this.props.authority === "PILOT"
+      ? (links = this.pilotRender())
+      : (links = null);
+
+    return links;
+  }
+
+  adminRender() {
+    return (
+      <Nav className="mr-auto">
+        <Link className="navlinks" to="/aircrafts">
+          Aircrafts
+        </Link>
+        <Link className="navlinks" to="/aerodromes">
+          Aerodromes
+        </Link>
+        <Link className="navlinks" to="/routes">
+          Routes
+        </Link>
+      </Nav>
+    );
+  }
+
+  pilotRender() {}
+
+  anonymousRender() {}
+
   render() {
     return (
       <Navbar expand="lg" className="navbar">
         <Link className="brand" to="/">
           WikiFlight
         </Link>
-        <Nav className="mr-auto">
-          <Link className="navlinks" to="/aircrafts">
-            Aircrafts
-          </Link>
-          <Link className="navlinks" to="/aerodromes">
-            Aerodromes
-          </Link>
-          <Link className="navlinks" to="/routes">
-            Routes
-          </Link>
-        </Nav>
+        <Nav className="mr-auto">{this.setUserRender()}</Nav>
         <div className="log">{this.setLoginRender()}</div>
       </Navbar>
     );

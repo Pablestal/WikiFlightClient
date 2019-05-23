@@ -9,6 +9,10 @@
 
 .panelpass {
   margin-top: 1%;
+  width: 167%;
+}
+.forgotp {
+  width: 60%;
 }
 
 input {
