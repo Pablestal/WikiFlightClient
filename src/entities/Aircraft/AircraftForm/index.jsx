@@ -13,14 +13,12 @@ class AircraftForm extends Component {
       model: ""
     };
     this.handleSubmitNew = this.handleSubmitNew.bind(this);
-    // this.getCurrentAircraft = this.getCurrentAircraft.bind(this);
   }
 
   componentDidMount() {
     if (this.props.match.params.id)
       return HTTP.get(`/aircrafts/${this.props.match.params.id}`)
         .then(response => {
-          console.log(response);
           this.setState({
             manufacturer: response.data.manufacturer,
             model: response.data.model
@@ -41,12 +39,11 @@ class AircraftForm extends Component {
       model: this.state.model
     })
       .then(function(response) {
-        console.log(response);
         notify.show("Successfully added", "success", 3000);
         push("/aircrafts");
       })
       .catch(function(error) {
-        console.log(error);
+        notify.show("This aircraft already exists.", "error", 3000);
       });
   };
 
@@ -61,20 +58,17 @@ class AircraftForm extends Component {
       model: this.state.model
     })
       .then(function(response) {
-        console.log(response);
         notify.show("Successfully modified", "success", 3000);
         push("/aircrafts");
       })
       .catch(function(error) {
-        console.log(error);
+        notify.show("This aircraft already exists.", "error", 3000);
       });
   };
 
   renderNew() {
     return (
       <div>
-        {/* <p>Manufacturer: {manufacturer}</p>
-    <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitNew}>
           <h2 className="tittle">Create new aircraft</h2>
           <hr />
@@ -96,7 +90,7 @@ class AircraftForm extends Component {
               onChange={this.handleInputChange}
             />
           </Form.Group>
-          <Button className="btn m-3" variant="primary" type="submit">
+          <Button className="btn m-3" variant="new" type="submit">
             Submit
           </Button>
         </Form>
@@ -111,7 +105,7 @@ class AircraftForm extends Component {
         <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitEdit}>
           <h2 className="tittle">
-            Edit aircraft with ID: {this.props.match.params.id}
+            Edit {this.state.manufacturer} {this.state.model}
           </h2>
           <hr />
           <Form.Group className="m-3">
@@ -130,7 +124,7 @@ class AircraftForm extends Component {
               onChange={this.handleInputChange}
             />
           </Form.Group>
-          <Button className="btn m-3" variant="primary" type="submit">
+          <Button className="btn m-3" variant="new" type="submit">
             Submit
           </Button>
         </Form>

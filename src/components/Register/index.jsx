@@ -53,7 +53,7 @@ class Register extends Component {
   render() {
     return (
       <div className="container">
-        <h2 className="tittle">SIGN UP PAGE</h2>
+        <h2 className="tittle">Sign up</h2>
         <hr />
         <Form className="m-5" onSubmit={this.handleSubmit}>
           <Form.Row>
@@ -148,7 +148,7 @@ class Register extends Component {
 
           <Form.Row />
 
-          <Button variant="primary" type="submit">
+          <Button variant="new" type="submit">
             Submit
           </Button>
         </Form>

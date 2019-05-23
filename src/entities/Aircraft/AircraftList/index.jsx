@@ -87,7 +87,7 @@ class AircraftList extends Component {
   render() {
     return (
       <div className="container">
-        <h2 className="tittle">LIST OF REGISTERED AIRCRAFTS</h2>
+        <h2 className="tittle">List of registered aircrafts</h2>
 
         <Link to="/aircrafts/new">
           <Button variant="new">New</Button>

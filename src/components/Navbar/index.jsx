@@ -18,7 +18,7 @@ class Navibar extends React.Component {
     return (
       <Nav className="linkslog">
         <Link className="navlinks" name="login" to="/login">
-          Login
+          Sign in
         </Link>
         <h2 className="separator">|</h2>
         <Link className="navlinks" name="register" to="/register">

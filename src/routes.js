@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import Page404 from "./components/Page404";
 import AircraftForm from "./entities/Aircraft/AircraftForm";
 import AircraftList from "./entities/Aircraft/AircraftList";
+import PassRecovery from "./components/RestorePass";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -21,6 +22,11 @@ const AppRoutes = () => (
         <Switch>
           <Route exact path="/register" component={noRequireAuth(Register)} />
           <Route exact path="/login" component={noRequireAuth(Signin)} />
+          <Route
+            exact
+            path="/pass-recovery"
+            component={noRequireAuth(PassRecovery)}
+          />
           <Route
             exact
             path="/aircrafts"
