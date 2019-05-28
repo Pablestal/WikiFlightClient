@@ -13,7 +13,8 @@ import Home from "./components/Home";
 import Page404 from "./components/Page404";
 import AircraftForm from "./entities/Aircraft/AircraftForm";
 import AircraftList from "./entities/Aircraft/AircraftList";
-import PassRecovery from "./components/RestorePass";
+import PassRecovery from "./components/ForgotPass";
+import ResetPass from "./components/ResetPass";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -24,8 +25,13 @@ const AppRoutes = () => (
           <Route exact path="/login" component={noRequireAuth(Signin)} />
           <Route
             exact
-            path="/pass-recovery"
+            path="/forgotPassword"
             component={noRequireAuth(PassRecovery)}
+          />
+          <Route
+            path="/resetPassword/:token"
+            exact
+            component={noRequireAuth(ResetPass)}
           />
           <Route
             exact

@@ -52,7 +52,7 @@ class Signin extends Component {
               Sign in
             </Button>
             {/* {this.errorMessage()} */}
-            <Link to="/pass-recovery" className="forgotp">
+            <Link to="/forgotPassword" className="forgotp">
               Forgot your password?
             </Link>
             <Button className="regbutton" variant="new" href="/register">
