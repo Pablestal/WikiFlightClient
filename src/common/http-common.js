@@ -10,8 +10,7 @@ const HTTP = axios.create({
 });
 
 const onUnauthorized = () => {
-  notify.show("Access denied");
-  //auth.logout();
+  notify.show("Access denied", "error", 3000);
 };
 const onResponseSuccess = response => response;
 

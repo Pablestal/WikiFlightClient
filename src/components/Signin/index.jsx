@@ -12,11 +12,11 @@ class Signin extends Component {
     this.props.signInAction(values, this.props.history);
   };
 
-  errorMessage() {
-    if (this.props.errorMessage) {
-      return <div className="info-red">{this.props.errorMessage}</div>;
-    }
-  }
+  // errorMessage() {
+  //   if (this.props.errorMessage) {
+  //     return <div className="info-red">{this.props.errorMessage}</div>;
+  //   }
+  // }
 
   render() {
     const { handleSubmit } = this.props;
@@ -47,11 +47,12 @@ class Signin extends Component {
               placeholder="Password"
             />
           </Form.Group>
+          {/* {this.errorMessage()} */}
           <div>
             <Button className="btn m-3" variant="new" type="submit">
               Sign in
             </Button>
-            {/* {this.errorMessage()} */}
+
             <Link to="/forgotPassword" className="forgotp">
               Forgot your password?
             </Link>
@@ -78,30 +79,3 @@ export default connect(
   mapStateToProps,
   { signInAction }
 )(reduxFormSignin);
-
-/*  <form onSubmit={handleSubmit(this.submit)} className="form">
-      <div>
-            <h2 className="tittle">Sign in</h2>
-            <h4 className="recsubtittle">Enter your credentials to sign in</h4>
-            <hr />
-            <div className="inputf">
-              <Field
-                name="login"
-                component="input"
-                type="text"
-                placeholder="Username"
-              />
-            </div>
-          </div>
-          <div>
-            <div className="inputf">
-              <Field
-                name="password"
-                component="input"
-                type="password"
-                placeholder="Password"
-              />
-            </div>
-          </div> 
-          </form>
-        */

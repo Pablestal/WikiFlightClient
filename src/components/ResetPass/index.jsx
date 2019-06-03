@@ -1,10 +1,34 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import { HTTP } from "../../common/http-common";
+import { withRouter } from "react-router-dom";
+import { notify } from "react-notify-toast";
 
 class ResetPass extends Component {
   state = { password: "", repassword: "", token: "" };
 
-  handleSubmit = event => {};
+  handleSubmit = event => {
+    event.preventDefault();
+    const {
+      history: { push }
+    } = this.props;
+    this.state.password === this.state.repassword
+      ? HTTP.put(`resetpassword/${this.props.match.params.token}`, {
+          password: this.state.password
+        })
+          .then(function(response) {
+            notify.show("Successfully modified", "success", 3000);
+            push("/login");
+          })
+          .catch(function(error) {
+            notify.show(
+              "An error has occurred, please try again",
+              "error",
+              3000
+            );
+          })
+      : notify.show("Password must be the same in both fields", "error", 3000);
+  };
 
   handleInputChange = event => {
     event.preventDefault();
@@ -51,4 +75,4 @@ class ResetPass extends Component {
   }
 }
 
-export default ResetPass;
+export default withRouter(ResetPass);
