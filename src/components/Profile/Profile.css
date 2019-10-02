@@ -8,6 +8,8 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+  border: 3px solid #bc986a;
+  border-radius: 4px;
 }
 
 .profrow {
@@ -16,4 +18,9 @@
 
 .profCol {
   margin-left: 3%;
+}
+
+.fileContainer {
+  background-color: #fbeec1;
+  box-shadow: none;
 }

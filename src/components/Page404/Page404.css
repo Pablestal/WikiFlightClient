@@ -1,7 +1,11 @@
 .nfound {
   text-align: center;
-  margin-top: 8%;
-  background-image: url("/src/common/images/crash.png");
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10%;
+  margin-top: 3%;
+  padding-top: 3%;
+  background-color: #fbeec1;
 }
 
 .crash {

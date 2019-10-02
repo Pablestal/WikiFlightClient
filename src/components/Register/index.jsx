@@ -55,7 +55,7 @@ class Register extends Component {
       <div className="container">
         <h2 className="tittle">Sign up</h2>
         <hr />
-        <Form className="m-5" onSubmit={this.handleSubmit}>
+        <Form className="innerform" onSubmit={this.handleSubmit}>
           <Form.Row>
             <Form.Group as={Col} controlId="formGridName">
               <Form.Label>Name</Form.Label>

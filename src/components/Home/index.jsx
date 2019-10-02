@@ -14,7 +14,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h1>
           HOME PAGE <span>{this.renderIf()}</span>
         </h1>

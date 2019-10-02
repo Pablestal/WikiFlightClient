@@ -39,8 +39,8 @@ class ResetPass extends Component {
 
   render() {
     return (
-      <div>
-        <Form className="form" onSubmit={this.handleSubmit}>
+      <div className="container">
+        <Form className="innerform" onSubmit={this.handleSubmit}>
           <h2 className="tittle">Password reset</h2>
           <h4 className="recsubtittle">
             Enter your new password twice to reset your password.

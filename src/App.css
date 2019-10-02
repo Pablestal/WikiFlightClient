@@ -18,5 +18,17 @@
 }
 
 body {
-  background-color: #fff8dd;
+  background-color: #bc986a;
+}
+
+.container {
+  background-color: #fbeec1;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 10%;
+}
+
+.innerform {
+  margin-left: 10%;
+  margin-right: 10%;
 }

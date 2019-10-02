@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import { notify } from "react-notify-toast";
-// import Loader from "react-loader-spinner";
 import "./RestorePass.css";
 
 class PassRecovery extends Component {
@@ -33,18 +32,6 @@ class PassRecovery extends Component {
       });
   };
 
-  // renderLoading() {
-  //   let load;
-  //   this.state.loading === 0
-  //     ? (load = <Loader type="Plane" color="#7a6344" height={80} width={80} />)
-  //     : (load = (
-  //         <Button className="btn m-3" variant="new" type="submit">
-  //           Submit
-  //         </Button>
-  //       ));
-  //   return load;
-  // }
-
   handleInputChange = event => {
     event.preventDefault();
     this.setState({
@@ -54,8 +41,8 @@ class PassRecovery extends Component {
 
   render() {
     return (
-      <div>
-        <Form className="form" onSubmit={this.handleSubmit}>
+      <div className="container">
+        <Form className="innerform" onSubmit={this.handleSubmit}>
           <h2 className="tittle">Password recovery</h2>
           <h4 className="recsubtittle">
             Enter your email and we will send you instructions to reset your

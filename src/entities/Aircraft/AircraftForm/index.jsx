@@ -68,31 +68,32 @@ class AircraftForm extends Component {
 
   renderNew() {
     return (
-      <div>
-        <Form className="form" onSubmit={this.handleSubmitNew}>
+      <div className="container">
+        <Form onSubmit={this.handleSubmitNew}>
           <h2 className="tittle">Create new aircraft</h2>
           <hr />
-
-          <Form.Group className="m-3">
-            <Form.Label>Manufacturer</Form.Label>
-            <Form.Control
-              placeholder="Enter manufacturer"
-              name="manufacturer"
-              onChange={this.handleInputChange}
-              defaultValue={this.state.manufacturer}
-            />
-          </Form.Group>
-          <Form.Group className="m-3">
-            <Form.Label>Model</Form.Label>
-            <Form.Control
-              placeholder="Enter model"
-              name="model"
-              onChange={this.handleInputChange}
-            />
-          </Form.Group>
-          <Button className="btn m-3" variant="new" type="submit">
-            Submit
-          </Button>
+          <div className="innerform">
+            <Form.Group className="m-3">
+              <Form.Label>Manufacturer</Form.Label>
+              <Form.Control
+                placeholder="Enter manufacturer"
+                name="manufacturer"
+                onChange={this.handleInputChange}
+                defaultValue={this.state.manufacturer}
+              />
+            </Form.Group>
+            <Form.Group className="m-3">
+              <Form.Label>Model</Form.Label>
+              <Form.Control
+                placeholder="Enter model"
+                name="model"
+                onChange={this.handleInputChange}
+              />
+            </Form.Group>
+            <Button className="btn m-3" variant="new" type="submit">
+              Submit
+            </Button>
+          </div>
         </Form>
       </div>
     );
@@ -101,8 +102,6 @@ class AircraftForm extends Component {
   renderEdit() {
     return (
       <div className="content">
-        {/* <p>Manufacturer: {this.state.manufacturer}</p>
-        <p>Model: {this.state.model}</p> */}
         <Form className="form" onSubmit={this.handleSubmitEdit}>
           <h2 className="tittle">
             Edit {this.state.manufacturer} {this.state.model}

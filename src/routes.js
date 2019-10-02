@@ -13,6 +13,8 @@ import Home from "./components/Home";
 import Page404 from "./components/Page404";
 import AircraftForm from "./entities/Aircraft/AircraftForm";
 import AircraftList from "./entities/Aircraft/AircraftList";
+import AerodromeList from "./entities/Aerodrome/AerodromeList";
+import AerodromeForm from "./entities/Aerodrome/AerodromeForm";
 import PassRecovery from "./components/ForgotPass";
 import ResetPass from "./components/ResetPass";
 import Profile from "./components/Profile";
@@ -46,6 +48,16 @@ const AppRoutes = () => (
           />
           <Route path="/profile/:username" exact component={Profile} />
           <Route path="/aircrafts/edit/:id" exact component={AircraftForm} />
+          <Route
+            exact
+            path="/aerodromes"
+            component={requireAuth(AerodromeList)}
+          />
+          <Route
+            exact
+            path="/aerodromess/new"
+            component={requireAuth(AerodromeForm)}
+          />
           <Route exact path="/" component={Home} />
           <Route exact component={Page404} />
         </Switch>

@@ -3,6 +3,8 @@ export const AUTHENTICATED = "authenticated_user";
 export const UNAUTHENTICATED = "unauthenticated_user";
 export const AUTHENTICATION_ERROR = "authentication_error";
 export const ISAUTHENTICATED = "already_authenticated";
+export const INITIALIZEAER = "initialized_aerodromes";
+export const INITIALIZATIONERROR = "initialization_error";
 
 export function getToken() {
   return localStorage.getItem("token");
@@ -38,5 +40,24 @@ export function signOutAction() {
   localStorage.clear();
   return {
     type: UNAUTHENTICATED
+  };
+}
+
+export function initializeAerAction() {
+  return async dispatch => {
+    try {
+      const res = await HTTP.get("/aerodromes");
+      dispatch({
+        type: INITIALIZEAER,
+        payload: {
+          aerodromes: res.data.aerodrome
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: INITIALIZATIONERROR,
+        payload: "Error while initializating."
+      });
+    }
   };
 }
