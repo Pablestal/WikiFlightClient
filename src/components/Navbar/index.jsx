@@ -14,6 +14,30 @@ class Navibar extends React.Component {
     history.push("/");
   };
 
+  renderPilot() {
+    return (
+      <Nav className="linkslog">
+        <Link className="navlinks" to={`/profile/${this.props.login}`}>
+          {this.props.login}'s profile
+        </Link>
+        <h2 className="separator">|</h2>
+        <Nav.Link onClick={this.handleLogout} name="logout">
+          Logout
+        </Nav.Link>
+      </Nav>
+    );
+  }
+
+  renderAdmin() {
+    return (
+      <Nav className="linkslog">
+        <Nav.Link onClick={this.handleLogout} name="logout">
+          Logout
+        </Nav.Link>
+      </Nav>
+    );
+  }
+
   renderLogin() {
     return (
       <Nav className="linkslog">
@@ -29,17 +53,11 @@ class Navibar extends React.Component {
   }
 
   renderLogout() {
-    return (
-      <Nav className="linkslog">
-        <Link className="navlinks" to="/profile">
-          {this.props.login}'s profile
-        </Link>
-        <h2 className="separator">|</h2>
-        <Nav.Link onClick={this.handleLogout} name="logout">
-          Logout
-        </Nav.Link>
-      </Nav>
-    );
+    let logout;
+    this.props.authority === "ADMIN"
+      ? (logout = this.renderAdmin())
+      : (logout = this.renderPilot());
+    return logout;
   }
 
   setLoginRender() {

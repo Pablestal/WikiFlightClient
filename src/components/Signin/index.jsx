@@ -12,12 +12,6 @@ class Signin extends Component {
     this.props.signInAction(values, this.props.history);
   };
 
-  // errorMessage() {
-  //   if (this.props.errorMessage) {
-  //     return <div className="info-red">{this.props.errorMessage}</div>;
-  //   }
-  // }
-
   render() {
     const { handleSubmit } = this.props;
     return (

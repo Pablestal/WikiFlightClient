@@ -2,19 +2,21 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import { notify } from "react-notify-toast";
+// import Loader from "react-loader-spinner";
 import "./RestorePass.css";
 
 class PassRecovery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: ""
+      email: "",
+      loading: 0
     };
   }
 
   handleSubmit = e => {
     e.preventDefault();
-
+    this.setState({ loading: 1 });
     const {
       history: { push }
     } = this.props;
@@ -23,12 +25,25 @@ class PassRecovery extends Component {
     })
       .then(function(response) {
         notify.show("Successfully sent", "success", 3000);
+        this.setState({ loading: 0 });
         push("/login");
       })
       .catch(function(error) {
         notify.show("This email is not in our database.", "error", 3000);
       });
   };
+
+  // renderLoading() {
+  //   let load;
+  //   this.state.loading === 0
+  //     ? (load = <Loader type="Plane" color="#7a6344" height={80} width={80} />)
+  //     : (load = (
+  //         <Button className="btn m-3" variant="new" type="submit">
+  //           Submit
+  //         </Button>
+  //       ));
+  //   return load;
+  // }
 
   handleInputChange = event => {
     event.preventDefault();
@@ -56,7 +71,7 @@ class PassRecovery extends Component {
               onChange={this.handleInputChange}
             />
           </Form.Group>
-
+          {/* {this.renderLoading} */}
           <Button className="btn m-3" variant="new" type="submit">
             Submit
           </Button>

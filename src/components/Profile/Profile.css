@@ -1,0 +1,19 @@
+.dataContainer {
+  margin-top: 5%;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profrow {
+  margin-top: 2%;
+}
+
+.profCol {
+  margin-left: 3%;
+}
