@@ -4,7 +4,7 @@ export const UNAUTHENTICATED = "unauthenticated_user";
 export const AUTHENTICATION_ERROR = "authentication_error";
 export const ISAUTHENTICATED = "already_authenticated";
 export const INITIALIZEAER = "initialized_aerodromes";
-export const INITIALIZATIONERROR = "initialization_error";
+export const AERODROMERROR = "aerodrome_error";
 
 export function getToken() {
   return localStorage.getItem("token");
@@ -43,20 +43,19 @@ export function signOutAction() {
   };
 }
 
-export function initializeAerAction() {
+export function initializeAerAction(aerodromes) {
   return async dispatch => {
     try {
-      const res = await HTTP.get("/aerodromes");
       dispatch({
         type: INITIALIZEAER,
         payload: {
-          aerodromes: res.data.aerodrome
+          aerodromes: aerodromes
         }
       });
     } catch (error) {
       dispatch({
-        type: INITIALIZATIONERROR,
-        payload: "Error while initializating."
+        type: AERODROMERROR,
+        payload: "Not possible to load aerodromes."
       });
     }
   };

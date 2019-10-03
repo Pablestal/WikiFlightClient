@@ -55,9 +55,10 @@ const AppRoutes = () => (
           />
           <Route
             exact
-            path="/aerodromess/new"
+            path="/aerodromes/new"
             component={requireAuth(AerodromeForm)}
           />
+          <Route path="/aerodromes/edit/:id" exact component={AerodromeForm} />
           <Route exact path="/" component={Home} />
           <Route exact component={Page404} />
         </Switch>

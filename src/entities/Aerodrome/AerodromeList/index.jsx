@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { HTTP } from "../../../common/http-common";
 
 import { initializeAerAction } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { notify } from "react-notify-toast";
 
 class AerodromeList extends Component {
   state = {
@@ -11,12 +13,19 @@ class AerodromeList extends Component {
   };
 
   componentDidMount() {
-    this.props.initializeAerAction();
+    HTTP.get("/aerodromes")
+      .then(res => {
+        const aerodromes = res.data;
+        this.props.initializeAerAction(aerodromes);
+      })
+      .catch(function(error) {
+        notify.show("Error in get aerodromes", "error");
+      });
   }
 
   renderEmpty() {
     let rend;
-    this.state.aerodromes.length === 0
+    this.props.aerodromes.length === 0
       ? (rend = <h3 className="empty">List is empty, add some aerodromes.</h3>)
       : (rend = this.renderList());
     return rend;
@@ -25,13 +34,18 @@ class AerodromeList extends Component {
   renderList() {
     return (
       <ul className="list">
-        {this.state.aerodromes.map(function(aerodrome, index) {
+        {this.props.aerodromes.map(function(aerodrome, index) {
           return (
             <li key={index}>
               <h3 className="elem">
                 {aerodrome.name}
                 <div className="btns">
-                  <Link to={`/aerodromes/edit/${aerodrome.id}`}>
+                  <Link
+                    to={{
+                      pathname: `/aerodromes/edit/${aerodrome.id}`,
+                      state: { selected: aerodrome }
+                    }}
+                  >
                     <Button variant="ed" size="sm">
                       Edit
                     </Button>
@@ -67,7 +81,7 @@ class AerodromeList extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return { aerodromes: state.aerod.aerodromes };
 }
 
 export default connect(

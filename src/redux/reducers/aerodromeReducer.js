@@ -1,16 +1,15 @@
-import { INITIALIZEAER, INITIALIZATIONERROR } from "../actions";
+import { INITIALIZEAER, AERODROMERROR } from "../actions";
 
-const initialData = [];
+const initialData = { aerodromes: "" };
 
 export default function(state = initialData, action) {
   switch (action.type) {
     case INITIALIZEAER:
       return {
         ...state,
-        ...action.payload
+        aerodromes: action.payload.aerodromes
       };
-
-    case INITIALIZATIONERROR:
+    case AERODROMERROR:
       return { ...state, error: action.payload };
     default:
       return state;

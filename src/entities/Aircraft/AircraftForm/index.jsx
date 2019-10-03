@@ -79,7 +79,6 @@ class AircraftForm extends Component {
                 placeholder="Enter manufacturer"
                 name="manufacturer"
                 onChange={this.handleInputChange}
-                defaultValue={this.state.manufacturer}
               />
             </Form.Group>
             <Form.Group className="m-3">
@@ -101,31 +100,33 @@ class AircraftForm extends Component {
 
   renderEdit() {
     return (
-      <div className="content">
-        <Form className="form" onSubmit={this.handleSubmitEdit}>
+      <div className="container">
+        <Form onSubmit={this.handleSubmitEdit}>
           <h2 className="tittle">
             Edit {this.state.manufacturer} {this.state.model}
           </h2>
           <hr />
-          <Form.Group className="m-3">
-            <Form.Label>Edit Manufacturer</Form.Label>
-            <Form.Control
-              defaultValue={this.state.manufacturer}
-              name="manufacturer"
-              onChange={this.handleInputChange}
-            />
-          </Form.Group>
-          <Form.Group className="m-3">
-            <Form.Label>Edit Model</Form.Label>
-            <Form.Control
-              defaultValue={this.state.model}
-              name="model"
-              onChange={this.handleInputChange}
-            />
-          </Form.Group>
-          <Button className="btn m-3" variant="new" type="submit">
-            Submit
-          </Button>
+          <div className="innerform">
+            <Form.Group className="m-3">
+              <Form.Label>Edit Manufacturer</Form.Label>
+              <Form.Control
+                defaultValue={this.state.manufacturer}
+                name="manufacturer"
+                onChange={this.handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group className="m-3">
+              <Form.Label>Edit Model</Form.Label>
+              <Form.Control
+                defaultValue={this.state.model}
+                name="model"
+                onChange={this.handleInputChange}
+              />
+            </Form.Group>
+            <Button className="btn m-3" variant="new" type="submit">
+              Submit
+            </Button>
+          </div>
         </Form>
       </div>
     );
