@@ -70,7 +70,12 @@ class AerodromeList extends Component {
     return (
       <div className="container">
         <h2 className="tittle">List of registered aerodromes</h2>
-        <Link to="/aerodromes/new">
+        <Link
+          to={{
+            pathname: `/aerodromes/new`,
+            state: { selected: "" }
+          }}
+        >
           <Button variant="new">New</Button>
         </Link>
         <hr />

@@ -4,13 +4,13 @@ import PropTypes from "prop-types";
 
 export default function(ComposedComponent) {
   class NotAuthentication extends Component {
-    componentWillMount() {
+    componentDidMount() {
       if (this.props.authenticated) {
         this.props.history.push("/");
       }
     }
 
-    componentWillUpdate(nextProps) {
+    componentDidUpdate(nextProps) {
       if (nextProps.authenticated) {
         this.props.history.push("/");
       }
