@@ -16,5 +16,8 @@ const persistConfig = {
 
 const apersistReducer = persistReducer(persistConfig, reducers);
 
-export const store = createStoreWithMiddleware(apersistReducer);
+export const store = createStoreWithMiddleware(
+  apersistReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 export const persistor = persistStore(store);

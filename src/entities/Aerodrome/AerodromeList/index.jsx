@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { HTTP } from "../../../common/http-common";
 
-import { initializeAerAction } from "../../../redux/actions";
+import { initializeAerAction, deleteAerAction } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
@@ -21,6 +21,18 @@ class AerodromeList extends Component {
       .catch(function(error) {
         notify.show("Error in get aerodromes", "error");
       });
+  }
+
+  handleDelete(aerodrome) {
+    HTTP.delete(`aerodromes/${aerodrome.id}`)
+      .then(function(response) {
+        notify.show("Aerodrome removed", "success");
+      })
+      .catch(function(error) {
+        console.log("COOMO QUE NO");
+        notify.show("Aerodrome cannot be removed", "error");
+      });
+    this.props.deleteAerAction(aerodrome);
   }
 
   renderEmpty() {
@@ -91,5 +103,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { initializeAerAction }
+  { initializeAerAction, deleteAerAction }
 )(AerodromeList);

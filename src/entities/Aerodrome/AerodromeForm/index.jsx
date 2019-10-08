@@ -8,31 +8,81 @@ import { notify } from "react-notify-toast";
 import { Map, TileLayer, Marker } from "react-leaflet";
 
 class AerodromeForm extends Component {
-  state = {
-    aerodrome: "",
-    lat: 51.505,
-    lng: -0.09,
-    zoom: 13
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      aerodrome: {
+        name: "",
+        city: "",
+        country: "",
+        codIATA: "",
+        codOACI: "",
+        elevation: "",
+        position: {
+          x: 43.33,
+          y: -8.33
+        }
+      },
+      zoom: 13
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
   componentDidMount() {
     const aerodrome = this.props.location.state.selected;
-    this.setState({ aerodrome: aerodrome });
+    aerodrome
+      ? this.setState({ aerodrome: aerodrome })
+      : this.setState({
+          aerodrome: {
+            name: "",
+            city: "",
+            country: "",
+            codIATA: "",
+            codOACI: "",
+            elevation: "",
+            position: {
+              x: 43.33,
+              y: -8.33
+            }
+          }
+        });
   }
 
   handleInputChange = event => {
     event.preventDefault();
-    this.setState({
-      aerodrome: {
-        ...this.state.aerodrome,
-        [event.target.name]: event.target.value,
-        position: {
-          ...this.state.aerodrome.position,
-          [event.target.name]: event.target.value
-        }
-      }
-    });
+    let isPos;
+    event.target.name === "x" || event.target.name === "y"
+      ? (isPos = true)
+      : (isPos = false);
+
+    isPos
+      ? this.setState({
+          aerodrome: {
+            position: {
+              ...this.state.aerodrome.position,
+              [event.target.name]: event.target.value
+            }
+          }
+        })
+      : this.setState({
+          aerodrome: {
+            ...this.state.aerodrome,
+            [event.target.name]: event.target.value
+          }
+        });
   };
+
+  handleClick(e) {
+    let x = e.latlng.lat;
+    let y = e.latlng.lng;
+    let newPos = { x, y };
+    this.setState(prevState => ({
+      aerodrome: {
+        ...prevState.aerodrome,
+        position: newPos
+      }
+    }));
+    console.log(this.state.aerodrome.position);
+  }
 
   handleSubmitEdit = event => {
     event.preventDefault();
@@ -67,12 +117,10 @@ class AerodromeForm extends Component {
   };
 
   renderEdit(aerodrome) {
-    let pos;
-    let position;
-    !this.state.aerodrome.position
-      ? (pos = "Loading...")
-      : (pos = this.state.aerodrome.position);
-    pos === "Loading..." ? (position = [0, 0]) : (position = [pos.x, pos.y]);
+    const initialPosition = [
+      this.state.aerodrome.position.x,
+      this.state.aerodrome.position.y
+    ];
 
     return (
       <div className="container">
@@ -87,6 +135,7 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
+                  required
                   defaultValue={aerodrome.name}
                   name="name"
                   onChange={this.handleInputChange}
@@ -112,7 +161,8 @@ class AerodromeForm extends Component {
             {/* Segunda columna (MAPA) */}
             <Col>
               <Map
-                center={position}
+                onclick={this.handleClick}
+                center={initialPosition}
                 zoom={this.state.zoom}
                 className="map_aerod"
               >
@@ -120,7 +170,7 @@ class AerodromeForm extends Component {
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={position}></Marker>
+                <Marker position={initialPosition}></Marker>
               </Map>
             </Col>
           </Row>
@@ -153,8 +203,9 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridX">
               <Form.Label>Latitude:</Form.Label>
               <Form.Control
-                placeholder="X"
-                defaultValue={pos.x}
+                type="number"
+                placeholder="Latitude"
+                value={this.state.aerodrome.position.x}
                 name="x"
                 onChange={this.handleInputChange}
               />
@@ -163,15 +214,16 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridY">
               <Form.Label>Longitude:</Form.Label>
               <Form.Control
-                placeholder="Y"
-                defaultValue={pos.y}
+                type="number"
+                placeholder="Longitude"
+                value={this.state.aerodrome.position.y}
                 name="y"
                 onChange={this.handleInputChange}
               />
             </Form.Group>
           </Row>
           <Button className="btn m-3" variant="new" type="submit">
-            Submit
+            Save
           </Button>
         </Form>
       </div>
@@ -179,40 +231,58 @@ class AerodromeForm extends Component {
   }
 
   renderNew() {
+    const initialPosition = [
+      this.state.aerodrome.position.x,
+      this.state.aerodrome.position.y
+    ];
     return (
       <div className="container">
         <h2 className="tittle">Create new aerodrome</h2>
         <hr />
-        <Form className="innerform" onSubmit={this.handleSubmitNew}>
+        <Form onSubmit={this.handleSubmitNew}>
           {/* Primera columna (Name, City, Country) */}
-          <Col>
-            <Form.Group className="m-3" as={Row} controlId="formGridName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                placeholder="Name"
-                name="name"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Row} controlId="formGridCountry">
-              <Form.Label>Country</Form.Label>
-              <Form.Control
-                placeholder="Country"
-                name="country"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Row} controlId="formGridCity">
-              <Form.Label>City</Form.Label>
-              <Form.Control
-                placeholder="City"
-                name="city"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Col>
-          {/* Segunda columna (MAPA) */}
-          <Col></Col>
+          <Row>
+            <Col>
+              <Form.Group className="m-3" as={Row} controlId="formGridName">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  placeholder="Name"
+                  name="name"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group className="m-3" as={Row} controlId="formGridCountry">
+                <Form.Label>Country</Form.Label>
+                <Form.Control
+                  placeholder="Country"
+                  name="country"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group className="m-3" as={Row} controlId="formGridCity">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  placeholder="City"
+                  name="city"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+            {/* Segunda columna (MAPA) */}
+            <Col>
+              <Map
+                center={initialPosition}
+                zoom={this.state.zoom}
+                onClick={this.handleClick}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={initialPosition}></Marker>
+              </Map>
+            </Col>
+          </Row>
           {/* Fila de abajo (IATA, OACI, Elevación, Coordenadas(X, Y)) */}
           <Row>
             <Form.Group className="m-3" as={Col} controlId="formGridIATA">
@@ -240,18 +310,22 @@ class AerodromeForm extends Component {
               />
             </Form.Group>
             <Form.Group className="m-3" as={Col} controlId="formGridX">
-              <Form.Label>X:</Form.Label>
+              <Form.Label>Latitude:</Form.Label>
               <Form.Control
-                placeholder="X value"
+                type="number"
+                value={this.state.aerodrome.position.x}
+                placeholder="Latitude"
                 name="x"
                 onChange={this.handleInputChange}
               />
             </Form.Group>
 
             <Form.Group className="m-3" as={Col} controlId="formGridY">
-              <Form.Label>Y:</Form.Label>
+              <Form.Label>Longitude:</Form.Label>
               <Form.Control
-                placeholder="Y value"
+                type="number"
+                value={this.state.aerodrome.position.y}
+                placeholder="Longitude"
                 name="y"
                 onChange={this.handleInputChange}
               />
@@ -267,8 +341,7 @@ class AerodromeForm extends Component {
 
   render() {
     const aerodrome = this.props.location.state.selected;
-
-    return aerodrome !== "" ? this.renderEdit(aerodrome) : this.renderNew();
+    return aerodrome ? this.renderEdit(aerodrome) : this.renderNew();
   }
 }
 

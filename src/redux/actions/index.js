@@ -5,6 +5,7 @@ export const AUTHENTICATION_ERROR = "authentication_error";
 export const ISAUTHENTICATED = "already_authenticated";
 export const INITIALIZEAER = "initialized_aerodromes";
 export const AERODROMERROR = "aerodrome_error";
+export const DELETEAERODROME = "delete_aerodrome";
 
 export function getToken() {
   return localStorage.getItem("token");
@@ -56,6 +57,24 @@ export function initializeAerAction(aerodromes) {
       dispatch({
         type: AERODROMERROR,
         payload: "Not possible to load aerodromes."
+      });
+    }
+  };
+}
+
+export function deleteAerAction(aerodrome) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: DELETEAERODROME,
+        payload: {
+          id: aerodrome.id
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: AERODROMERROR,
+        payload: "Not possible to delete aerodrome."
       });
     }
   };
