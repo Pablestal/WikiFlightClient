@@ -53,6 +53,8 @@ class PassRecovery extends Component {
           <Form.Group className="m-3">
             <Form.Label className="recLabel">Enter your email</Form.Label>
             <Form.Control
+              required
+              type="text"
               placeholder="Email"
               name="email"
               onChange={this.handleInputChange}

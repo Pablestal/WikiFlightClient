@@ -50,6 +50,7 @@ class ResetPass extends Component {
           <Form.Group className="m-3">
             <Form.Label className="recLabel">New password</Form.Label>
             <Form.Control
+              required
               placeholder="Password"
               name="password"
               type="password"
@@ -59,6 +60,7 @@ class ResetPass extends Component {
           <Form.Group className="m-3">
             <Form.Label className="recLabel">Repeat new password</Form.Label>
             <Form.Control
+              required
               placeholder="Password"
               name="repassword"
               type="password"

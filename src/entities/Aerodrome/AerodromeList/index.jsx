@@ -29,7 +29,6 @@ class AerodromeList extends Component {
         notify.show("Aerodrome removed", "success");
       })
       .catch(function(error) {
-        console.log("COOMO QUE NO");
         notify.show("Aerodrome cannot be removed", "error");
       });
     this.props.deleteAerAction(aerodrome);

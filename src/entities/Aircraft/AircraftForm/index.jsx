@@ -76,6 +76,8 @@ class AircraftForm extends Component {
             <Form.Group className="m-3">
               <Form.Label>Manufacturer</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Enter manufacturer"
                 name="manufacturer"
                 onChange={this.handleInputChange}
@@ -84,6 +86,8 @@ class AircraftForm extends Component {
             <Form.Group className="m-3">
               <Form.Label>Model</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Enter model"
                 name="model"
                 onChange={this.handleInputChange}
@@ -110,6 +114,8 @@ class AircraftForm extends Component {
             <Form.Group className="m-3">
               <Form.Label>Edit Manufacturer</Form.Label>
               <Form.Control
+                required
+                type="text"
                 defaultValue={this.state.manufacturer}
                 name="manufacturer"
                 onChange={this.handleInputChange}
@@ -118,6 +124,8 @@ class AircraftForm extends Component {
             <Form.Group className="m-3">
               <Form.Label>Edit Model</Form.Label>
               <Form.Control
+                required
+                type="text"
                 defaultValue={this.state.model}
                 name="model"
                 onChange={this.handleInputChange}
@@ -138,19 +146,6 @@ class AircraftForm extends Component {
       [event.target.name]: event.target.value
     });
   };
-
-  //Ejemplo para comprobar event
-  // handleInputChange = event => {
-  //   event.preventDefault();
-  //   console.log(event);
-  //   console.log(event.target.name);
-  //   console.log(event.target.value);
-  //   this.setState({
-  //     [event.target.name]: event.target.value
-  //   });
-  //   console.log(this.state.manufacturer);
-  //   console.log(this.state.model);
-  // };
 
   render() {
     return this.props.match.params.id ? this.renderEdit() : this.renderNew();

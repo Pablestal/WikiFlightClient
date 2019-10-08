@@ -43,7 +43,6 @@ class Register extends Component {
       birthDate: this.state.birthDate
     })
       .then(function(response) {
-        console.log(response);
         notify.show("Successfully registered, you may log in.", "success");
         history.push("/login");
       })
@@ -60,6 +59,8 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridName">
               <Form.Label>Name</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Name"
                 name="name"
                 onChange={this.handleInputChange}
@@ -69,6 +70,8 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridSurname1">
               <Form.Label>Surname</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Surname"
                 name="surname1"
                 onChange={this.handleInputChange}
@@ -78,6 +81,7 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridSurname2">
               <Form.Label>Surname 2 (optional)</Form.Label>
               <Form.Control
+                type="text"
                 placeholder="Surname"
                 name="surname2"
                 onChange={this.handleInputChange}
@@ -89,6 +93,8 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridUserName">
               <Form.Label>Username</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Username"
                 name="login"
                 onChange={this.handleInputChange}
@@ -97,6 +103,7 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
+                required
                 type="email"
                 placeholder="Email"
                 name="email"
@@ -109,6 +116,7 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                required
                 type="password"
                 placeholder="Password"
                 name="password"
@@ -121,6 +129,8 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridCountry">
               <Form.Label>Country</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="Country"
                 name="country"
                 onChange={this.handleInputChange}
@@ -130,6 +140,8 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridCity">
               <Form.Label>City</Form.Label>
               <Form.Control
+                required
+                type="text"
                 placeholder="City"
                 name="city"
                 onChange={this.handleInputChange}
@@ -139,6 +151,7 @@ class Register extends Component {
             <Form.Group as={Col} controlId="formGridBirthDate">
               <Form.Label>Birth date</Form.Label>
               <Form.Control
+                required
                 type="date"
                 name="birthDate"
                 onChange={this.handleInputChange}

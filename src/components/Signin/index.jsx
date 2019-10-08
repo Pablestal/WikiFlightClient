@@ -23,6 +23,7 @@ class Signin extends Component {
             <Form.Group className="m-3">
               <Form.Label>Username</Form.Label>
               <Field
+                required
                 className="myfield"
                 name="login"
                 component="input"
@@ -34,6 +35,7 @@ class Signin extends Component {
             <Form.Group className="m-3">
               <Form.Label>Password</Form.Label>
               <Field
+                required
                 className="myfield"
                 name="password"
                 component="input"

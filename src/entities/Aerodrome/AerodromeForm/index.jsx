@@ -40,8 +40,8 @@ class AerodromeForm extends Component {
             codOACI: "",
             elevation: "",
             position: {
-              x: 43.33,
-              y: -8.33
+              x: 41.940823995744914,
+              y: -7.439899846370271
             }
           }
         });
@@ -81,7 +81,6 @@ class AerodromeForm extends Component {
         position: newPos
       }
     }));
-    console.log(this.state.aerodrome.position);
   }
 
   handleSubmitEdit = event => {
@@ -136,6 +135,7 @@ class AerodromeForm extends Component {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
+                  type="text"
                   defaultValue={aerodrome.name}
                   name="name"
                   onChange={this.handleInputChange}
@@ -144,6 +144,8 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridCountry">
                 <Form.Label>Country</Form.Label>
                 <Form.Control
+                  required
+                  type="text"
                   defaultValue={aerodrome.country}
                   name="country"
                   onChange={this.handleInputChange}
@@ -152,6 +154,8 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridCity">
                 <Form.Label>City</Form.Label>
                 <Form.Control
+                  required
+                  type="text"
                   defaultValue={aerodrome.city}
                   name="city"
                   onChange={this.handleInputChange}
@@ -179,6 +183,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridIATA">
               <Form.Label>IATA</Form.Label>
               <Form.Control
+                type="text"
                 defaultValue={aerodrome.codIATA}
                 name="codIATA"
                 onChange={this.handleInputChange}
@@ -187,6 +192,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridOACI">
               <Form.Label>OACI</Form.Label>
               <Form.Control
+                type="text"
                 defaultValue={aerodrome.codOACI}
                 name="codOACI"
                 onChange={this.handleInputChange}
@@ -195,6 +201,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridElevation">
               <Form.Label>Elevation (ft)</Form.Label>
               <Form.Control
+                type="number"
                 defaultValue={aerodrome.elevation}
                 name="elevation"
                 onChange={this.handleInputChange}
@@ -203,6 +210,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridX">
               <Form.Label>Latitude:</Form.Label>
               <Form.Control
+                required
                 type="number"
                 placeholder="Latitude"
                 value={this.state.aerodrome.position.x}
@@ -214,6 +222,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridY">
               <Form.Label>Longitude:</Form.Label>
               <Form.Control
+                required
                 type="number"
                 placeholder="Longitude"
                 value={this.state.aerodrome.position.y}
@@ -246,6 +255,8 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridName">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
+                  required
+                  type="text"
                   placeholder="Name"
                   name="name"
                   onChange={this.handleInputChange}
@@ -254,6 +265,8 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridCountry">
                 <Form.Label>Country</Form.Label>
                 <Form.Control
+                  required
+                  type="text"
                   placeholder="Country"
                   name="country"
                   onChange={this.handleInputChange}
@@ -262,6 +275,8 @@ class AerodromeForm extends Component {
               <Form.Group className="m-3" as={Row} controlId="formGridCity">
                 <Form.Label>City</Form.Label>
                 <Form.Control
+                  required
+                  type="text"
                   placeholder="City"
                   name="city"
                   onChange={this.handleInputChange}
@@ -288,6 +303,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridIATA">
               <Form.Label>IATA</Form.Label>
               <Form.Control
+                type="text"
                 placeholder="IATA code"
                 name="codIATA"
                 onChange={this.handleInputChange}
@@ -296,6 +312,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridOACI">
               <Form.Label>OACI</Form.Label>
               <Form.Control
+                type="text"
                 placeholder="OACI code"
                 name="codOACI"
                 onChange={this.handleInputChange}
@@ -304,6 +321,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridElevation">
               <Form.Label>Elevation (ft)</Form.Label>
               <Form.Control
+                type="number"
                 placeholder="Elevation"
                 name="elevation"
                 onChange={this.handleInputChange}
@@ -312,6 +330,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridX">
               <Form.Label>Latitude:</Form.Label>
               <Form.Control
+                required
                 type="number"
                 value={this.state.aerodrome.position.x}
                 placeholder="Latitude"
@@ -323,6 +342,7 @@ class AerodromeForm extends Component {
             <Form.Group className="m-3" as={Col} controlId="formGridY">
               <Form.Label>Longitude:</Form.Label>
               <Form.Control
+                required
                 type="number"
                 value={this.state.aerodrome.position.y}
                 placeholder="Longitude"
