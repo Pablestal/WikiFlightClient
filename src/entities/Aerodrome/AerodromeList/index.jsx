@@ -49,6 +49,7 @@ class AerodromeList extends Component {
           return (
             <li key={index}>
               <h3 className="elem">
+                <b>{aerodrome.codIATA} </b>
                 {aerodrome.name}
                 <div className="btns">
                   <Link

@@ -26,7 +26,13 @@ class AerodromeForm extends Component {
       zoom: 13
     };
     this.handleClick = this.handleClick.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
   componentDidMount() {
     const aerodrome = this.props.location.state.selected;
     aerodrome
@@ -124,7 +130,10 @@ class AerodromeForm extends Component {
     return (
       <div className="container">
         <h2 className="tittle">
-          Edit aerodrome of {aerodrome.city} ({aerodrome.name})
+          Edit aerodrome
+          <Button variant="back" onClick={this.goBack}>
+            Back
+          </Button>
         </h2>
         <hr />
         <Form onSubmit={this.handleSubmitEdit}>
@@ -135,6 +144,7 @@ class AerodromeForm extends Component {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   required
+                  maxLength="36"
                   type="text"
                   defaultValue={aerodrome.name}
                   name="name"
@@ -246,7 +256,12 @@ class AerodromeForm extends Component {
     ];
     return (
       <div className="container">
-        <h2 className="tittle">Create new aerodrome</h2>
+        <h2 className="tittle">
+          Create new aerodrome
+          <Button variant="back" onClick={this.goBack}>
+            Back
+          </Button>
+        </h2>
         <hr />
         <Form onSubmit={this.handleSubmitNew}>
           {/* Primera columna (Name, City, Country) */}
@@ -257,6 +272,7 @@ class AerodromeForm extends Component {
                 <Form.Control
                   required
                   type="text"
+                  maxLength="36"
                   placeholder="Name"
                   name="name"
                   onChange={this.handleInputChange}

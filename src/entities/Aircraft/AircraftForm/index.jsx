@@ -13,6 +13,11 @@ class AircraftForm extends Component {
       model: ""
     };
     this.handleSubmitNew = this.handleSubmitNew.bind(this);
+    this.goBack = this.goBack.bind(this);
+  }
+
+  goBack() {
+    this.props.history.goBack();
   }
 
   componentDidMount() {
@@ -70,7 +75,12 @@ class AircraftForm extends Component {
     return (
       <div className="container">
         <Form onSubmit={this.handleSubmitNew}>
-          <h2 className="tittle">Create new aircraft</h2>
+          <h2 className="tittle">
+            Create new aircraft
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
           <hr />
           <div className="innerform">
             <Form.Group className="m-3">
@@ -78,6 +88,7 @@ class AircraftForm extends Component {
               <Form.Control
                 required
                 type="text"
+                maxLength="20"
                 placeholder="Enter manufacturer"
                 name="manufacturer"
                 onChange={this.handleInputChange}
@@ -87,6 +98,7 @@ class AircraftForm extends Component {
               <Form.Label>Model</Form.Label>
               <Form.Control
                 required
+                maxLength="9"
                 type="text"
                 placeholder="Enter model"
                 name="model"
@@ -108,6 +120,9 @@ class AircraftForm extends Component {
         <Form onSubmit={this.handleSubmitEdit}>
           <h2 className="tittle">
             Edit {this.state.manufacturer} {this.state.model}
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
           </h2>
           <hr />
           <div className="innerform">
@@ -115,6 +130,7 @@ class AircraftForm extends Component {
               <Form.Label>Edit Manufacturer</Form.Label>
               <Form.Control
                 required
+                maxLength="20"
                 type="text"
                 defaultValue={this.state.manufacturer}
                 name="manufacturer"
@@ -126,13 +142,14 @@ class AircraftForm extends Component {
               <Form.Control
                 required
                 type="text"
+                maxLength="9"
                 defaultValue={this.state.model}
                 name="model"
                 onChange={this.handleInputChange}
               />
             </Form.Group>
             <Button className="btn m-3" variant="new" type="submit">
-              Submit
+              Save
             </Button>
           </div>
         </Form>
