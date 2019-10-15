@@ -2,10 +2,11 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { signOutAction } from "../../redux/actions";
-import { ButtonGroup } from "react-bootstrap";
+import { ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import { Button, Col, Row, Container, Image } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import { notify } from "react-notify-toast";
+import { Link } from "react-router-dom";
 import ImageUploader from "react-images-upload";
 
 import "./Profile.css";
@@ -16,6 +17,11 @@ class Profile extends Component {
     this.state = { picture: "", pilot: {}, avatar: "" };
     this.onDrop = this.onDrop.bind(this);
     this.showAvatar = this.showAvatar.bind(this);
+    this.goBack = this.goBack.bind(this);
+  }
+
+  goBack() {
+    this.props.history.goBack();
   }
 
   componentDidMount() {
@@ -37,10 +43,11 @@ class Profile extends Component {
 
     var formData = new FormData();
     formData.append("image", image);
-    let pilot = this.state.pilot;
-    formData.append("pilot", pilot);
 
-    HTTP.put(`users/${this.props.login}`, formData, {
+    let pilot = this.state.pilot;
+
+    formData.append("pilot", pilot);
+    HTTP.put(`users/updateavatar/${this.props.login}`, formData, {
       "Content-Type": "multipart/form-data"
     })
       .then(function(response) {
@@ -82,12 +89,27 @@ class Profile extends Component {
           <b>
             {pilot.name} {pilot.surname1} {pilot.surname2}
           </b>
+          <Button variant="back" onClick={this.goBack}>
+            Back
+          </Button>
         </h2>
-        <ButtonGroup aria-label="toolbar">
-          <Button variant="new">Info</Button>
-          <Button variant="new">Routes uploaded</Button>
-          <Button variant="new">Statistics</Button>
-        </ButtonGroup>
+        <ButtonToolbar>
+          <ButtonGroup>
+            <Button variant="new">Info</Button>
+            <Button variant="new">Routes uploaded</Button>
+            <Button variant="new">Statistics</Button>
+            <Link
+              to={{
+                pathname: `/profile/${this.props.login}/editData`,
+                state: { selected: pilot }
+              }}
+            >
+              <Button variant="new" className="profEditButton">
+                Settings
+              </Button>
+            </Link>
+          </ButtonGroup>
+        </ButtonToolbar>
         <hr />
 
         <Container className="dataContainer">
@@ -99,7 +121,7 @@ class Profile extends Component {
                   withIcon={false}
                   buttonText="Change avatar"
                   onChange={this.onDrop}
-                  imgExtension={[".jpg", ".jpegº"]}
+                  imgExtension={[".jpg", ".jpeg"]}
                   maxFileSize={5242880}
                   singleImage={true}
                   withLabel={false}

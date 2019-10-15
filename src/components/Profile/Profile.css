@@ -24,3 +24,7 @@
   background-color: #fbeec1;
   box-shadow: none;
 }
+
+.profEditButton {
+  float: right;
+}

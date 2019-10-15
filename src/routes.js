@@ -18,6 +18,7 @@ import AerodromeForm from "./entities/Aerodrome/AerodromeForm";
 import PassRecovery from "./components/ForgotPass";
 import ResetPass from "./components/ResetPass";
 import Profile from "./components/Profile";
+import ProfileEdit from "./components/Profile/ProfileEdit";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -47,6 +48,11 @@ const AppRoutes = () => (
             component={requireAuth(AircraftForm)}
           />
           <Route path="/profile/:username" exact component={Profile} />
+          <Route
+            path="/profile/:username/editData"
+            exact
+            component={ProfileEdit}
+          />
           <Route path="/aircrafts/edit/:id" exact component={AircraftForm} />
           <Route
             exact

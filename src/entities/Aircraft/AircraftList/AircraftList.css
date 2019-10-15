@@ -2,11 +2,6 @@
   list-style-type: none;
   justify-content: center;
 }
-.tittle {
-  padding-top: 2%;
-  padding-bottom: 2%;
-  color: #6b6630;
-}
 
 hr {
   align: center;
@@ -33,27 +28,6 @@ li {
 
 .elem b {
   font-size: 80%;
-}
-
-.btn-ed {
-  color: #bc986a;
-  border: 2px solid #bc986a;
-}
-
-.btn-del {
-  color: #bc986a;
-  border: 2px solid #bc7a6a;
-}
-
-.btn-new {
-  color: #bc986a;
-  border: 2px solid #bc986a;
-  margin: auto;
-}
-
-.btn-new:hover {
-  color: #836b4b;
-  border: 2px solid #bc986a;
 }
 
 .btns {
