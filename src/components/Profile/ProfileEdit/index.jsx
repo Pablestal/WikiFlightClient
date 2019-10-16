@@ -150,11 +150,11 @@ class ProfileEdit extends Component {
           <h4 className="tittle">Modify password</h4>
           <Form.Row>
             <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>New password</Form.Label>
               <Form.Control
                 defaultValue={pilot.password}
                 type="password"
-                placeholder="Password"
+                placeholder="New password"
                 name="password"
                 onChange={this.handleInputChange}
               />
@@ -162,10 +162,10 @@ class ProfileEdit extends Component {
           </Form.Row>
           <Form.Row>
             <Form.Group as={Col} controlId="formGridRepPassword">
-              <Form.Label>Confirm Password</Form.Label>
+              <Form.Label>Confirm new password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Confirm Password"
+                placeholder="Confirm new password"
                 name="repPassword"
                 onChange={this.handleInputChange}
               />

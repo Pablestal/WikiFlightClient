@@ -30,7 +30,7 @@ class AircraftForm extends Component {
           });
         })
         .catch(function(error) {
-          console.log(error);
+          notify.show("Error loading aircrafts.", "error", 3000);
         });
   }
 
