@@ -47,13 +47,21 @@ const AppRoutes = () => (
             path="/aircrafts/new"
             component={requireAuth(AircraftForm)}
           />
-          <Route path="/profile/:username" exact component={Profile} />
+          <Route
+            path="/profile/:username"
+            exact
+            component={noRequireAuth(Profile)}
+          />
           <Route
             path="/profile/:username/editData"
             exact
-            component={ProfileEdit}
+            component={requireAuth(ProfileEdit)}
           />
-          <Route path="/aircrafts/edit/:id" exact component={AircraftForm} />
+          <Route
+            path="/aircrafts/edit/:id"
+            exact
+            component={requireAuth(AircraftForm)}
+          />
           <Route
             exact
             path="/aerodromes"
@@ -64,7 +72,11 @@ const AppRoutes = () => (
             path="/aerodromes/new"
             component={requireAuth(AerodromeForm)}
           />
-          <Route path="/aerodromes/edit/:id" exact component={AerodromeForm} />
+          <Route
+            path="/aerodromes/edit/:id"
+            exact
+            component={requireAuth(AerodromeForm)}
+          />
           <Route exact path="/" component={Home} />
           <Route exact component={Page404} />
         </Switch>

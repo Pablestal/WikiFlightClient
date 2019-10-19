@@ -19,8 +19,8 @@ class AerodromeForm extends Component {
         codOACI: "",
         elevation: "",
         position: {
-          x: 43.33,
-          y: -8.33
+          type: "Point",
+          coordinates: [-8.33, 43.33]
         }
       },
       zoom: 13
@@ -46,8 +46,8 @@ class AerodromeForm extends Component {
             codOACI: "",
             elevation: "",
             position: {
-              x: 41.940823995744914,
-              y: -7.439899846370271
+              type: "Point",
+              coordinates: [41.940823995744914, -7.4398998463702713]
             }
           }
         });
@@ -55,36 +55,53 @@ class AerodromeForm extends Component {
 
   handleInputChange = event => {
     event.preventDefault();
-    let isPos;
-    event.target.name === "x" || event.target.name === "y"
-      ? (isPos = true)
-      : (isPos = false);
-
-    isPos
-      ? this.setState({
-          aerodrome: {
-            position: {
-              ...this.state.aerodrome.position,
-              [event.target.name]: event.target.value
-            }
+    if (event.target.name === "x") {
+      this.setState({
+        aerodrome: {
+          ...this.state.aerodrome,
+          position: {
+            ...this.state.aerodrome.position,
+            coordinates: [
+              event.target.value,
+              this.state.aerodrome.position.coordinates[1]
+            ]
           }
-        })
-      : this.setState({
-          aerodrome: {
-            ...this.state.aerodrome,
-            [event.target.name]: event.target.value
+        }
+      });
+    } else if (event.target.name === "y") {
+      this.setState({
+        aerodrome: {
+          ...this.state.aerodrome,
+          position: {
+            ...this.state.aerodrome.position,
+            coordinates: [
+              this.state.aerodrome.position.coordinates[0],
+              event.target.value
+            ]
           }
-        });
+        }
+      });
+    } else {
+      this.setState({
+        aerodrome: {
+          ...this.state.aerodrome,
+          [event.target.name]: event.target.value
+        }
+      });
+    }
   };
 
   handleClick(e) {
     let x = e.latlng.lat;
     let y = e.latlng.lng;
-    let newPos = { x, y };
+    let newPos = [x, y];
     this.setState(prevState => ({
       aerodrome: {
-        ...prevState.aerodrome,
-        position: newPos
+        ...this.state.aerodrome,
+        position: {
+          ...this.state.aerodrome.position,
+          coordinates: newPos
+        }
       }
     }));
   }
@@ -101,7 +118,7 @@ class AerodromeForm extends Component {
         push("/aerodromes");
       })
       .catch(function(error) {
-        notify.show("This aerodrome already exists.", "error", 3000);
+        notify.show("Cannot modify aerodrome.", "error", 3000);
       });
   };
 
@@ -122,11 +139,7 @@ class AerodromeForm extends Component {
   };
 
   renderEdit(aerodrome) {
-    const initialPosition = [
-      this.state.aerodrome.position.x,
-      this.state.aerodrome.position.y
-    ];
-
+    const initialPosition = this.state.aerodrome.position.coordinates;
     return (
       <div className="container">
         <h2 className="tittle">
@@ -223,7 +236,7 @@ class AerodromeForm extends Component {
                 required
                 type="number"
                 placeholder="Latitude"
-                value={this.state.aerodrome.position.x}
+                value={this.state.aerodrome.position.coordinates[0]}
                 name="x"
                 onChange={this.handleInputChange}
               />
@@ -235,7 +248,7 @@ class AerodromeForm extends Component {
                 required
                 type="number"
                 placeholder="Longitude"
-                value={this.state.aerodrome.position.y}
+                value={this.state.aerodrome.position.coordinates[1]}
                 name="y"
                 onChange={this.handleInputChange}
               />
@@ -250,10 +263,7 @@ class AerodromeForm extends Component {
   }
 
   renderNew() {
-    const initialPosition = [
-      this.state.aerodrome.position.x,
-      this.state.aerodrome.position.y
-    ];
+    const initialPosition = this.state.aerodrome.position.coordinates;
     return (
       <div className="container">
         <h2 className="tittle">
@@ -348,7 +358,7 @@ class AerodromeForm extends Component {
               <Form.Control
                 required
                 type="number"
-                value={this.state.aerodrome.position.x}
+                value={this.state.aerodrome.position.coordinates[0]}
                 placeholder="Latitude"
                 name="x"
                 onChange={this.handleInputChange}
@@ -360,7 +370,7 @@ class AerodromeForm extends Component {
               <Form.Control
                 required
                 type="number"
-                value={this.state.aerodrome.position.y}
+                value={this.state.aerodrome.position.coordinates[1]}
                 placeholder="Longitude"
                 name="y"
                 onChange={this.handleInputChange}

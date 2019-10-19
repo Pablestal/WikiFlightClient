@@ -6,6 +6,9 @@ export const ISAUTHENTICATED = "already_authenticated";
 export const INITIALIZEAER = "initialized_aerodromes";
 export const AERODROMERROR = "aerodrome_error";
 export const DELETEAERODROME = "delete_aerodrome";
+export const INITIALIZEAIRC = "initialized_aircraft";
+export const AIRCRAFTERROR = "aircraft_error";
+export const DELETEAIRCRAFT = "delete_aircraft";
 
 export function getToken() {
   return localStorage.getItem("token");
@@ -41,6 +44,24 @@ export function signOutAction() {
   localStorage.clear();
   return {
     type: UNAUTHENTICATED
+  };
+}
+
+export function initializeAircAction(aircrafts) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: INITIALIZEAIRC,
+        payload: {
+          aircrafts: aircrafts
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: AIRCRAFTERROR,
+        payload: "Not possible to load aircrafts."
+      });
+    }
   };
 }
 

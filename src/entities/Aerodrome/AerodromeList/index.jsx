@@ -36,7 +36,7 @@ class AerodromeList extends Component {
 
   renderEmpty() {
     let rend;
-    this.state.aerodromes.length === 0
+    this.props.aerodromes.length === 0
       ? (rend = <h3 className="empty">List is empty, add some aerodromes.</h3>)
       : (rend = this.renderList());
     return rend;
