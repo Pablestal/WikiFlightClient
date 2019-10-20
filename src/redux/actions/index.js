@@ -10,6 +10,8 @@ export const INITIALIZEAIRC = "initialized_aircraft";
 export const AIRCRAFTERROR = "aircraft_error";
 export const DELETEAIRCRAFT = "delete_aircraft";
 
+// AUTHENTICATION ACTIONS
+
 export function getToken() {
   return localStorage.getItem("token");
 }
@@ -47,6 +49,8 @@ export function signOutAction() {
   };
 }
 
+// AIRCRAFT ACTIONS
+
 export function initializeAircAction(aircrafts) {
   return async dispatch => {
     try {
@@ -64,6 +68,26 @@ export function initializeAircAction(aircrafts) {
     }
   };
 }
+
+export function deleteAircAction(aircraft) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: DELETEAIRCRAFT,
+        payload: {
+          id: aircraft.id
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: AIRCRAFTERROR,
+        payload: "Not possible to delete aerodrome."
+      });
+    }
+  };
+}
+
+// AERODROME ACTIONS
 
 export function initializeAerAction(aerodromes) {
   return async dispatch => {

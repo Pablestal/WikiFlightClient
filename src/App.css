@@ -25,7 +25,12 @@ body {
   background-color: #fbeec1;
   padding-left: 5%;
   padding-right: 5%;
-  padding-bottom: 10%;
+  padding-bottom: 2%;
+  margin-top: 2%;
+  margin-right: 10%;
+  margin-left: 10%;
+  max-width: 100%;
+  width: auto;
 }
 
 .innerform {
@@ -72,6 +77,11 @@ body {
 }
 
 .btn-new:hover {
+  color: #836b4b;
+  border: 2px solid #bc986a;
+}
+
+.btn-new:active {
   color: #836b4b;
   border: 2px solid #bc986a;
 }

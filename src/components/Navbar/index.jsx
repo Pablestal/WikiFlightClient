@@ -10,24 +10,7 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 class Navibar extends React.Component {
-  handleLogout = event => {
-    this.props.signOutAction();
-    history.push("/");
-  };
-
-  renderPilot() {
-    return (
-      <Nav className="linkslog">
-        <Link className="navlinks" to={`/profile/${this.props.login}`}>
-          {this.props.login}'s profile
-        </Link>
-        <h2 className="separator">|</h2>
-        <Nav.Link onClick={this.handleLogout} name="logout">
-          Logout
-        </Nav.Link>
-      </Nav>
-    );
-  }
+  // ADMIN NAVBAR //
 
   renderAdmin() {
     return (
@@ -39,50 +22,7 @@ class Navibar extends React.Component {
     );
   }
 
-  renderLogin() {
-    return (
-      <Nav className="linkslog">
-        <Link className="navlinks" name="login" to="/login">
-          Sign in
-        </Link>
-        <h2 className="separator">|</h2>
-        <Link className="navlinks" name="register" to="/register">
-          Register
-        </Link>
-      </Nav>
-    );
-  }
-
-  renderLogout() {
-    let logout;
-    this.props.authority === "ADMIN"
-      ? (logout = this.renderAdmin())
-      : (logout = this.renderPilot());
-    return logout;
-  }
-
-  setLoginRender() {
-    let login;
-    this.props.authenticated
-      ? (login = this.renderLogout())
-      : (login = this.renderLogin());
-    return login;
-  }
-
-  setUserRender() {
-    let links;
-    !this.props.authenticated
-      ? (links = this.anonymousRender())
-      : this.props.authority === "ADMIN"
-      ? (links = this.adminRender())
-      : this.props.authority === "PILOT"
-      ? (links = this.pilotRender())
-      : (links = null);
-
-    return links;
-  }
-
-  adminRender() {
+  adminLogRender() {
     return (
       <Nav className="mr-auto">
         <Link className="navlinks" to="/aircrafts">
@@ -98,9 +38,83 @@ class Navibar extends React.Component {
     );
   }
 
-  pilotRender() {}
+  // PILOT NAVBAR //
+
+  renderPilot() {
+    return (
+      <Nav className="linkslog">
+        <Link className="navlinks" to={`/profile/${this.props.login}`}>
+          {this.props.login}'s profile
+        </Link>
+        <h2 className="separator">|</h2>
+        <Nav.Link onClick={this.handleLogout} name="logout">
+          Logout
+        </Nav.Link>
+      </Nav>
+    );
+  }
+
+  pilotLogRender() {
+    return (
+      <Nav className="mr-auto">
+        <Link className="navlinks" to={`/logbook/${this.props.login}`}>
+          My Logbook
+        </Link>
+      </Nav>
+    );
+  }
+
+  // ANONYMOUS NAVBAR //
+
+  anonymousLogRender() {
+    return (
+      <Nav className="linkslog">
+        <Link className="navlinks" name="login" to="/login">
+          Sign in
+        </Link>
+        <h2 className="separator">|</h2>
+        <Link className="navlinks" name="register" to="/register">
+          Register
+        </Link>
+      </Nav>
+    );
+  }
 
   anonymousRender() {}
+
+  renderLogout() {
+    let logout;
+    this.props.authority === "ADMIN"
+      ? (logout = this.renderAdmin())
+      : (logout = this.renderPilot());
+    return logout;
+  }
+
+  setLoginRender() {
+    let login;
+    this.props.authenticated
+      ? (login = this.renderLogout())
+      : (login = this.anonymousLogRender());
+    return login;
+  }
+
+  setUserRender() {
+    let links;
+    !this.props.authenticated
+      ? (links = this.anonymousRender())
+      : this.props.authority === "ADMIN"
+      ? (links = this.adminLogRender())
+      : this.props.authority === "PILOT"
+      ? (links = this.pilotLogRender())
+      : (links = null);
+
+    return links;
+  }
+
+  handleLogout = event => {
+    this.props.signOutAction();
+    history.push("/");
+  };
 
   render() {
     return (

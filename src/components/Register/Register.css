@@ -6,3 +6,15 @@
 .form-label {
   font-weight: bold;
 }
+
+.regContainer {
+  background-color: #fbeec1;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 2%;
+  margin-top: 2%;
+  margin-right: 15%;
+  margin-left: 15%;
+  max-width: 100%;
+  width: auto;
+}

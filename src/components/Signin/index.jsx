@@ -15,9 +15,9 @@ class Signin extends Component {
   render() {
     const { handleSubmit } = this.props;
     return (
-      <div className="container">
+      <div className="signContainer">
         <Form onSubmit={handleSubmit(this.submit)}>
-          <h2 className="tittle">Sign in</h2>
+          <h2 className="tittle">Welcome to WikiFlight</h2>
           <hr />
           <div className="innerform">
             <Form.Group className="m-3">

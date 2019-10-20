@@ -1,3 +1,15 @@
+.signContainer {
+  background-color: #fbeec1;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 2%;
+  margin-top: 5%;
+  margin-right: 20%;
+  margin-left: 20%;
+  max-width: 100%;
+  width: auto;
+}
+
 .formupass {
   padding-left: 30%;
 }

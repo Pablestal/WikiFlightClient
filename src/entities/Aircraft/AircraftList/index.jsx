@@ -3,16 +3,17 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "./AircraftList.css";
 import { HTTP } from "../../../common/http-common";
-import { withRouter } from "react-router";
+import { initializeAircAction, deleteAircAction } from "../../../redux/actions";
+import { connect } from "react-redux";
 import { notify } from "react-notify-toast";
 
 class AircraftList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aircrafts: [],
-      selectedOption: []
+      aircrafts: []
     };
+
     this.handleDelete = this.handleDelete.bind(this);
     this.renderEmpty = this.renderEmpty.bind(this);
   }
@@ -21,10 +22,10 @@ class AircraftList extends Component {
     HTTP.get("/aircrafts")
       .then(res => {
         const aircrafts = res.data;
-        this.setState({ aircrafts });
+        this.props.initializeAircAction(aircrafts);
       })
       .catch(function(error) {
-        notify.show("You are not allowed here", "error");
+        notify.show("Error loading aircrafts.", "error");
       });
   }
 
@@ -43,19 +44,24 @@ class AircraftList extends Component {
       .catch(function(error) {
         notify.show("Aircraft cannot be removed", "error");
       });
-    this.componentDidMount();
+    this.props.deleteAircAction(aircraft);
   };
 
   renderList() {
     return (
       <ul className="list">
-        {this.state.aircrafts.map(function(aircraft, index) {
+        {this.props.aircrafts.map(function(aircraft, index) {
           return (
             <li key={index}>
               <h3 className="elem">
                 {aircraft.manufacturer} <b>{aircraft.model}</b>
                 <div className="btns">
-                  <Link to={`/aircrafts/edit/${aircraft.id}`}>
+                  <Link
+                    to={{
+                      pathname: `/aircrafts/edit/${aircraft.id}`,
+                      state: { selected: aircraft }
+                    }}
+                  >
                     <Button variant="ed" size="sm">
                       Edit
                     </Button>
@@ -78,7 +84,7 @@ class AircraftList extends Component {
 
   renderEmpty() {
     let rend;
-    this.state.aircrafts.length === 0
+    this.props.aircrafts.length === 0
       ? (rend = <h3 className="empty">List is empty, add some aircrafts.</h3>)
       : (rend = this.renderList());
     return rend;
@@ -89,7 +95,12 @@ class AircraftList extends Component {
       <div className="container">
         <h2 className="tittle">List of registered aircrafts</h2>
 
-        <Link to="/aircrafts/new">
+        <Link
+          to={{
+            pathname: `/aircrafts/new`,
+            state: { selected: "" }
+          }}
+        >
           <Button variant="new">New</Button>
         </Link>
         <hr />
@@ -99,4 +110,11 @@ class AircraftList extends Component {
   }
 }
 
-export default withRouter(AircraftList);
+function mapStateToProps(state) {
+  return { aircrafts: state.airc.aircrafts };
+}
+
+export default connect(
+  mapStateToProps,
+  { initializeAircAction, deleteAircAction }
+)(AircraftList);
