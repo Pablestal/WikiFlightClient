@@ -1,0 +1,16 @@
+.deleteIcon:hover {
+  cursor: pointer;
+}
+
+.editIcon {
+  float: left;
+}
+
+.actionsTable {
+  text-align: center;
+  padding-right: 5%;
+}
+
+.csvButton {
+  float: right;
+}

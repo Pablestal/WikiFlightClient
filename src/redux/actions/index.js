@@ -9,6 +9,9 @@ export const DELETEAERODROME = "delete_aerodrome";
 export const INITIALIZEAIRC = "initialized_aircraft";
 export const AIRCRAFTERROR = "aircraft_error";
 export const DELETEAIRCRAFT = "delete_aircraft";
+export const INITIALIZEFLIGHT = "initialized_flight";
+export const DELETEFLIGHT = "delete_flight";
+export const FLIGHTERROR = "flight_error";
 
 // AUTHENTICATION ACTIONS
 
@@ -120,6 +123,44 @@ export function deleteAerAction(aerodrome) {
       dispatch({
         type: AERODROMERROR,
         payload: "Not possible to delete aerodrome."
+      });
+    }
+  };
+}
+
+// FLIGHT ACTIONS
+
+export function initializeFliAction(flights) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: INITIALIZEFLIGHT,
+        payload: {
+          flights: flights
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: FLIGHTERROR,
+        payload: "Not possible to load flights."
+      });
+    }
+  };
+}
+
+export function deleteFliAction(flight) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: DELETEFLIGHT,
+        payload: {
+          id: flight.id
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: FLIGHTERROR,
+        payload: "Not possible to delete flight."
       });
     }
   };

@@ -71,13 +71,14 @@ body {
 }
 
 .btn-new {
+  box-shadow: none;
   color: #bc986a;
   border: 2px solid #bc986a;
   margin: auto;
 }
 
 .btn-new:hover {
-  color: #836b4b;
+  color: #53442f;
   border: 2px solid #bc986a;
 }
 

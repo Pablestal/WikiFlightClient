@@ -57,7 +57,7 @@ class Navibar extends React.Component {
   pilotLogRender() {
     return (
       <Nav className="mr-auto">
-        <Link className="navlinks" to={`/logbook/${this.props.login}`}>
+        <Link className="navlinks" to={`/myLogbook`}>
           My Logbook
         </Link>
       </Nav>
