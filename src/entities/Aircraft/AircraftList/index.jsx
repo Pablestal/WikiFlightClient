@@ -13,9 +13,6 @@ class AircraftList extends Component {
     this.state = {
       aircrafts: []
     };
-
-    this.handleDelete = this.handleDelete.bind(this);
-    this.renderEmpty = this.renderEmpty.bind(this);
   }
 
   componentDidMount() {
@@ -28,16 +25,8 @@ class AircraftList extends Component {
         notify.show("Error loading aircrafts.", "error");
       });
   }
-
-  updateAircrafts(aircraft) {
-    const aircrafts = this.state.aircrafts.filter(p => p.id !== aircraft.id);
-    this.setState({ aircrafts });
-  }
-
-  handleDelete = async aircraft => {
-    await HTTP.delete("/aircrafts/$(aircraft.id)", {
-      params: { id: aircraft.id }
-    })
+  handleDelete(aircraft) {
+    HTTP.delete(`aircrafts/${aircraft.id}`)
       .then(function(response) {
         notify.show("Aircraft removed", "success");
       })
@@ -45,7 +34,15 @@ class AircraftList extends Component {
         notify.show("Aircraft cannot be removed", "error");
       });
     this.props.deleteAircAction(aircraft);
-  };
+  }
+
+  renderEmpty() {
+    let rend;
+    this.props.aircrafts.length === 0
+      ? (rend = <h3 className="empty">List is empty, add some aircrafts.</h3>)
+      : (rend = this.renderList());
+    return rend;
+  }
 
   renderList() {
     return (
@@ -80,14 +77,6 @@ class AircraftList extends Component {
         }, this)}
       </ul>
     );
-  }
-
-  renderEmpty() {
-    let rend;
-    this.props.aircrafts.length === 0
-      ? (rend = <h3 className="empty">List is empty, add some aircrafts.</h3>)
-      : (rend = this.renderList());
-    return rend;
   }
 
   render() {

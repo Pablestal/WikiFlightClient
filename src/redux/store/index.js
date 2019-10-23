@@ -11,7 +11,7 @@ const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ["auth", "aerod"]
+  whitelist: ["auth", "aerod", "airc", "flight"]
 };
 
 const apersistReducer = persistReducer(persistConfig, reducers);

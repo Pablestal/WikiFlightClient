@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
 import { notify } from "react-notify-toast";
+import Loader from "react-loader-spinner";
+
 import "./RestorePass.css";
 
 class PassRecovery extends Component {
@@ -24,7 +26,6 @@ class PassRecovery extends Component {
     })
       .then(function(response) {
         notify.show("Successfully sent", "success", 3000);
-        this.setState({ loading: 0 });
         push("/login");
       })
       .catch(function(error) {
@@ -39,7 +40,30 @@ class PassRecovery extends Component {
     });
   };
 
+  renderSpinner() {
+    let rendSpinner;
+    this.state.loading === 0
+      ? (rendSpinner = (
+          <Button className="btn m-3" variant="new" type="submit">
+            Submit
+          </Button>
+        ))
+      : (rendSpinner = (
+          <Button className="btn m-3" variant="new" disabled>
+            <Loader
+              as="span"
+              type="Puff"
+              color="#6b6630"
+              height={20}
+              width={20}
+            />
+          </Button>
+        ));
+    return rendSpinner;
+  }
+
   render() {
+    console.log(this.state.loading);
     return (
       <div className="container">
         <Form className="innerform" onSubmit={this.handleSubmit}>
@@ -60,10 +84,7 @@ class PassRecovery extends Component {
               onChange={this.handleInputChange}
             />
           </Form.Group>
-          {/* {this.renderLoading} */}
-          <Button className="btn m-3" variant="new" type="submit">
-            Submit
-          </Button>
+          {this.renderSpinner()}
         </Form>
       </div>
     );

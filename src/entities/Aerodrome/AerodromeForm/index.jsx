@@ -194,8 +194,8 @@ class AerodromeForm extends Component {
                 className="map_aerod"
               >
                 <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                  attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
                 />
                 <Marker position={initialPosition}></Marker>
               </Map>
@@ -317,8 +317,8 @@ class AerodromeForm extends Component {
                 onClick={this.handleClick}
               >
                 <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                  attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
                 />
                 <Marker position={initialPosition}></Marker>
               </Map>
