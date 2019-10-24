@@ -48,6 +48,11 @@ body {
   margin: auto;
 }
 
+.formTittle {
+  padding-top: 2%;
+  color: #6b6630;
+}
+
 .tittle {
   padding-top: 2%;
   padding-bottom: 2%;

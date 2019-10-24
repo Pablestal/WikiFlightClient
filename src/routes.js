@@ -19,7 +19,7 @@ import PassRecovery from "./components/ForgotPass";
 import ResetPass from "./components/ResetPass";
 import Profile from "./components/Profile";
 import FlightList from "./entities/Flight/FlightList";
-import FlightForm from "./entities/Flight/FlightForm";
+import FlightEdit from "./entities/Flight/FlightEdit";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -73,7 +73,7 @@ const AppRoutes = () => (
           <Route
             path="/flights/edit/:id"
             exact
-            component={requireAuth(FlightForm)}
+            component={requireAuth(FlightEdit)}
           />
 
           <Route exact path="/" component={Home} />

@@ -77,7 +77,7 @@ class FlightList extends Component {
             return (
               <tr key={index}>
                 <td>{flight.id}</td>
-                <td>{flight.departureTime}</td>
+                <td>{flight.departureDate} </td>
                 <td>{flight.takeoffAerodrome.codIATA}</td>
                 <td>{flight.landingAerodrome.codIATA} </td>
                 <td>
