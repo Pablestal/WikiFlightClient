@@ -48,10 +48,25 @@ class FlightDetail extends Component {
       );
   }
 
+  getRoute(flight) {
+    //CUANDO EXISTAN RUTAS, COMPROBAR SI TIENE
+    return (
+      <div>
+        <Row>
+          <h6 className="detailTitle">ROUTE</h6>
+          <hr></hr>
+        </Row>
+        <Row>
+          <h5>This flight doesn't follow any public route.</h5>
+        </Row>
+      </div>
+    );
+  }
+
   renderDetail(flight) {
     return (
       <div className="container">
-        <h2 className="tittle">
+        <h3 className="tittle">
           <b>{flight.departureDate}</b> Flight from{" "}
           <b>
             {flight.takeoffAerodrome.name}({flight.takeoffAerodrome.codIATA})
@@ -63,28 +78,58 @@ class FlightDetail extends Component {
           <Button variant="back" onClick={this.goBack}>
             Back
           </Button>
-        </h2>
+        </h3>
         <hr />
         <Row>
-          <Col className="detCol">
-            <h3>
-              <span className="detailTitle">From:&nbsp;&nbsp;</span>{" "}
-              {flight.takeoffAerodrome.name}({flight.takeoffAerodrome.codIATA})
-              <span className="detailTitle"> at </span>
-              {flight.departureTime}
-            </h3>
+          <Col>
+            <Row>
+              <h6 className="detailTitle">DEPARTURE</h6>
+            </Row>
 
-            <h3>
-              <span className="detailTitle">To:&nbsp;&nbsp;</span>{" "}
-              {flight.landingAerodrome.name}({flight.landingAerodrome.codIATA})
-              <span className="detailTitle"> at </span>
-              {flight.arrivalTime}
-            </h3>
+            <Row>
+              <h5>
+                <b>{flight.departureDate}</b> at <b>{flight.departureTime}</b>{" "}
+                from&nbsp;
+                <b>
+                  {flight.takeoffAerodrome.name} (
+                  {flight.takeoffAerodrome.codIATA})
+                </b>
+              </h5>
+            </Row>
+            <Row>
+              <h6 className="detailTitle">ARRIVAL</h6>
+            </Row>
 
-            <h3>
-              <span className="detailTitle">Total time:&nbsp;&nbsp;</span>
-              {flight.totalTime} minutes.
-            </h3>
+            <Row>
+              <h5>
+                <b>{flight.arrivalDate}</b> at <b>{flight.arrivalTime}</b>{" "}
+                at&nbsp;
+                <b>
+                  {flight.landingAerodrome.name} (
+                  {flight.landingAerodrome.codIATA})
+                </b>
+              </h5>
+            </Row>
+            <Row>
+              <h6 className="detailTitle">TOTAL TIME</h6>
+            </Row>
+            <Row>
+              <h5>
+                <b>{flight.totalTime} minutes.</b>
+              </h5>
+            </Row>
+            <Row>
+              <h6 className="detailTitle">AIRCRAFT</h6>
+            </Row>
+            <Row>
+              <h5>
+                <b>
+                  {flight.aircraft.manufacturer} {flight.aircraft.model}
+                </b>{" "}
+                ({flight.aircraftReg})
+              </h5>
+            </Row>
+            {this.getRoute(flight)}
           </Col>
           <Col>
             <Map
@@ -99,6 +144,86 @@ class FlightDetail extends Component {
               {this.drawPath()}
             </Map>
           </Col>
+        </Row>
+        <hr></hr>
+        <Row>
+          <Col>
+            <Row>
+              <h6 className="detailTitle">TOTAL TAKEOFFS</h6>
+            </Row>
+            <Row>
+              <h5>
+                Day: <b>{flight.takeoffsDay}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{" "}
+                Night: <b>{flight.takeoffsNight}</b>
+              </h5>
+            </Row>
+
+            <Row>
+              <h6 className="detailTitle">TOTAL LANDINGS</h6>
+            </Row>
+            <Row>
+              <h5>
+                Day: <b>{flight.landingsDay}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{" "}
+                Night: <b>{flight.landingsNight}</b>
+              </h5>
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <h6 className="detailTitle">SINGLE AND MULTIPILOT </h6>
+            </Row>
+            <Row>
+              <h5>
+                Single engine: <b>{flight.seTime}</b>
+              </h5>
+              <h5>
+                Multi engine: <b>{flight.meTime}</b>
+              </h5>
+              <h5>
+                Multi pilot: <b>{flight.mpTime}</b>
+              </h5>
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <h6 className="detailTitle">OPERATIONAL CONDITIONS </h6>
+            </Row>
+            <Row>
+              <h5 className="fixtime">
+                Night: <b>{flight.nightTime}</b>
+              </h5>
+              <h5>
+                IFR: <b>{flight.ifrTime}</b>
+              </h5>
+            </Row>
+          </Col>
+          <Col>
+            <Row>
+              <h6 className="detailTitle">PILOT FUNCTION </h6>
+            </Row>
+            <Row>
+              <h5>
+                PIC: <b>{flight.picTime}</b>
+              </h5>
+              <h5>
+                Coopilot: <b>{flight.coopilotTime}</b>
+              </h5>
+              <h5>
+                Dual: <b>{flight.dualTime}</b>
+              </h5>
+              <h5>
+                Instructor: <b>{flight.instructorTime}</b>
+              </h5>
+            </Row>
+          </Col>
+        </Row>
+        <Row>
+          <h6 className="detailTitle">OBSERVATIONS</h6>
+        </Row>
+        <Row>
+          <h5>
+            <b>{flight.observations}</b>
+          </h5>
         </Row>
       </div>
     );
