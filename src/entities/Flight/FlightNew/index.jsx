@@ -12,7 +12,21 @@ class FlightEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flight: {}
+      flight: {
+        aircraft: {
+          manufacturer: "",
+          model: ""
+        },
+        seTime: "00:00:00",
+        meTime: "00:00:00",
+        mpTime: "00:00:00",
+        nightTime: "00:00:00",
+        ifrTime: "00:00:00",
+        picTime: "00:00:00",
+        dualTime: "00:00:00",
+        coopilotTime: "00:00:00",
+        instructorTime: "00:00:00"
+      }
     };
     this.goBack = this.goBack.bind(this);
   }
@@ -22,58 +36,45 @@ class FlightEdit extends Component {
   }
 
   componentDidMount() {
-    const flight = this.props.location.state.selected;
-    flight
-      ? this.setState({ flight: flight })
-      : this.setState({
-          flight: ""
-        });
+    this.getPilot();
+    this.setState({
+      flight: {
+        aircraft: {
+          manufacturer: "",
+          model: ""
+        }
+      }
+    });
   }
 
-  getTakeoffAerodrome = async event => {
-    event.preventDefault();
-    let res = await HTTP.get(`aerodromes/${event.target.value}`);
-    let toAer = res.data;
+  getPilot = async () => {
+    let res = await HTTP.get(`users/${this.props.login}`);
+
+    let pilot = res.data;
+
     this.setState({
-      flight: { ...this.state.flight, takeoffAerodrome: toAer }
+      flight: {
+        ...this.state.flight,
+        picUser: pilot
+      }
     });
   };
 
-  getLandingAerodrome = async event => {
+  handleSubmitNew = event => {
     event.preventDefault();
-    let res = await HTTP.get(`aerodromes/${event.target.value}`);
-    let toAer = res.data;
-    this.setState({
-      flight: { ...this.state.flight, landingAerodrome: toAer }
-    });
-  };
-
-  getAircraft = async event => {
-    event.preventDefault();
-    let res = await HTTP.get(`aircrafts/${event.target.value}`);
-    let airc = res.data;
-    this.setState({
-      flight: { ...this.state.flight, aircraft: airc }
-    });
-  };
-
-  handleSubmitEdit = event => {
-    event.preventDefault();
-
-    if (this.state.flight.aircraft.model !== null) {
-      const flight = this.state.flight;
-      const {
-        history: { push }
-      } = this.props;
-      HTTP.put(`flights/${flight.id}`, flight)
-        .then(function(response) {
-          notify.show("Successfully modified", "success", 3000);
-          push("/myLogbook");
-        })
-        .catch(function(error) {
-          notify.show("Cannot modify flight.", "error", 3000);
-        });
-    } else notify.show("Please select an aircraft model.", "error", 3000);
+    const flight = this.state.flight;
+    console.log(flight);
+    const {
+      history: { push }
+    } = this.props;
+    HTTP.post(`/flights`, flight)
+      .then(function(response) {
+        notify.show("Successfully created", "success", 3000);
+        push("/myLogbook");
+      })
+      .catch(function(error) {
+        notify.show("Error creating flight.", "error", 3000);
+      });
   };
 
   handleInputObjChange = event => {
@@ -141,41 +142,69 @@ class FlightEdit extends Component {
     return models;
   }
 
-  renderEdit(flight) {
+  getTakeoffAerodrome = async event => {
+    event.preventDefault();
+    let res = await HTTP.get(`aerodromes/${event.target.value}`);
+    let toAer = res.data;
+    this.setState({
+      flight: { ...this.state.flight, takeoffAerodrome: toAer }
+    });
+  };
+
+  getLandingAerodrome = async event => {
+    event.preventDefault();
+    let res = await HTTP.get(`aerodromes/${event.target.value}`);
+    let toAer = res.data;
+    this.setState({
+      flight: { ...this.state.flight, landingAerodrome: toAer }
+    });
+  };
+
+  getAircraft = async event => {
+    event.preventDefault();
+    let res = await HTTP.get(`aircrafts/${event.target.value}`);
+    let airc = res.data;
+    this.setState({
+      flight: { ...this.state.flight, aircraft: airc }
+    });
+  };
+
+  renderNew() {
     const manufacturers = this.filterManufacturers();
     let models;
+    let defTime = "00:00:00";
+    let defNum = 0;
 
-    this.state.flight.aircraft
+    this.state.flight.aircraft.manufacturer
       ? (models = this.getModels(this.state.flight.aircraft.manufacturer))
-      : (models = this.getModels(flight.aircraft.manufacturer));
+      : (models = []);
 
-    console.log(this.state.flight);
     return (
       <div className="container">
         <h2 className="tittle">
-          Edit logbook entry
+          Create new logbook entry
           <Button variant="back" onClick={this.goBack}>
             Back
           </Button>
         </h2>
         <hr />
-        <Form onSubmit={this.handleSubmitEdit}>
+        <Form onSubmit={this.handleSubmitNew}>
           {/* Fila 1 / 2 Departure(Col1: Airport1, Airport2) Arrival(Col2: Date1, Time1, Date2, Time2) */}
-          <h4 className="formTittle">
-            Departure (<b>{flight.takeoffAerodrome.name}</b>) and Arrival (
-            <b>{flight.landingAerodrome.name}</b>)
-          </h4>
+          <h4 className="formTittle">Departure and Arrival Info</h4>
 
           <Row>
             <Form.Group md="5" as={Col} controlId="formGridDepAirport">
               <Form.Label>Departure airport</Form.Label>
               <Form.Control
                 required
+                defaultValue={1}
                 as="select"
-                defaultValue={flight.takeoffAerodrome.name}
                 name="takeoffAerodrome"
                 onChange={this.getTakeoffAerodrome}
               >
+                <option value={1} default disabled>
+                  Select an airport...
+                </option>
                 {this.props.aerodromes.map(function(aerodrome, index) {
                   return <option key={index}>{aerodrome.name}</option>;
                 }, this)}
@@ -186,7 +215,7 @@ class FlightEdit extends Component {
               <Form.Label>Date</Form.Label>
               <Form.Control
                 required
-                defaultValue={flight.departureDate}
+                placeholder="Date"
                 type="Date"
                 name="departureDate"
                 onChange={this.handleInputChange}
@@ -196,7 +225,7 @@ class FlightEdit extends Component {
               <Form.Label>Time</Form.Label>
               <Form.Control
                 required
-                defaultValue={flight.departureTime}
+                defaultValue={defTime}
                 type="time"
                 name="departureTime"
                 onChange={this.handleInputChange}
@@ -209,10 +238,13 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 as="select"
-                defaultValue={flight.landingAerodrome.name}
+                defaultValue={1}
                 name="landingAerodrome"
                 onChange={this.getLandingAerodrome}
               >
+                <option value={1} default disabled>
+                  Select an airport...
+                </option>
                 {this.props.aerodromes.map(function(aerodrome, index) {
                   return <option key={index}>{aerodrome.name}</option>;
                 }, this)}
@@ -223,7 +255,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="Date"
-                defaultValue={flight.arrivalDate}
+                placeholder="Date"
                 name="arrivalDate"
                 onChange={this.handleInputChange}
               />
@@ -233,7 +265,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="time"
-                defaultValue={flight.arrivalTime}
+                defaultValue={defTime}
                 name="arrivalTime"
                 onChange={this.handleInputChange}
               />
@@ -254,7 +286,7 @@ class FlightEdit extends Component {
                 <Form.Control
                   required
                   type="number"
-                  defaultValue={flight.takeoffsDay}
+                  defaultValue={defNum}
                   name="takeoffsDay"
                   onChange={this.handleInputChange}
                 />
@@ -267,7 +299,7 @@ class FlightEdit extends Component {
                 <Form.Control
                   required
                   type="number"
-                  defaultValue={flight.takeoffsNight}
+                  defaultValue={defNum}
                   name="takeoffsNight"
                   onChange={this.handleInputChange}
                 />
@@ -283,7 +315,7 @@ class FlightEdit extends Component {
                 <Form.Control
                   required
                   type="number"
-                  defaultValue={flight.landingsDay}
+                  defaultValue={defNum}
                   name="landingsDay"
                   onChange={this.handleInputChange}
                 />
@@ -295,7 +327,7 @@ class FlightEdit extends Component {
                 <Form.Control
                   required
                   type="number"
-                  defaultValue={flight.landingsNight}
+                  defaultValue={defNum}
                   name="landingsNight"
                   onChange={this.handleInputChange}
                 />
@@ -308,14 +340,13 @@ class FlightEdit extends Component {
           <Row>
             <Col>
               <h4 className="formTittle">Single and Multi pilot times</h4>
-
               <Row>
                 <Form.Group md="3" as={Col} controlId="formGridSeTime">
                   <Form.Label>Single Engine</Form.Label>
                   <Form.Control
                     required
                     type="time"
-                    defaultValue={flight.seTime}
+                    defaultValue={defTime}
                     name="seTime"
                     onChange={this.handleInputChange}
                   />
@@ -326,7 +357,7 @@ class FlightEdit extends Component {
                   <Form.Control
                     required
                     type="time"
-                    defaultValue={flight.meTime}
+                    defaultValue={defTime}
                     name="meTime"
                     onChange={this.handleInputChange}
                   />
@@ -337,7 +368,7 @@ class FlightEdit extends Component {
                   <Form.Control
                     required
                     type="time"
-                    defaultValue={flight.mpTime}
+                    defaultValue={defTime}
                     name="mpTime"
                     onChange={this.handleInputChange}
                   />
@@ -346,14 +377,13 @@ class FlightEdit extends Component {
             </Col>
             <Col>
               <h4 className="formTittle">Operational condition time</h4>
-
               <Row>
                 <Form.Group md="3" as={Col} controlId="formGridNightTime">
                   <Form.Label>Night</Form.Label>
                   <Form.Control
                     required
                     type="time"
-                    defaultValue={flight.nightTime}
+                    defaultValue={defTime}
                     name="nightTime"
                     onChange={this.handleInputChange}
                   />
@@ -364,7 +394,7 @@ class FlightEdit extends Component {
                   <Form.Control
                     required
                     type="time"
-                    defaultValue={flight.ifrTime}
+                    defaultValue={defTime}
                     name="ifrTime"
                     onChange={this.handleInputChange}
                   />
@@ -382,7 +412,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="time"
-                defaultValue={flight.picTime}
+                defaultValue={defTime}
                 name="picTime"
                 onChange={this.handleInputChange}
               />
@@ -393,7 +423,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="time"
-                defaultValue={flight.coopilotTime}
+                defaultValue={defTime}
                 name="coopilotTime"
                 onChange={this.handleInputChange}
               />
@@ -404,7 +434,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="time"
-                defaultValue={flight.dualTime}
+                defaultValue={defTime}
                 name="dualTime"
                 onChange={this.handleInputChange}
               />
@@ -415,7 +445,7 @@ class FlightEdit extends Component {
               <Form.Control
                 required
                 type="time"
-                defaultValue={flight.instructorTime}
+                defaultValue={defTime}
                 name="instructorTime"
                 onChange={this.handleInputChange}
               />
@@ -423,13 +453,7 @@ class FlightEdit extends Component {
           </Row>
 
           {/* Fila 7: Aircraft, AircReg  */}
-          <h4 className="formTittle">
-            Edit aircraft (
-            <b>
-              {flight.aircraft.manufacturer} {flight.aircraft.model}
-            </b>
-            )
-          </h4>
+          <h4 className="formTittle">Aircraft info</h4>
 
           <Row>
             <Form.Group as={Col} controlId="formGridAircraft">
@@ -457,7 +481,7 @@ class FlightEdit extends Component {
                 defaultValue={1}
                 as="select"
                 name="model"
-                onChange={this.handleInputObjChange}
+                onChange={this.getAircraft}
               >
                 <option value={1} default disabled>
                   Choose one...
@@ -472,7 +496,6 @@ class FlightEdit extends Component {
               <Form.Label>Registration</Form.Label>
               <Form.Control
                 placeholder="Aircraft Reg."
-                defaultValue={flight.aircraftReg}
                 type="text"
                 name="aircraftReg"
                 onChange={this.handleInputChange}
@@ -485,7 +508,7 @@ class FlightEdit extends Component {
           <Row>
             <Form.Group as={Col} controlId="formGridAircraftReg">
               <Form.Control
-                defaultValue={flight.observations}
+                placeholder="Observations..."
                 as="textarea"
                 name="observations"
                 onChange={this.handleInputChange}
@@ -501,15 +524,15 @@ class FlightEdit extends Component {
   }
 
   render() {
-    const flight = this.props.location.state.selected;
-    return this.renderEdit(flight);
+    return this.renderNew();
   }
 }
 
 function mapStateToProps(state) {
   return {
     aircrafts: state.airc.aircrafts,
-    aerodromes: state.aerod.aerodromes
+    aerodromes: state.aerod.aerodromes,
+    login: state.auth.login
   };
 }
 

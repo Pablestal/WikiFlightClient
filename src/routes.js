@@ -20,6 +20,8 @@ import ResetPass from "./components/ResetPass";
 import Profile from "./components/Profile";
 import FlightList from "./entities/Flight/FlightList";
 import FlightEdit from "./entities/Flight/FlightEdit";
+import FlightNew from "./entities/Flight/FlightNew";
+import FlightDetail from "./entities/Flight/FlightDetail";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -75,7 +77,12 @@ const AppRoutes = () => (
             exact
             component={requireAuth(FlightEdit)}
           />
-
+          <Route path="/flights/new" exact component={requireAuth(FlightNew)} />
+          <Route
+            path="/flights/:id"
+            exact
+            component={requireAuth(FlightDetail)}
+          />
           <Route exact path="/" component={Home} />
           <Route exact component={Page404} />
         </Switch>

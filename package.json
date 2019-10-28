@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@js-joda/core": "^1.11.0",
     "axios": "^0.18.0",
     "blob-util": "^2.0.2",
     "bootstrap": "^4.3.1",
@@ -10,6 +11,7 @@
     "history": "^4.9.0",
     "image-to-base64": "^2.0.1",
     "isomorphic-style-loader": "^5.0.1",
+    "js-joda": "^1.11.0",
     "leaflet": "^1.5.1",
     "mdbreact": "^4.11.0",
     "rc-collapse": "^1.11.1",

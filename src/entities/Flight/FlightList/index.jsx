@@ -85,7 +85,7 @@ class FlightList extends Component {
                     <Link
                       to={{
                         pathname: `flights/${flight.id}`,
-                        selected: flight
+                        state: { selected: flight }
                       }}
                     >
                       View Detail
@@ -144,10 +144,16 @@ class FlightList extends Component {
           }}
         >
           <Button variant="new">New Flight</Button>
-          <Button className="csvButton" variant="new">
-            Download CSV
-          </Button>
         </Link>
+
+        <Button
+          title="Download a spreadsheet of your flight list."
+          className="csvButton"
+          variant="new"
+        >
+          Download List
+        </Button>
+
         <hr />
         {this.renderEmpty()}
       </div>
