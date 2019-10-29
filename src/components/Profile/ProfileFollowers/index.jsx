@@ -59,7 +59,7 @@ class ProfileFollowers extends Component {
       return (
         <h4 className="tittle">{pilot.name} is not following any pilot. </h4>
       );
-    } else if (list.length === 0 && this.props.follow === "followed") {
+    } else if (list.length === 0 && this.props.follow === "followers") {
       return (
         <h4 className="tittle">{pilot.name} is not followed by any pilot. </h4>
       );

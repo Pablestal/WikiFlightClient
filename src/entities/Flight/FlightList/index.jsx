@@ -215,7 +215,7 @@ class FlightList extends Component {
           {this.props.flights.map(function(flight, index) {
             return (
               <tr key={index}>
-                <td>{flight.id}</td>
+                <td>{index + 1}</td>
                 <td>{flight.departureDate} </td>
                 <td>{flight.takeoffAerodrome.codIATA}</td>
                 <td>{flight.landingAerodrome.codIATA} </td>
