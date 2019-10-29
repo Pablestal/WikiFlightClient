@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { signOutAction } from "../../redux/actions";
 import history from "../../history";
 import { Link } from "react-router-dom";
+import Plane from "../../icons/Plane";
 
 import "./Navbar.css";
 
@@ -120,7 +121,8 @@ class Navibar extends React.Component {
     return (
       <Navbar expand="lg" className="navbar">
         <Link className="brand" to="/">
-          WikiFlight
+          <Plane width="40px" height="40px" />
+          &nbsp;&nbsp;WikiFlight
         </Link>
         <Nav className="mr-auto">{this.setUserRender()}</Nav>
         <div className="log">{this.setLoginRender()}</div>

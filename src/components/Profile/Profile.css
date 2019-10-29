@@ -28,3 +28,32 @@
 .profEditButton {
   float: right;
 }
+
+.buttonBarCol {
+  margin: auto;
+}
+
+.followCol {
+  margin: auto;
+  padding-right: 15px;
+  padding-left: 50px;
+}
+
+.followCol1 {
+  margin: auto;
+  padding-right: 15px;
+  padding-left: 50px;
+}
+
+.followCont {
+  margin: auto;
+  text-align: center;
+}
+
+.followCont:hover {
+  cursor: pointer;
+}
+
+.followButton {
+  float: right;
+}

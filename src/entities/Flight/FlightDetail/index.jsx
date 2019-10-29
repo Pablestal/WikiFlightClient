@@ -170,7 +170,7 @@ class FlightDetail extends Component {
           </Col>
           <Col>
             <Row>
-              <h6 className="detailTitle">SINGLE AND MULTIPILOT </h6>
+              <h6 className="detailTitle">SINGLE AND MULTI PILOT TIMES</h6>
             </Row>
             <Row>
               <h5>
@@ -186,7 +186,7 @@ class FlightDetail extends Component {
           </Col>
           <Col>
             <Row>
-              <h6 className="detailTitle">OPERATIONAL CONDITIONS </h6>
+              <h6 className="detailTitle">OPERATIONAL CONDITIONS TIMES</h6>
             </Row>
             <Row>
               <h5 className="fixtime">
@@ -199,7 +199,7 @@ class FlightDetail extends Component {
           </Col>
           <Col>
             <Row>
-              <h6 className="detailTitle">PILOT FUNCTION </h6>
+              <h6 className="detailTitle">PILOT FUNCTION TIMES</h6>
             </Row>
             <Row>
               <h5>

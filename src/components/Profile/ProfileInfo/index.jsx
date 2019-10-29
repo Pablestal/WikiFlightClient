@@ -9,20 +9,9 @@ import ImageUploader from "react-images-upload";
 class ProfileInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { picture: "", pilot: {}, avatar: "" };
+    this.state = { pilot: {} };
     this.onDrop = this.onDrop.bind(this);
     this.showAvatar = this.showAvatar.bind(this);
-  }
-
-  componentDidMount() {
-    HTTP.get(`users/${this.props.login}`)
-      .then(res => {
-        const pilot = res.data;
-        this.setState({ pilot });
-      })
-      .catch(function(error) {
-        notify.show("You are not allowed here", "error");
-      });
   }
 
   onDrop(picture) {
@@ -48,13 +37,10 @@ class ProfileInfo extends Component {
       });
   }
 
-  showAvatar() {
+  showAvatar(login) {
     let showedAvatar;
     const myavatar =
-      "/images/avatars/" +
-      this.state.pilot.login +
-      "avatar.jpg?t=" +
-      new Date().getTime();
+      "/images/avatars/" + login + "avatar.jpg?t=" + new Date().getTime();
     showedAvatar = (
       <Image
         className="avatar"
@@ -63,31 +49,43 @@ class ProfileInfo extends Component {
           e.target.src = "/images/default.jpg";
         }}
         src={myavatar}
-        alt={this.state.pilot.login + "avatar"}
+        alt={login + "avatar"}
         rounded
       />
     );
     return showedAvatar;
   }
 
+  renderChangeAvatar() {
+    if (
+      this.props.authenticated &&
+      this.props.login === this.props.pilot.login
+    ) {
+      return (
+        <Row>
+          <ImageUploader
+            withIcon={false}
+            buttonText="Change avatar"
+            onChange={this.onDrop}
+            imgExtension={[".jpg", ".jpeg"]}
+            maxFileSize={5242880}
+            singleImage={true}
+            withLabel={false}
+            fileTypeError="File extension not supported"
+          />
+        </Row>
+      );
+    }
+  }
+
   render() {
-    const pilot = this.state.pilot;
+    const pilot = this.props.pilot;
+
     return (
       <Row>
         <Col xs={2}>
-          <Row>{this.showAvatar()}</Row>
-          <Row>
-            <ImageUploader
-              withIcon={false}
-              buttonText="Change avatar"
-              onChange={this.onDrop}
-              imgExtension={[".jpg", ".jpeg"]}
-              maxFileSize={5242880}
-              singleImage={true}
-              withLabel={false}
-              fileTypeError="File extension not supported"
-            />
-          </Row>
+          <Row>{this.showAvatar(pilot.login)}</Row>
+          {this.renderChangeAvatar(pilot)}
         </Col>
         <Col className="profCol">
           <Row className="profrow">

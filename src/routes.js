@@ -50,7 +50,7 @@ const AppRoutes = () => (
             path="/aircrafts/new"
             component={requireAuth(AircraftForm)}
           />
-          <Route path="/profile/:username" exact component={Profile} />
+          <Route path="/profile/:login" exact component={Profile} />
           <Route
             path="/aircrafts/edit/:id"
             exact

@@ -149,7 +149,6 @@ class FlightEdit extends Component {
       ? (models = this.getModels(this.state.flight.aircraft.manufacturer))
       : (models = this.getModels(flight.aircraft.manufacturer));
 
-    console.log(this.state.flight);
     return (
       <div className="container">
         <h2 className="tittle">

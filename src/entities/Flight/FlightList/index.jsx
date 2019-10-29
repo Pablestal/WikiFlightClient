@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Row, Col } from "react-bootstrap";
 import { HTTP } from "../../../common/http-common";
 import { connect } from "react-redux";
 import { notify } from "react-notify-toast";
@@ -8,6 +8,7 @@ import "./FlightList.css";
 import EditIcon from "../../../icons/Edit";
 import DeleteIcon from "../../../icons/Delete";
 import { initializeFliAction, deleteFliAction } from "../../../redux/actions";
+import CsvDownloader from "react-csv-downloader";
 
 class FlightList extends Component {
   constructor(props) {
@@ -37,6 +38,144 @@ class FlightList extends Component {
         notify.show("Flight cannot be removed", "error");
       });
     this.props.deleteFliAction(flight);
+  }
+
+  getCSVCol() {
+    const columns = [
+      {
+        id: "cell1",
+        displayName: "DepartureDate"
+      },
+      {
+        id: "cell2",
+        displayName: "DepartureTime"
+      },
+      {
+        id: "cell3",
+        displayName: "DepartureAerodrome"
+      },
+      {
+        id: "cell4",
+        displayName: "ArrivalDate"
+      },
+      {
+        id: "cell5",
+        displayName: "ArrivalTime"
+      },
+      {
+        id: "cell6",
+        displayName: "ArrivalAerodrome"
+      },
+      {
+        id: "cell7",
+        displayName: "AircraftMAnufacturer"
+      },
+      {
+        id: "cell8",
+        displayName: "AircraftModel"
+      },
+      {
+        id: "cell9",
+        displayName: "AircraftRegistration"
+      },
+      {
+        id: "cell10",
+        displayName: "TotalTime"
+      },
+      {
+        id: "cell11",
+        displayName: "SETime"
+      },
+      {
+        id: "cell12",
+        displayName: "METime"
+      },
+      {
+        id: "cell13",
+        displayName: "MPTime"
+      },
+      {
+        id: "cell14",
+        displayName: "NightTime"
+      },
+      {
+        id: "cell15",
+        displayName: "IFRTime"
+      },
+      {
+        id: "cell16",
+        displayName: "PICTime"
+      },
+      {
+        id: "cell17",
+        displayName: "CoopilotTime"
+      },
+      {
+        id: "cell18",
+        displayName: "DualTime"
+      },
+      {
+        id: "cell19",
+        displayName: "InstructorTime"
+      },
+      {
+        id: "cell20",
+        displayName: "DayTakeoffs"
+      },
+      {
+        id: "cell21",
+        displayName: "NightTakeoffs"
+      },
+      {
+        id: "cell22",
+        displayName: "DayLandings"
+      },
+      {
+        id: "cell23",
+        displayName: "NightLandings"
+      },
+      {
+        id: "cell24",
+        displayName: "Observations"
+      }
+    ];
+
+    return columns;
+  }
+
+  getCSVData() {
+    const data = [];
+
+    this.props.flights.forEach(function(flight) {
+      data.push({
+        cell1: flight.departureDate,
+        cell2: flight.departureTime,
+        cell3: flight.takeoffAerodrome.name,
+        cell4: flight.arrivalDate,
+        cell5: flight.arrivalTime,
+        cell6: flight.landingAerodrome.name,
+        cell7: flight.aircraft.manufacturer,
+        cell8: flight.aircraft.model,
+        cell9: flight.aircraftReg,
+        cell10: flight.totalTime,
+        cell11: flight.seTime,
+        cell12: flight.meTime,
+        cell13: flight.mpTime,
+        cell14: flight.nightTime,
+        cell15: flight.ifrTime,
+        cell16: flight.picTime,
+        cell17: flight.coopilotTime,
+        cell18: flight.dualTime,
+        cell19: flight.instructorTime,
+        cell20: flight.takeoffsDay,
+        cell21: flight.takeoffsNight,
+        cell22: flight.landingsDay,
+        cell23: flight.landingsNight,
+        cell24: flight.observations
+      });
+    });
+
+    return data;
   }
 
   renderViewRouter(flight) {
@@ -136,24 +275,34 @@ class FlightList extends Component {
     return (
       <div className="container">
         <h2 className="tittle">My logbook</h2>
-
-        <Link
-          to={{
-            pathname: `/flights/new`,
-            state: { selected: "" }
-          }}
-        >
-          <Button variant="new">New Flight</Button>
-        </Link>
-
-        <Button
-          title="Download a spreadsheet of your flight list."
-          className="csvButton"
-          variant="new"
-        >
-          Download List
-        </Button>
-
+        <Row>
+          <Col>
+            <Link
+              to={{
+                pathname: `/flights/new`,
+                state: { selected: "" }
+              }}
+            >
+              <Button variant="new">New Flight</Button>
+            </Link>
+          </Col>
+          <Col>
+            <CsvDownloader
+              columns={this.getCSVCol()}
+              datas={this.getCSVData()}
+              filename="WikiFlightData"
+              separator=", "
+            >
+              <Button
+                className="csvButton"
+                title="Download a spreadsheet of your flight list."
+                variant="new"
+              >
+                Download List
+              </Button>
+            </CsvDownloader>
+          </Col>
+        </Row>
         <hr />
         {this.renderEmpty()}
       </div>

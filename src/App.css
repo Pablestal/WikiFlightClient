@@ -99,3 +99,37 @@ body {
   margin: auto;
   float: right;
 }
+
+.btn-follow {
+  box-shadow: none;
+  color: #495a41 !important;
+  background-color: #afcfa0;
+  border: 2px solid #756652;
+  /* float: right; */
+  /* margin-right: 20%; */
+  border-radius: 40%;
+}
+.btn-follow:active {
+  box-shadow: none !important;
+}
+.btn-follow:hover {
+  color: #000000 !important;
+}
+
+.btn-unfollow {
+  box-shadow: none;
+  background-color: #bd5d5d;
+  color: #531e1e !important;
+  border: 2px solid #bc986a;
+  /* float: right; */
+  /* margin-right: 20%; */
+  border-radius: 40%;
+}
+
+.btn-unfollow:hover {
+  color: #000000 !important;
+}
+
+.btn-unfollow:active {
+  box-shadow: none !important;
+}
