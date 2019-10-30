@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { ButtonToolbar, ButtonGroup, Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { HTTP } from "../../common/http-common";
+import { baseURL } from "../../common/http-common";
 import { notify } from "react-notify-toast";
 import ProfileEdit from "./ProfileEdit";
 import ProfileInfo from "./ProfileInfo";
@@ -28,7 +29,16 @@ class Profile extends Component {
     HTTP.get(`users/${this.props.match.params.login}`)
       .then(res => {
         const pilot = res.data;
-        this.setState({ pilot, toggle: "info" });
+        this.setState({
+          pilot,
+          toggle: "info",
+          avatar:
+            baseURL +
+            "users/image/" +
+            pilot.login +
+            ".jpg?time=" +
+            new Date().getTime()
+        });
       })
       .catch(function(error) {
         notify.show("You are not allowed here", "error");
@@ -116,21 +126,27 @@ class Profile extends Component {
   }
 
   toggleRender(pilot) {
-    switch (this.state.toggle) {
-      case "info":
-        return <ProfileInfo pilot={pilot} />;
-      case "routes":
-        return <ProfileInfo pilot={pilot} />;
-      case "stats":
-        return <ProfileInfo pilot={pilot} />;
-      case "settings":
-        return <ProfileEdit pilot={pilot} />;
-      case "following":
-        return <ProfileFollowers pilot={pilot} follow="following" />;
-      case "followers":
-        return <ProfileFollowers pilot={pilot} follow="followers" />;
-      default:
-        return <ProfileInfo pilot={pilot}></ProfileInfo>;
+    let avatar = null;
+    avatar = this.state.avatar;
+
+    if (pilot) {
+      // console.log(avatar);
+      switch (this.state.toggle) {
+        case "info":
+          return <ProfileInfo pilot={pilot} avatar={avatar} />;
+        case "routes":
+          return <ProfileInfo pilot={pilot} />;
+        case "stats":
+          return <ProfileInfo pilot={pilot} />;
+        case "settings":
+          return <ProfileEdit pilot={pilot} />;
+        case "following":
+          return <ProfileFollowers pilot={pilot} follow="following" />;
+        case "followers":
+          return <ProfileFollowers pilot={pilot} follow="followers" />;
+        default:
+          return <ProfileInfo pilot={pilot}></ProfileInfo>;
+      }
     }
   }
 
@@ -231,7 +247,6 @@ class Profile extends Component {
       followed = "...";
       rend = "Loading...";
     }
-
     return (
       <div className="container">
         <h2 className="tittle">

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Row, Image } from "react-bootstrap";
+import { baseURL } from "../../../common/http-common";
 
 import "./ProfileFollowers.css";
 
@@ -8,6 +9,26 @@ class ProfileFollowers extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  showAvatar(login) {
+    let showedAvatar;
+    let avatar =
+      baseURL + "users/image/" + login + ".jpg?time=" + new Date().getTime();
+
+    showedAvatar = (
+      <Image
+        className="followListAvatar"
+        onError={e => {
+          e.target.onerror = null;
+          e.target.src = "/images/default.jpg";
+        }}
+        src={avatar}
+        alt={login + "avatar"}
+        fluid
+      />
+    );
+    return showedAvatar;
   }
 
   renderFollows(pilot, list, listType) {
@@ -19,14 +40,15 @@ class ProfileFollowers extends Component {
     return (
       <ul className="list">
         <h4 className="tittle">
-          List of pilots who {followText} {pilot.name}
+          Pilots who {followText} {pilot.name}
         </h4>
         {list.map(function(pilot, index) {
           return (
-            <Link key={index} to={link.concat(pilot.login)}>
-              <li className="followListItem">
-                <Row>
-                  <Col className="followListCol">
+            <div key={index}>
+              <Link to={link.concat(pilot.login)}>
+                <li className="followListItem">
+                  <Row className="followListCol">
+                    <div>{this.showAvatar(pilot.login)}</div>
                     <h5 className="followListText">
                       <b>
                         {pilot.name} {pilot.surname1} {pilot.surname2}
@@ -37,12 +59,13 @@ class ProfileFollowers extends Component {
                       </b>
                       )
                     </h5>
-                  </Col>
-                </Row>
-              </li>
-            </Link>
+                  </Row>
+                </li>
+              </Link>
+              <hr></hr>
+            </div>
           );
-        })}
+        }, this)}
       </ul>
     );
   }

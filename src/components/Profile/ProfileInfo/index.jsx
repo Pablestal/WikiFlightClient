@@ -14,19 +14,29 @@ class ProfileInfo extends Component {
     this.showAvatar = this.showAvatar.bind(this);
   }
 
-  onDrop(picture) {
+  componentDidMount() {
+    this.setState({
+      avatar: this.props.avatar + new Date().getTime()
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.avatar !== prevProps.avatar) {
+      this.componentDidMount();
+    }
+  }
+
+  onDrop = async picture => {
     this.setState({
       picture: picture
     });
+
     const image = picture[picture.length - 1];
 
     var formData = new FormData();
-    formData.append("image", image);
+    formData.append("image", image, this.props.login + ".jpg");
 
-    let pilot = this.state.pilot;
-
-    formData.append("pilot", pilot);
-    HTTP.put(`users/updateavatar/${this.props.login}`, formData, {
+    await HTTP.put(`users/updateavatar/${this.props.login}`, formData, {
       "Content-Type": "multipart/form-data"
     })
       .then(function(response) {
@@ -35,12 +45,11 @@ class ProfileInfo extends Component {
       .catch(function(error) {
         notify.show("Can`t modify", "error", 3000);
       });
-  }
+    this.componentDidMount();
+  };
 
   showAvatar(login) {
     let showedAvatar;
-    const myavatar =
-      "/images/avatars/" + login + "avatar.jpg?t=" + new Date().getTime();
     showedAvatar = (
       <Image
         className="avatar"
@@ -48,7 +57,7 @@ class ProfileInfo extends Component {
           e.target.onerror = null;
           e.target.src = "/images/default.jpg";
         }}
-        src={myavatar}
+        src={this.state.avatar}
         alt={login + "avatar"}
         rounded
       />

@@ -1,8 +1,8 @@
 .followListItem {
-  margin-top: 1%;
+  /* margin-top: 1%; */
   color: #6d4e1f;
-  padding: 1%;
-  border-style: solid;
+  /* padding: 1%; */
+  /* border-style: solid; */
 }
 
 .followListCol {
@@ -10,5 +10,14 @@
 }
 
 .followListText {
-  margin-bottom: 0%;
+  margin: auto;
+  margin-left: 3%;
+}
+
+.followListAvatar {
+  width: 60px;
+  height: 60px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
