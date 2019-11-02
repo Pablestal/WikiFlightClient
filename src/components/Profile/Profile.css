@@ -12,14 +12,6 @@
   border-radius: 4px;
 }
 
-.profrow {
-  margin-top: 2%;
-}
-
-.profCol {
-  margin-left: 3%;
-}
-
 .fileContainer {
   background-color: #fbeec1;
   box-shadow: none;
@@ -56,4 +48,21 @@
 
 .followButton {
   float: right;
+}
+
+.loader {
+  margin-left: 35%;
+  margin-top: 5%;
+}
+
+.profIcon {
+  margin-right: 2%;
+}
+
+.profRow {
+  padding-top: 2%;
+}
+
+.profCol {
+  margin-left: 8%;
 }

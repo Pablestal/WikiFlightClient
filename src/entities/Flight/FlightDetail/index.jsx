@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Map, TileLayer, Circle, Marker, Polyline } from "react-leaflet";
+import L from "leaflet";
 import "./FlightDetail.css";
 
 class FlightDetail extends Component {
@@ -16,36 +17,78 @@ class FlightDetail extends Component {
     this.props.history.goBack();
   }
 
-  drawPath() {
+  drawFlight() {
     const flight = this.props.location.state.selected;
     let toAer = flight.takeoffAerodrome;
     let ldAer = flight.landingAerodrome;
     let polyline = [toAer.position.coordinates, ldAer.position.coordinates];
+    let bounds;
+
+    const airportIcon = new L.Icon({
+      iconUrl: require("../../../icons/airport.svg"),
+      iconRetinaUrl: require("../../../icons/airport.svg"),
+      iconAnchor: [23, 44],
+      iconSize: [45, 45],
+      shadowUrl: "../assets/marker-shadow.png",
+      shadowSize: [68, 95],
+      shadowAnchor: [20, 92]
+    });
 
     if (toAer.name === ldAer.name) {
       return (
-        <div>
-          <Marker position={toAer.position.coordinates}></Marker>
+        <Map
+          center={flight.takeoffAerodrome.position.coordinates}
+          zoom={10}
+          className="map_aerod"
+        >
+          <TileLayer
+            attribution='Imagery from <a href="http://giscience.uni-hd.de/">University of Heidelberg</a> | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
+          />
+
+          <Marker
+            icon={airportIcon}
+            position={toAer.position.coordinates}
+          ></Marker>
           <Circle
             center={flight.takeoffAerodrome.position.coordinates}
-            color="#6b6630"
-            radius={3000}
+            color="#a14655"
+            radius={12000}
             dashArray="4"
           ></Circle>
-        </div>
+        </Map>
       );
-    } else
+    } else {
+      bounds = this.getBounds(flight);
+
       return (
-        <div>
-          <Marker position={toAer.position.coordinates}></Marker>
-          <Marker position={ldAer.position.coordinates}></Marker>
+        <Map
+          center={flight.takeoffAerodrome.position.coordinates}
+          zoom={11}
+          className="map_aerod"
+          bounds={bounds}
+        >
+          <TileLayer
+            attribution='Imagery from <a href="http://giscience.uni-hd.de/">University of Heidelberg</a> | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
+          />
+
+          <Marker
+            icon={airportIcon}
+            position={toAer.position.coordinates}
+          ></Marker>
+          <Marker
+            icon={airportIcon}
+            position={ldAer.position.coordinates}
+          ></Marker>
           <Polyline
             positions={polyline}
-            color="#6b6630"
+            color="#a14655"
             dashArray="4"
           ></Polyline>
-        </div>
+        </Map>
       );
+    }
   }
 
   getRoute(flight) {
@@ -61,6 +104,13 @@ class FlightDetail extends Component {
         </Row>
       </div>
     );
+  }
+
+  getBounds(flight) {
+    let f1 = flight.takeoffAerodrome.position.coordinates;
+    let f2 = flight.landingAerodrome.position.coordinates;
+
+    return [[f1[0], f1[1]], [f2[0], f2[1]]];
   }
 
   renderDetail(flight) {
@@ -131,19 +181,7 @@ class FlightDetail extends Component {
             </Row>
             {this.getRoute(flight)}
           </Col>
-          <Col>
-            <Map
-              center={flight.takeoffAerodrome.position.coordinates}
-              zoom={11}
-              className="map_aerod"
-            >
-              <TileLayer
-                attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
-              />
-              {this.drawPath()}
-            </Map>
-          </Col>
+          <Col>{this.drawFlight()}</Col>
         </Row>
         <hr></hr>
         <Row>
@@ -231,6 +269,7 @@ class FlightDetail extends Component {
 
   render() {
     const flight = this.props.location.state.selected;
+
     return this.renderDetail(flight);
   }
 }

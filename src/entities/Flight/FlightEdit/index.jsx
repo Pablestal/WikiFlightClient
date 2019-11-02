@@ -62,6 +62,17 @@ class FlightEdit extends Component {
 
     if (this.state.flight.aircraft.model !== null) {
       const flight = this.state.flight;
+      if (!flight.departureTime) flight.departureTime = "00:00";
+      if (!flight.arrivalTime) flight.arrivalTime = "00:00";
+      if (!flight.seTime) flight.seTime = "00:00";
+      if (!flight.meTime) flight.meTime = "00:00";
+      if (!flight.mpTime) flight.mpTime = "00:00";
+      if (!flight.nightTime) flight.nightTime = "00:00";
+      if (!flight.ifrTime) flight.ifrTime = "00:00";
+      if (!flight.picTime) flight.picTime = "00:00";
+      if (!flight.coopilotTime) flight.coopilotTime = "00:00";
+      if (!flight.dualTime) flight.dualTime = "00:00";
+      if (!flight.instructorTime) flight.instructorTime = "00:00";
       const {
         history: { push }
       } = this.props;

@@ -9,6 +9,7 @@ import { notify } from "react-notify-toast";
 import ProfileEdit from "./ProfileEdit";
 import ProfileInfo from "./ProfileInfo";
 import ProfileFollowers from "./ProfileFollowers";
+import ProfileStatistics from "./ProfileStatistics";
 import "./Profile.css";
 
 class Profile extends Component {
@@ -135,9 +136,9 @@ class Profile extends Component {
         case "info":
           return <ProfileInfo pilot={pilot} avatar={avatar} />;
         case "routes":
-          return <ProfileInfo pilot={pilot} />;
+          return <ProfileInfo pilot={pilot} avatar={avatar} />;
         case "stats":
-          return <ProfileInfo pilot={pilot} />;
+          return <ProfileStatistics pilot={pilot} />;
         case "settings":
           return <ProfileEdit pilot={pilot} />;
         case "following":

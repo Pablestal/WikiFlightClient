@@ -40,7 +40,9 @@ class ProfileFollowers extends Component {
     return (
       <ul className="list">
         <h4 className="tittle">
-          Pilots who {followText} {pilot.name}
+          <b>
+            Pilots who {followText} {pilot.name}
+          </b>
         </h4>
         {list.map(function(pilot, index) {
           return (

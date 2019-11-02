@@ -7,6 +7,7 @@ import { notify } from "react-notify-toast";
 import "./FlightList.css";
 import EditIcon from "../../../icons/Edit";
 import DeleteIcon from "../../../icons/Delete";
+import DetailIcon from "../../../icons/Detail";
 import { initializeFliAction, deleteFliAction } from "../../../redux/actions";
 import CsvDownloader from "react-csv-downloader";
 
@@ -202,11 +203,10 @@ class FlightList extends Component {
       <Table hover>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>DATE</th>
-            <th>TAKEOFF</th>
-            <th>LANDING</th>
             <th>DETAIL</th>
+            <th>DATE</th>
+            <th>DEPARTURE</th>
+            <th>ARRIVAL</th>
             <th>ROUTE</th>
             <th>ACTIONS</th>
           </tr>
@@ -215,22 +215,19 @@ class FlightList extends Component {
           {this.props.flights.map(function(flight, index) {
             return (
               <tr key={index}>
-                <td>{index + 1}</td>
+                <td>
+                  <Link
+                    to={{
+                      pathname: `flights/${flight.id}`,
+                      state: { selected: flight }
+                    }}
+                  >
+                    <DetailIcon width="25px" height="25px"></DetailIcon>
+                  </Link>
+                </td>
                 <td>{flight.departureDate} </td>
                 <td>{flight.takeoffAerodrome.codIATA}</td>
                 <td>{flight.landingAerodrome.codIATA} </td>
-                <td>
-                  <u>
-                    <Link
-                      to={{
-                        pathname: `flights/${flight.id}`,
-                        state: { selected: flight }
-                      }}
-                    >
-                      View Detail
-                    </Link>
-                  </u>
-                </td>
                 <td>{this.renderViewRouter(flight)}</td>
                 <td className="actionsTable">
                   <Link

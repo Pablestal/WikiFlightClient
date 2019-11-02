@@ -5,6 +5,9 @@ import { Col, Row, Image } from "react-bootstrap";
 import { HTTP } from "../../../common/http-common";
 import { notify } from "react-notify-toast";
 import ImageUploader from "react-images-upload";
+import CardIcon from "../../../icons/Card";
+import HomeIcon from "../../../icons/Home";
+import CakeIcon from "../../../icons/Cake";
 
 class ProfileInfo extends Component {
   constructor(props) {
@@ -46,6 +49,7 @@ class ProfileInfo extends Component {
         notify.show("Can`t modify", "error", 3000);
       });
     this.componentDidMount();
+    this.forceUpdate();
   };
 
   showAvatar(login) {
@@ -91,26 +95,32 @@ class ProfileInfo extends Component {
     const pilot = this.props.pilot;
 
     return (
-      <Row>
+      <Row className="profRow">
         <Col xs={2}>
           <Row>{this.showAvatar(pilot.login)}</Row>
           {this.renderChangeAvatar(pilot)}
         </Col>
         <Col className="profCol">
-          <Row className="profrow">
-            <Col>
-              <h2>
-                {pilot.city} ({pilot.country})
-              </h2>
-            </Col>
-            <Col>
-              <h2>Birth date: {pilot.birthDate}</h2>
-            </Col>
+          <Row>
+            <CardIcon className="profIcon" width="30px" height="30px" />{" "}
+            <h4>
+              {pilot.name} {pilot.surname1} {pilot.surname2}
+            </h4>
           </Row>
-          <Row className="profrow">
-            <Col>
-              <h2>User since: {pilot.regisDate}</h2>
-            </Col>
+          <Row className="profRow">
+            <HomeIcon className="profIcon" width="30px" height="30px" />
+            <h4>
+              {pilot.city} ({pilot.country})
+            </h4>
+          </Row>
+          <Row className="profRow">
+            <CakeIcon className="profIcon" width="30px" height="30px" />
+            <h4> {pilot.birthDate}</h4>
+          </Row>
+          <Row className="profRow">
+            <h4>
+              <b>User since:</b> {pilot.regisDate}
+            </h4>
           </Row>
         </Col>
       </Row>

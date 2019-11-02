@@ -7,6 +7,7 @@ import { signOutAction } from "../../redux/actions";
 import history from "../../history";
 import { Link } from "react-router-dom";
 import Plane from "../../icons/Plane";
+// import { baseURL } from "../../common/http-common";
 
 import "./Navbar.css";
 
@@ -42,8 +43,21 @@ class Navibar extends React.Component {
   // PILOT NAVBAR //
 
   renderPilot() {
+    // let avatar = baseURL + "users/image/" + this.props.login + ".jpg";
     return (
       <Nav className="linkslog">
+        {/* <Link className="navlinks1" to={`/profile/${this.props.login}`}>
+          <Image
+            className="navBarAvatar"
+            onError={e => {
+              e.target.onerror = null;
+              e.target.src = "/images/default.jpg";
+            }}
+            src={avatar}
+            alt={this.props.login + "avatar"}
+            roundedCircle
+          />
+        </Link> */}
         <Link className="navlinks" to={`/profile/${this.props.login}`}>
           {this.props.login}'s profile
         </Link>

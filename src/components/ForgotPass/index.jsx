@@ -30,6 +30,7 @@ class PassRecovery extends Component {
       })
       .catch(function(error) {
         notify.show("This email is not in our database.", "error", 3000);
+        push("/login");
       });
   };
 

@@ -63,7 +63,18 @@ class FlightEdit extends Component {
   handleSubmitNew = event => {
     event.preventDefault();
     const flight = this.state.flight;
-    console.log(flight);
+    if (!flight.departureTime) flight.departureTime = "00:00";
+    if (!flight.arrivalTime) flight.arrivalTime = "00:00";
+    if (!flight.seTime) flight.seTime = "00:00";
+    if (!flight.meTime) flight.meTime = "00:00";
+    if (!flight.mpTime) flight.mpTime = "00:00";
+    if (!flight.nightTime) flight.nightTime = "00:00";
+    if (!flight.ifrTime) flight.ifrTime = "00:00";
+    if (!flight.picTime) flight.picTime = "00:00";
+    if (!flight.coopilotTime) flight.coopilotTime = "00:00";
+    if (!flight.dualTime) flight.dualTime = "00:00";
+    if (!flight.instructorTime) flight.instructorTime = "00:00";
+
     const {
       history: { push }
     } = this.props;
@@ -172,7 +183,7 @@ class FlightEdit extends Component {
   renderNew() {
     const manufacturers = this.filterManufacturers();
     let models;
-    let defTime = "00:00:00";
+    let defTime = "00:00";
     let defNum = 0;
 
     this.state.flight.aircraft.manufacturer
