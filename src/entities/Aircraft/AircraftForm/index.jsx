@@ -84,6 +84,9 @@ class AircraftForm extends Component {
                 name="manufacturer"
                 onChange={this.handleInputChange}
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid manufacturer.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="m-3">
               <Form.Label>Model</Form.Label>

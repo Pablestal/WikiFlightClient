@@ -252,64 +252,67 @@ class FlightEdit extends Component {
 
           {/* Fila 3 TotalTakeoffs(Col1: Day, Night) TotalLandings(Col2: Day, Night) */}
 
-          <Row></Row>
           <Row>
-            <Col xs={2}>
+            <Col xs={2} className="toCol">
               <h4 className="formTittle">Total takeoffs</h4>
 
-              <Form.Group as={Col} controlId="formGridTakeoffsDay">
-                <Form.Label>
-                  <SunIcon width="25px" height="25px" />
-                </Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  defaultValue={flight.takeoffsDay}
-                  name="takeoffsDay"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
+              <Row>
+                <Form.Group as={Col} controlId="formGridTakeoffsDay">
+                  <Form.Label>
+                    <SunIcon width="25px" height="25px" />
+                  </Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    defaultValue={flight.takeoffsDay}
+                    name="takeoffsDay"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-              <Form.Group as={Col} controlId="formGridTakeoffsNight">
-                <Form.Label>
-                  <MoonIcon width="25px" height="25px" />
-                </Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  defaultValue={flight.takeoffsNight}
-                  name="takeoffsNight"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
+                <Form.Group as={Col} controlId="formGridTakeoffsNight">
+                  <Form.Label>
+                    <MoonIcon width="25px" height="25px" />
+                  </Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    defaultValue={flight.takeoffsNight}
+                    name="takeoffsNight"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Row>
             </Col>
             <Col xs={2}>
               <h4 className="formTittle">Total landings</h4>
 
-              <Form.Group as={Col} controlId="formGridLandingsDay">
-                <Form.Label>
-                  <SunIcon width="25px" height="25px" />
-                </Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  defaultValue={flight.landingsDay}
-                  name="landingsDay"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group as={Col} controlId="formGridLandingsNight">
-                <Form.Label>
-                  <MoonIcon width="25px" height="25px" />
-                </Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  defaultValue={flight.landingsNight}
-                  name="landingsNight"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
+              <Row>
+                <Form.Group as={Col} controlId="formGridLandingsDay">
+                  <Form.Label>
+                    <SunIcon width="25px" height="25px" />
+                  </Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    defaultValue={flight.landingsDay}
+                    name="landingsDay"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group as={Col} controlId="formGridLandingsNight">
+                  <Form.Label>
+                    <MoonIcon width="25px" height="25px" />
+                  </Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    defaultValue={flight.landingsNight}
+                    name="landingsNight"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Row>
             </Col>
           </Row>
 

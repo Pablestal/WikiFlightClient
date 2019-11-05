@@ -4,6 +4,12 @@
 
 .editIcon {
   float: left;
+  margin-right: 30%;
+  margin-left: 15%;
+}
+
+.detailIcon {
+  margin-left: 20%;
 }
 
 .actionsTable {
@@ -13,4 +19,22 @@
 
 .csvButton {
   float: right;
+}
+
+.page-link {
+  background-color: #d8b07c !important;
+  color: black !important;
+}
+
+.tableCell {
+  text-align: center;
+}
+
+.tableSearch {
+  margin-bottom: 1%;
+}
+
+.search-label {
+  padding-top: 0% !important;
+  float: right !important;
 }

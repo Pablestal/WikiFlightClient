@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Table, Row, Col } from "react-bootstrap";
 import { HTTP } from "../../../common/http-common";
 import { connect } from "react-redux";
 import { notify } from "react-notify-toast";
@@ -10,17 +10,6 @@ import DeleteIcon from "../../../icons/Delete";
 import DetailIcon from "../../../icons/Detail";
 import { initializeFliAction, deleteFliAction } from "../../../redux/actions";
 import CsvDownloader from "react-csv-downloader";
-import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
-import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
-import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css";
-
-import BootstrapTable from "react-bootstrap-table-next";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-  PaginationTotalStandalone
-} from "react-bootstrap-table2-paginator";
 
 class FlightList extends Component {
   constructor(props) {
@@ -28,7 +17,6 @@ class FlightList extends Component {
 
     this.handleDelete = this.handleDelete.bind(this);
     this.renderEmpty = this.renderEmpty.bind(this);
-    this.getRows = this.getRows.bind(this);
   }
 
   componentDidMount() {
@@ -210,157 +198,65 @@ class FlightList extends Component {
     return rend;
   }
 
-  getColumns() {
-    const columns = [
-      {
-        dataField: "id",
-        text: "ID",
-        headerStyle: (colum, colIndex) => {
-          return { width: "40px", textAlign: "center" };
-        }
-      },
-      {
-        text: "Detail",
-        dataField: "detail",
-        headerStyle: (colum, colIndex) => {
-          return { width: "70px", textAlign: "center" };
-        }
-      },
-
-      {
-        text: "Date",
-        dataField: "depDate",
-        sort: true,
-        headerStyle: (colum, colIndex) => {
-          return { width: "130px" };
-        }
-      },
-      {
-        text: "Departure",
-        dataField: "departure",
-        sort: true,
-        headerStyle: (colum, colIndex) => {
-          return { width: "100px" };
-        }
-      },
-      {
-        text: "Arrival",
-        dataField: "arrival",
-        sort: true,
-        headerStyle: (colum, colIndex) => {
-          return { width: "100px" };
-        }
-      },
-      {
-        text: "Route",
-        dataField: "route",
-        sort: true
-      },
-      {
-        text: "Actions",
-        dataField: "actions",
-        headerStyle: (colum, colIndex) => {
-          return { width: "150px", textAlign: "center" };
-        }
-      }
-    ];
-
-    return columns;
-  }
-
-  getRows() {
-    let flights = this.props.flights;
-    let data = [];
-
-    flights.map(function(flight) {
-      return data.push({
-        id: flight.id,
-        detail: (
-          <Link
-            to={{
-              pathname: `flights/${flight.id}`,
-              state: { selected: flight }
-            }}
-          >
-            <DetailIcon
-              width="25px"
-              height="25px"
-              className="detailIcon"
-            ></DetailIcon>
-          </Link>
-        ),
-        depDate: flight.departureDate,
-        departure: flight.takeoffAerodrome.codIATA,
-        arrival: flight.landingAerodrome.codIATA,
-        route: "No route",
-        actions: (
-          <React.Fragment>
-            <Link
-              title="Edit"
-              to={{
-                pathname: `/flights/edit/${flight.id}`,
-                state: { selected: flight }
-              }}
-            >
-              <EditIcon
-                className="editIcon"
-                width="25px"
-                height="25px"
-              ></EditIcon>
-            </Link>
-            <div title="Delete Flight">
-              <DeleteIcon
-                className="deleteIcon"
-                onClick={() => this.handleDelete(flight)}
-                width="25px"
-                height="25px"
-              ></DeleteIcon>
-            </div>{" "}
-          </React.Fragment>
-        )
-      });
-    }, this);
-
-    return data;
-  }
-
-  getData() {
-    const data = { columns: this.getColumns(), rows: this.getRows() };
-
-    return data;
-  }
-
   renderList() {
-    const options = {
-      custom: true,
-      totalSize: this.props.flights.length
-    };
-
-    const { SearchBar } = Search;
-
     return (
-      <ToolkitProvider
-        keyField="id"
-        data={this.getRows()}
-        columns={this.getColumns()}
-        search
-      >
-        {props => (
-          <PaginationProvider pagination={paginationFactory(options)}>
-            {({ paginationProps, paginationTableProps }) => (
-              <div>
-                <SearchBar {...props.searchProps} className="tableSearch" />
-                <BootstrapTable
-                  {...props.baseProps}
-                  {...paginationTableProps}
-                />
-                <PaginationTotalStandalone {...paginationProps} />
-                <PaginationListStandalone {...paginationProps} />
-              </div>
-            )}
-          </PaginationProvider>
-        )}
-      </ToolkitProvider>
+      <Table hover>
+        <thead>
+          <tr>
+            <th>DETAIL</th>
+            <th>DATE</th>
+            <th>DEPARTURE</th>
+            <th>ARRIVAL</th>
+            <th>ROUTE</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.flights.map(function(flight, index) {
+            return (
+              <tr key={index}>
+                <td>
+                  <Link
+                    to={{
+                      pathname: `flights/${flight.id}`,
+                      state: { selected: flight }
+                    }}
+                  >
+                    <DetailIcon width="25px" height="25px"></DetailIcon>
+                  </Link>
+                </td>
+                <td>{flight.departureDate} </td>
+                <td>{flight.takeoffAerodrome.codIATA}</td>
+                <td>{flight.landingAerodrome.codIATA} </td>
+                <td>{this.renderViewRouter(flight)}</td>
+                <td className="actionsTable">
+                  <Link
+                    title="Edit"
+                    to={{
+                      pathname: `/flights/edit/${flight.id}`,
+                      state: { selected: flight }
+                    }}
+                  >
+                    <EditIcon
+                      className="editIcon"
+                      width="25px"
+                      height="25px"
+                    ></EditIcon>
+                  </Link>
+                  <div title="Delete Flight">
+                    <DeleteIcon
+                      className="deleteIcon"
+                      onClick={() => this.handleDelete(flight)}
+                      width="25px"
+                      height="25px"
+                    ></DeleteIcon>
+                  </div>
+                </td>
+              </tr>
+            );
+          }, this)}
+        </tbody>
+      </Table>
     );
   }
 

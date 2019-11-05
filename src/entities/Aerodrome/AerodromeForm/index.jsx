@@ -6,6 +6,7 @@ import { HTTP } from "../../../common/http-common";
 import { withRouter } from "react-router-dom";
 import { notify } from "react-notify-toast";
 import { Map, TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
 
 class AerodromeForm extends Component {
   constructor(props) {
@@ -140,6 +141,16 @@ class AerodromeForm extends Component {
 
   renderEdit(aerodrome) {
     const initialPosition = this.state.aerodrome.position.coordinates;
+    const airportIcon = new L.Icon({
+      iconUrl: require("../../../icons/airport.svg"),
+      iconRetinaUrl: require("../../../icons/airport.svg"),
+      iconAnchor: [23, 44],
+      iconSize: [45, 45],
+      shadowUrl: "../assets/marker-shadow.png",
+      shadowSize: [68, 95],
+      shadowAnchor: [20, 92]
+    });
+
     return (
       <div className="container">
         <h2 className="tittle">
@@ -197,7 +208,7 @@ class AerodromeForm extends Component {
                   attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
                 />
-                <Marker position={initialPosition}></Marker>
+                <Marker icon={airportIcon} position={initialPosition}></Marker>
               </Map>
             </Col>
           </Row>
@@ -264,6 +275,16 @@ class AerodromeForm extends Component {
 
   renderNew() {
     const initialPosition = this.state.aerodrome.position.coordinates;
+    const airportIcon = new L.Icon({
+      iconUrl: require("../../../icons/airport.svg"),
+      iconRetinaUrl: require("../../../icons/airport.svg"),
+      iconAnchor: [23, 44],
+      iconSize: [45, 45],
+      shadowUrl: "../assets/marker-shadow.png",
+      shadowSize: [68, 95],
+      shadowAnchor: [20, 92]
+    });
+
     return (
       <div className="container">
         <h2 className="tittle">
@@ -320,7 +341,7 @@ class AerodromeForm extends Component {
                   attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
                 />
-                <Marker position={initialPosition}></Marker>
+                <Marker icon={airportIcon} position={initialPosition}></Marker>
               </Map>
             </Col>
           </Row>

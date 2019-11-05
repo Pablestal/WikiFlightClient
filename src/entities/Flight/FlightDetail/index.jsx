@@ -185,7 +185,7 @@ class FlightDetail extends Component {
         </Row>
         <hr></hr>
         <Row>
-          <Col>
+          <Col xs={2} className="tolnCol">
             <Row>
               <h6 className="detailTitle">TOTAL TAKEOFFS</h6>
             </Row>
@@ -228,7 +228,7 @@ class FlightDetail extends Component {
             </Row>
             <Row>
               <h5 className="fixtime">
-                Night: <b>{flight.nightTime}</b>
+                Night: <b>{flight.nightTime}</b>&nbsp;&nbsp;&nbsp;&nbsp;
               </h5>
               <h5>
                 IFR: <b>{flight.ifrTime}</b>
@@ -241,10 +241,10 @@ class FlightDetail extends Component {
             </Row>
             <Row>
               <h5>
-                PIC: <b>{flight.picTime}</b>
+                PIC: <b>{flight.picTime}</b>&nbsp;&nbsp;&nbsp;&nbsp;
               </h5>
               <h5>
-                Coopilot: <b>{flight.coopilotTime}</b>
+                Coopilot: <b>{flight.coopilotTime}</b>&nbsp;&nbsp;&nbsp;
               </h5>
               <h5>
                 Dual: <b>{flight.dualTime}</b>
