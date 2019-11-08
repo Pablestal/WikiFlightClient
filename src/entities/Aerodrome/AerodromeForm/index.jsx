@@ -31,14 +31,15 @@ class AerodromeForm extends Component {
             name: "",
             city: "",
             country: "",
-            codIATA: "",
-            codOACI: "",
+            codIATA: "ZZZ",
+            codOACI: "ZZZZ",
             elevation: "",
             position: {
               type: "Point",
               coordinates: [20, 0]
             }
           },
+          selectedCoord: false,
           zoom: 1
         });
   }
@@ -56,7 +57,8 @@ class AerodromeForm extends Component {
               this.state.aerodrome.position.coordinates[1]
             ]
           }
-        }
+        },
+        selectedCoord: true
       });
     } else if (event.target.name === "y") {
       this.setState({
@@ -69,7 +71,8 @@ class AerodromeForm extends Component {
               event.target.value
             ]
           }
-        }
+        },
+        selectedCoord: true
       });
     } else {
       this.setState({
@@ -99,6 +102,7 @@ class AerodromeForm extends Component {
   handleSubmitEdit = event => {
     event.preventDefault();
     const aerodrome = this.state.aerodrome;
+
     const {
       history: { push }
     } = this.props;
@@ -315,6 +319,7 @@ class AerodromeForm extends Component {
                   initialPosition={iPosition}
                   zoom={this.state.zoom}
                   handleClick={this.handleClick}
+                  selectedCoord={this.state.selectedCoord}
                 ></MapNew>
               </Col>
             </Row>

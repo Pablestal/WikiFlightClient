@@ -139,3 +139,21 @@ body {
 .btn-unfollow:active {
   box-shadow: none !important;
 }
+
+.btn-submit {
+  box-shadow: none;
+  color: #bc986a;
+  border: 2px solid #bc986a;
+  margin: auto;
+  margin-top: 3%;
+}
+
+.btn-submit:hover {
+  color: #53442f;
+  border: 2px solid #bc986a;
+}
+
+.btn-submit:active {
+  color: #836b4b;
+  border: 2px solid #bc986a;
+}

@@ -172,7 +172,7 @@ class FlightEdit extends Component {
         <Form onSubmit={this.handleSubmitEdit}>
           {/* Fila 1 / 2 Departure(Col1: Airport1, Airport2) Arrival(Col2: Date1, Time1, Date2, Time2) */}
           <h4 className="formTittle">Departure and Arrival</h4>
-
+          <h6>* Both times must be in the same time zone.</h6>
           <Row>
             <Form.Group md="5" as={Col} controlId="formGridDepAirport">
               <Form.Label>Departure airport</Form.Label>

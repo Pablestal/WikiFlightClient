@@ -164,7 +164,7 @@ class ProfileEdit extends Component {
         </Form.Row>
         <Form.Row />
 
-        <Button variant="new" type="submit">
+        <Button variant="submit" type="submit">
           Save changes
         </Button>
       </Form>

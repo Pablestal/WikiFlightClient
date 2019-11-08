@@ -8,6 +8,7 @@
     "blob-util": "^2.0.2",
     "bootstrap": "^4.3.1",
     "buffer": "^5.4.3",
+    "eve": "^0.5.4",
     "formik": "^2.0.3",
     "history": "^4.9.0",
     "image-to-base64": "^2.0.1",
@@ -15,6 +16,7 @@
     "js-joda": "^1.11.0",
     "leaflet": "^1.5.1",
     "leaflet.bezier": "^0.1.0",
+    "leaflet.motion": "^0.1.5",
     "mdbreact": "^4.11.0",
     "rc-collapse": "^1.11.1",
     "react": "^16.8.4",
@@ -37,6 +39,7 @@
     "redux-persist": "^5.10.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0",
+    "snapsvg": "^0.5.1",
     "yup": "^0.27.0"
   },
   "scripts": {

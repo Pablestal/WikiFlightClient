@@ -1,5 +1,7 @@
 import React from "react";
 import L from "leaflet";
+// import "leaflet.motion";
+import "leaflet.motion/dist/leaflet.motion.js";
 //NEEDED PROPS: initialPosition, zoom
 
 class MapNew extends React.Component {
@@ -7,7 +9,7 @@ class MapNew extends React.Component {
     let airportIcon = new L.Icon({
       iconUrl: require("../../icons/airport.svg"),
       iconRetinaUrl: require("../../icons/airport.svg"),
-      iconAnchor: [23, 44],
+      iconAnchor: [23, 43],
       iconSize: [45, 45],
       shadowUrl: "../assets/marker-shadow.png",
       shadowSize: [68, 95],
@@ -19,6 +21,7 @@ class MapNew extends React.Component {
         this.props.initialPosition,
         this.props.zoom
       );
+
       this.marker = L.marker(this.props.initialPosition, {
         icon: airportIcon
       }).addTo(this.map);
@@ -33,23 +36,24 @@ class MapNew extends React.Component {
         icon: airportIcon
       }).addTo(this.map);
 
-      this.marker2 = L.marker(this.props.marker2, {
-        icon: airportIcon
-      }).addTo(this.map);
-
-      //   this.polyline = L.polyline(this.props.polyline, {
-      //     dashArray: 4,
-      //     color: "#a14655"
-      //   }).addTo(this.map);
-      L.bezier({
-        path: this.props.polyline,
-
-        icon: {
-          path: "plane.png"
-        }
-      }).addTo(this.map);
+      L.motion
+        .polyline(
+          this.props.polyline,
+          {
+            color: "#a14655"
+          },
+          {
+            auto: true,
+            duration: 5000,
+            easing: L.Motion.Ease.easeInOutQuart
+          },
+          {
+            removeOnEnd: false,
+            icon: airportIcon
+          }
+        )
+        .addTo(this.map);
     }
-
     this.tileLayer = L.tileLayer(
       "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
       {

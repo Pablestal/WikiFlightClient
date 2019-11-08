@@ -37,13 +37,16 @@ class MapNew extends React.Component {
 
     this.marker = L.marker(this.props.initialPosition, {
       icon: airportIcon
-    }).addTo(this.map);
+    });
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.initialPosition !== prevProps.user) {
+    if (this.props.initialPosition !== prevProps.initialPosition) {
       this.marker.setLatLng(this.props.initialPosition);
       this.map.setView(this.props.initialPosition);
+    }
+    if (this.props.selectedCoord !== prevProps.selectedCoord) {
+      this.marker.addTo(this.map);
     }
   }
 

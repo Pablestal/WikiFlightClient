@@ -161,7 +161,7 @@ class Register extends Component {
 
           <Form.Row />
 
-          <Button variant="new" type="submit">
+          <Button variant="submit" type="submit">
             Submit
           </Button>
         </Form>
