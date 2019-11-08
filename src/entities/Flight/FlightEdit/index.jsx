@@ -171,10 +171,7 @@ class FlightEdit extends Component {
         <hr />
         <Form onSubmit={this.handleSubmitEdit}>
           {/* Fila 1 / 2 Departure(Col1: Airport1, Airport2) Arrival(Col2: Date1, Time1, Date2, Time2) */}
-          <h4 className="formTittle">
-            Departure (<b>{flight.takeoffAerodrome.name}</b>) and Arrival (
-            <b>{flight.landingAerodrome.name}</b>)
-          </h4>
+          <h4 className="formTittle">Departure and Arrival</h4>
 
           <Row>
             <Form.Group md="5" as={Col} controlId="formGridDepAirport">
@@ -390,59 +387,64 @@ class FlightEdit extends Component {
           <h4 className="formTittle">Pilot function times</h4>
 
           <Row>
-            <Form.Group md="2" as={Col} controlId="formGridpicTime">
-              <Form.Label>PIC</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={flight.picTime}
-                name="picTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+            <Col xs={9}>
+              <Row>
+                <Form.Group md="2" as={Col} controlId="formGridpicTime">
+                  <Form.Label>PIC</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={flight.picTime}
+                    name="picTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridCoopTime">
-              <Form.Label>Coopilot</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={flight.coopilotTime}
-                name="coopilotTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridCoopTime">
+                  <Form.Label>Coopilot</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={flight.coopilotTime}
+                    name="coopilotTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridDualTime">
-              <Form.Label>Dual</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={flight.dualTime}
-                name="dualTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridDualTime">
+                  <Form.Label>Dual</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={flight.dualTime}
+                    name="dualTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridInstrTime">
-              <Form.Label>Instructor</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={flight.instructorTime}
-                name="instructorTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridInstrTime">
+                  <Form.Label>Instructor</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={flight.instructorTime}
+                    name="instructorTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Row>
+            </Col>
           </Row>
 
           {/* Fila 7: Aircraft, AircReg  */}
-          <h4 className="formTittle">
-            Edit aircraft (
+          <h4 className="formTittle">Edit aircraft</h4>
+
+          <h6>
+            Currently selected aircraft:&nbsp;
             <b>
               {flight.aircraft.manufacturer} {flight.aircraft.model}
             </b>
-            )
-          </h4>
+          </h6>
 
           <Row>
             <Form.Group as={Col} controlId="formGridAircraft">

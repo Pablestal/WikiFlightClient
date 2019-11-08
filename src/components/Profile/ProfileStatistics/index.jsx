@@ -103,6 +103,9 @@ class ProfileStatistics extends Component {
     return (
       <div>
         <h5>
+          Number of flights: <b>{this.state.flights.length} </b>
+        </h5>
+        <h5>
           Average Flight Time: <b>{this.getAverageTime()} minutes.</b>
         </h5>
         <h5>
@@ -134,7 +137,7 @@ class ProfileStatistics extends Component {
         return (
           <div>
             <h5 className="tittle">FLIGHT STATISTICS</h5>
-            <h5>User didn't fly yet.</h5>
+            <h5>{this.props.pilot.name} didn't fly yet.</h5>
           </div>
         );
     } else

@@ -208,7 +208,7 @@ class Profile extends Component {
     const isFollower = this.isFollower(this.props.login);
     let render;
     if (
-      this.props.authenticated &&
+      this.props.authority === "PILOT" &&
       this.props.match.params.login !== this.props.login
     ) {
       !isFollower

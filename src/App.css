@@ -48,6 +48,12 @@ body {
   margin: auto;
 }
 
+#mapid {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+}
+
 .formTittle {
   padding-top: 2%;
   color: #6b6630;

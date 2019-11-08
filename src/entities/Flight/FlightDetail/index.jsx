@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { Map, TileLayer, Circle, Marker, Polyline } from "react-leaflet";
-import L from "leaflet";
 import "./FlightDetail.css";
+import MapFlight from "../MapFlight";
 
 class FlightDetail extends Component {
   constructor(props) {
@@ -24,69 +23,24 @@ class FlightDetail extends Component {
     let polyline = [toAer.position.coordinates, ldAer.position.coordinates];
     let bounds;
 
-    const airportIcon = new L.Icon({
-      iconUrl: require("../../../icons/airport.svg"),
-      iconRetinaUrl: require("../../../icons/airport.svg"),
-      iconAnchor: [23, 44],
-      iconSize: [45, 45],
-      shadowUrl: "../assets/marker-shadow.png",
-      shadowSize: [68, 95],
-      shadowAnchor: [20, 92]
-    });
-
     if (toAer.name === ldAer.name) {
       return (
-        <Map
-          center={flight.takeoffAerodrome.position.coordinates}
+        <MapFlight
+          initialPosition={flight.takeoffAerodrome.position.coordinates}
           zoom={10}
-          className="map_aerod"
-        >
-          <TileLayer
-            attribution='Imagery from <a href="http://giscience.uni-hd.de/">University of Heidelberg</a> | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
-          />
-
-          <Marker
-            icon={airportIcon}
-            position={toAer.position.coordinates}
-          ></Marker>
-          <Circle
-            center={flight.takeoffAerodrome.position.coordinates}
-            color="#a14655"
-            radius={12000}
-            dashArray="4"
-          ></Circle>
-        </Map>
+        ></MapFlight>
       );
     } else {
       bounds = this.getBounds(flight);
 
       return (
-        <Map
-          center={flight.takeoffAerodrome.position.coordinates}
-          zoom={11}
-          className="map_aerod"
+        <MapFlight
           bounds={bounds}
-        >
-          <TileLayer
-            attribution='Imagery from <a href="http://giscience.uni-hd.de/">University of Heidelberg</a> | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
-          />
-
-          <Marker
-            icon={airportIcon}
-            position={toAer.position.coordinates}
-          ></Marker>
-          <Marker
-            icon={airportIcon}
-            position={ldAer.position.coordinates}
-          ></Marker>
-          <Polyline
-            positions={polyline}
-            color="#a14655"
-            dashArray="4"
-          ></Polyline>
-        </Map>
+          zoom={10}
+          marker1={toAer.position.coordinates}
+          marker2={ldAer.position.coordinates}
+          polyline={polyline}
+        ></MapFlight>
       );
     }
   }

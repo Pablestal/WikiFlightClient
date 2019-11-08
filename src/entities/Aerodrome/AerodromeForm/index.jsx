@@ -5,25 +5,13 @@ import { connect } from "react-redux";
 import { HTTP } from "../../../common/http-common";
 import { withRouter } from "react-router-dom";
 import { notify } from "react-notify-toast";
-import { Map, TileLayer, Marker } from "react-leaflet";
-import L from "leaflet";
+import MapEdit from "../MapEdit";
+import MapNew from "../MapNew";
 
 class AerodromeForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      aerodrome: {
-        name: "",
-        city: "",
-        country: "",
-        codIATA: "",
-        codOACI: "",
-        elevation: "",
-        position: {
-          type: "Point",
-          coordinates: [-8.33, 43.33]
-        }
-      },
       zoom: 13
     };
     this.handleClick = this.handleClick.bind(this);
@@ -48,9 +36,10 @@ class AerodromeForm extends Component {
             elevation: "",
             position: {
               type: "Point",
-              coordinates: [41.940823995744914, -7.4398998463702713]
+              coordinates: [20, 0]
             }
-          }
+          },
+          zoom: 1
         });
   }
 
@@ -140,270 +129,259 @@ class AerodromeForm extends Component {
   };
 
   renderEdit(aerodrome) {
-    const initialPosition = this.state.aerodrome.position.coordinates;
-    const airportIcon = new L.Icon({
-      iconUrl: require("../../../icons/airport.svg"),
-      iconRetinaUrl: require("../../../icons/airport.svg"),
-      iconAnchor: [23, 44],
-      iconSize: [45, 45],
-      shadowUrl: "../assets/marker-shadow.png",
-      shadowSize: [68, 95],
-      shadowAnchor: [20, 92]
-    });
+    if (this.state.aerodrome) {
+      let iPosition = this.state.aerodrome.position.coordinates;
 
-    return (
-      <div className="container">
-        <h2 className="tittle">
-          Edit aerodrome
-          <Button variant="back" onClick={this.goBack}>
-            Back
-          </Button>
-        </h2>
-        <hr />
-        <Form onSubmit={this.handleSubmitEdit}>
-          {/* Primera columna (Name, City, Country) */}
-          <Row>
-            <Col>
-              <Form.Group className="m-3" as={Row} controlId="formGridName">
-                <Form.Label>Name</Form.Label>
+      return (
+        <div className="container">
+          <h2 className="tittle">
+            Edit aerodrome
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
+          <hr />
+          <Form onSubmit={this.handleSubmitEdit}>
+            {/* Primera columna (Name, City, Country) */}
+            <Row>
+              <Col>
+                <Form.Group className="m-3" as={Row} controlId="formGridName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    required
+                    maxLength="36"
+                    type="text"
+                    defaultValue={aerodrome.name}
+                    name="name"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group
+                  className="m-3"
+                  as={Row}
+                  controlId="formGridCountry"
+                >
+                  <Form.Label>Country</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    defaultValue={aerodrome.country}
+                    name="country"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group className="m-3" as={Row} controlId="formGridCity">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    defaultValue={aerodrome.city}
+                    name="city"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Col>
+              {/* Segunda columna (MAPA) */}
+              <Col>
+                <MapEdit
+                  initialPosition={iPosition}
+                  zoom={this.state.zoom}
+                  handleClick={this.handleClick}
+                ></MapEdit>
+              </Col>
+            </Row>
+            {/* Fila de abajo (IATA, OACI, Elevación, Coordenadas(X, Y)) */}
+            <Row>
+              <Form.Group className="m-3" as={Col} controlId="formGridIATA">
+                <Form.Label>IATA</Form.Label>
                 <Form.Control
-                  required
-                  maxLength="36"
                   type="text"
-                  defaultValue={aerodrome.name}
-                  name="name"
+                  defaultValue={aerodrome.codIATA}
+                  name="codIATA"
                   onChange={this.handleInputChange}
                 />
               </Form.Group>
-              <Form.Group className="m-3" as={Row} controlId="formGridCountry">
-                <Form.Label>Country</Form.Label>
+              <Form.Group className="m-3" as={Col} controlId="formGridOACI">
+                <Form.Label>OACI</Form.Label>
                 <Form.Control
-                  required
                   type="text"
-                  defaultValue={aerodrome.country}
-                  name="country"
+                  defaultValue={aerodrome.codOACI}
+                  name="codOACI"
                   onChange={this.handleInputChange}
                 />
               </Form.Group>
-              <Form.Group className="m-3" as={Row} controlId="formGridCity">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  defaultValue={aerodrome.city}
-                  name="city"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
-            </Col>
-            {/* Segunda columna (MAPA) */}
-            <Col>
-              <Map
-                onclick={this.handleClick}
-                center={initialPosition}
-                zoom={this.state.zoom}
-                className="map_aerod"
+              <Form.Group
+                className="m-3"
+                as={Col}
+                controlId="formGridElevation"
               >
-                <TileLayer
-                  attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
+                <Form.Label>Elevation (ft)</Form.Label>
+                <Form.Control
+                  type="number"
+                  defaultValue={aerodrome.elevation}
+                  name="elevation"
+                  onChange={this.handleInputChange}
                 />
-                <Marker icon={airportIcon} position={initialPosition}></Marker>
-              </Map>
-            </Col>
-          </Row>
-          {/* Fila de abajo (IATA, OACI, Elevación, Coordenadas(X, Y)) */}
-          <Row>
-            <Form.Group className="m-3" as={Col} controlId="formGridIATA">
-              <Form.Label>IATA</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={aerodrome.codIATA}
-                name="codIATA"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridOACI">
-              <Form.Label>OACI</Form.Label>
-              <Form.Control
-                type="text"
-                defaultValue={aerodrome.codOACI}
-                name="codOACI"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridElevation">
-              <Form.Label>Elevation (ft)</Form.Label>
-              <Form.Control
-                type="number"
-                defaultValue={aerodrome.elevation}
-                name="elevation"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridX">
-              <Form.Label>Latitude:</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                placeholder="Latitude"
-                value={this.state.aerodrome.position.coordinates[0]}
-                name="x"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+              </Form.Group>
+              <Form.Group className="m-3" as={Col} controlId="formGridX">
+                <Form.Label>Latitude:</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  placeholder="Latitude"
+                  value={this.state.aerodrome.position.coordinates[0]}
+                  name="x"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
 
-            <Form.Group className="m-3" as={Col} controlId="formGridY">
-              <Form.Label>Longitude:</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                placeholder="Longitude"
-                value={this.state.aerodrome.position.coordinates[1]}
-                name="y"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
-          <Button className="btn m-3" variant="new" type="submit">
-            Save
-          </Button>
-        </Form>
-      </div>
-    );
+              <Form.Group className="m-3" as={Col} controlId="formGridY">
+                <Form.Label>Longitude:</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  placeholder="Longitude"
+                  value={this.state.aerodrome.position.coordinates[1]}
+                  name="y"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
+            <Button className="btn m-3" variant="new" type="submit">
+              Save
+            </Button>
+          </Form>
+        </div>
+      );
+    } else return null;
   }
 
   renderNew() {
-    const initialPosition = this.state.aerodrome.position.coordinates;
-    const airportIcon = new L.Icon({
-      iconUrl: require("../../../icons/airport.svg"),
-      iconRetinaUrl: require("../../../icons/airport.svg"),
-      iconAnchor: [23, 44],
-      iconSize: [45, 45],
-      shadowUrl: "../assets/marker-shadow.png",
-      shadowSize: [68, 95],
-      shadowAnchor: [20, 92]
-    });
+    if (this.state.aerodrome) {
+      let iPosition = this.state.aerodrome.position.coordinates;
 
-    return (
-      <div className="container">
-        <h2 className="tittle">
-          Create new aerodrome
-          <Button variant="back" onClick={this.goBack}>
-            Back
-          </Button>
-        </h2>
-        <hr />
-        <Form onSubmit={this.handleSubmitNew}>
-          {/* Primera columna (Name, City, Country) */}
-          <Row>
-            <Col>
-              <Form.Group className="m-3" as={Row} controlId="formGridName">
-                <Form.Label>Name</Form.Label>
+      return (
+        <div className="container">
+          <h2 className="tittle">
+            Create new aerodrome
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
+          <hr />
+          <Form onSubmit={this.handleSubmitNew}>
+            {/* Primera columna (Name, City, Country) */}
+            <Row>
+              <Col>
+                <Form.Group className="m-3" as={Row} controlId="formGridName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    maxLength="36"
+                    placeholder="Name"
+                    name="name"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group
+                  className="m-3"
+                  as={Row}
+                  controlId="formGridCountry"
+                >
+                  <Form.Label>Country</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Country"
+                    name="country"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+                <Form.Group className="m-3" as={Row} controlId="formGridCity">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="City"
+                    name="city"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Col>
+              {/* Segunda columna (MAPA) */}
+              <Col>
+                <MapNew
+                  initialPosition={iPosition}
+                  zoom={this.state.zoom}
+                  handleClick={this.handleClick}
+                ></MapNew>
+              </Col>
+            </Row>
+            {/* Fila de abajo (IATA, OACI, Elevación, Coordenadas(X, Y)) */}
+            <Row>
+              <Form.Group className="m-3" as={Col} controlId="formGridIATA">
+                <Form.Label>IATA</Form.Label>
                 <Form.Control
-                  required
                   type="text"
-                  maxLength="36"
-                  placeholder="Name"
-                  name="name"
+                  placeholder="IATA code"
+                  name="codIATA"
                   onChange={this.handleInputChange}
                 />
               </Form.Group>
-              <Form.Group className="m-3" as={Row} controlId="formGridCountry">
-                <Form.Label>Country</Form.Label>
+              <Form.Group className="m-3" as={Col} controlId="formGridOACI">
+                <Form.Label>OACI</Form.Label>
                 <Form.Control
-                  required
                   type="text"
-                  placeholder="Country"
-                  name="country"
+                  placeholder="OACI code"
+                  name="codOACI"
                   onChange={this.handleInputChange}
                 />
               </Form.Group>
-              <Form.Group className="m-3" as={Row} controlId="formGridCity">
-                <Form.Label>City</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  placeholder="City"
-                  name="city"
-                  onChange={this.handleInputChange}
-                />
-              </Form.Group>
-            </Col>
-            {/* Segunda columna (MAPA) */}
-            <Col>
-              <Map
-                center={initialPosition}
-                zoom={this.state.zoom}
-                onClick={this.handleClick}
+              <Form.Group
+                className="m-3"
+                as={Col}
+                controlId="formGridElevation"
               >
-                <TileLayer
-                  attribution=' Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png"
+                <Form.Label>Elevation (ft)</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Elevation"
+                  name="elevation"
+                  onChange={this.handleInputChange}
                 />
-                <Marker icon={airportIcon} position={initialPosition}></Marker>
-              </Map>
-            </Col>
-          </Row>
-          {/* Fila de abajo (IATA, OACI, Elevación, Coordenadas(X, Y)) */}
-          <Row>
-            <Form.Group className="m-3" as={Col} controlId="formGridIATA">
-              <Form.Label>IATA</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="IATA code"
-                name="codIATA"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridOACI">
-              <Form.Label>OACI</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="OACI code"
-                name="codOACI"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridElevation">
-              <Form.Label>Elevation (ft)</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Elevation"
-                name="elevation"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="m-3" as={Col} controlId="formGridX">
-              <Form.Label>Latitude:</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                value={this.state.aerodrome.position.coordinates[0]}
-                placeholder="Latitude"
-                name="x"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+              </Form.Group>
+              <Form.Group className="m-3" as={Col} controlId="formGridX">
+                <Form.Label>Latitude:</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  value={this.state.aerodrome.position.coordinates[0]}
+                  placeholder="Latitude"
+                  name="x"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
 
-            <Form.Group className="m-3" as={Col} controlId="formGridY">
-              <Form.Label>Longitude:</Form.Label>
-              <Form.Control
-                required
-                type="number"
-                value={this.state.aerodrome.position.coordinates[1]}
-                placeholder="Longitude"
-                name="y"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
-          <Button className="btn m-3" variant="new" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </div>
-    );
+              <Form.Group className="m-3" as={Col} controlId="formGridY">
+                <Form.Label>Longitude:</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  value={this.state.aerodrome.position.coordinates[1]}
+                  placeholder="Longitude"
+                  name="y"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
+            <Button className="btn m-3" variant="new" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </div>
+      );
+    } else return null;
   }
 
   render() {

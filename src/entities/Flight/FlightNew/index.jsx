@@ -423,49 +423,53 @@ class FlightEdit extends Component {
           <h4 className="formTittle">Pilot function times</h4>
 
           <Row>
-            <Form.Group md="2" as={Col} controlId="formGridpicTime">
-              <Form.Label>PIC</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={defTime}
-                name="picTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+            <Col xs={9}>
+              <Row>
+                <Form.Group md="2" as={Col} controlId="formGridpicTime">
+                  <Form.Label>PIC</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={defTime}
+                    name="picTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridCoopTime">
-              <Form.Label>Coopilot</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={defTime}
-                name="coopilotTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridCoopTime">
+                  <Form.Label>Coopilot</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={defTime}
+                    name="coopilotTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridDualTime">
-              <Form.Label>Dual</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={defTime}
-                name="dualTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridDualTime">
+                  <Form.Label>Dual</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={defTime}
+                    name="dualTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
 
-            <Form.Group md="2" as={Col} controlId="formGridInstrTime">
-              <Form.Label>Instructor</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={defTime}
-                name="instructorTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
+                <Form.Group md="2" as={Col} controlId="formGridInstrTime">
+                  <Form.Label>Instructor</Form.Label>
+                  <Form.Control
+                    required
+                    type="time"
+                    defaultValue={defTime}
+                    name="instructorTime"
+                    onChange={this.handleInputChange}
+                  />
+                </Form.Group>
+              </Row>
+            </Col>
           </Row>
 
           {/* Fila 7: Aircraft, AircReg  */}
