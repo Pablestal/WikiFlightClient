@@ -43,21 +43,8 @@ class Navibar extends React.Component {
   // PILOT NAVBAR //
 
   renderPilot() {
-    // let avatar = baseURL + "users/image/" + this.props.login + ".jpg";
     return (
       <Nav className="linkslog">
-        {/* <Link className="navlinks1" to={`/profile/${this.props.login}`}>
-          <Image
-            className="navBarAvatar"
-            onError={e => {
-              e.target.onerror = null;
-              e.target.src = "/images/default.jpg";
-            }}
-            src={avatar}
-            alt={this.props.login + "avatar"}
-            roundedCircle
-          />
-        </Link> */}
         <Link className="navlinks" to={`/profile/${this.props.login}`}>
           {this.props.login}'s profile
         </Link>
@@ -74,6 +61,9 @@ class Navibar extends React.Component {
       <Nav className="mr-auto">
         <Link className="navlinks" to={`/myLogbook`}>
           My Logbook
+        </Link>
+        <Link className="navlinks" to={`/routes`}>
+          Flight Routes
         </Link>
       </Nav>
     );
@@ -95,7 +85,15 @@ class Navibar extends React.Component {
     );
   }
 
-  anonymousRender() {}
+  anonymousRender() {
+    return (
+      <Nav className="mr-auto">
+        <Link className="navlinks" to={`/routes`}>
+          Flight Routes
+        </Link>
+      </Nav>
+    );
+  }
 
   renderLogout() {
     let logout;
@@ -153,7 +151,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { signOutAction }
-)(Navibar);
+export default connect(mapStateToProps, { signOutAction })(Navibar);

@@ -52,7 +52,7 @@ class Register extends Component {
   render() {
     return (
       <div className="regContainer">
-        <h2 className="tittle">Sign up</h2>
+        <h2 className="tittle">Registration</h2>
         <hr />
         <Form className="innerform" onSubmit={this.handleSubmit}>
           <Form.Row>

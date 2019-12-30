@@ -1,0 +1,15 @@
+.reglink {
+  color: #8d8741;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.125em; /* ~18px */
+}
+
+.reglink:hover {
+  color: #64602f;
+}
+
+.createRouteButton {
+  float: right;
+  margin-right: 10%;
+}

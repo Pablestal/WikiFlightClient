@@ -1,5 +1,4 @@
 import axios from "axios";
-//import auth from "./auth";
 import { getToken } from "../redux/actions";
 import { notify } from "react-notify-toast";
 

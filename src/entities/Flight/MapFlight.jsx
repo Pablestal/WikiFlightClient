@@ -2,7 +2,8 @@ import React from "react";
 import L from "leaflet";
 // import "leaflet.motion";
 import "leaflet.motion/dist/leaflet.motion.js";
-//NEEDED PROPS: initialPosition, zoom
+
+//NEEDED PROPS: (initialPosition, zoom) || (bounds)
 
 class MapNew extends React.Component {
   componentDidMount() {

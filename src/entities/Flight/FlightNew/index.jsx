@@ -477,7 +477,7 @@ class FlightEdit extends Component {
           <h4 className="formTittle">Aircraft info</h4>
 
           <Row>
-            <Form.Group as={Col} controlId="formGridAircraft">
+            <Form.Group as={Col} controlId="formGridAircraftMan">
               <Form.Label>Manufacturer</Form.Label>
               <Form.Control
                 required
@@ -495,7 +495,7 @@ class FlightEdit extends Component {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group as={Col} controlId="formGridAircraft">
+            <Form.Group as={Col} controlId="formGridAircraftMod">
               <Form.Label>Model</Form.Label>
               <Form.Control
                 required
@@ -527,7 +527,7 @@ class FlightEdit extends Component {
           {/* Fila 8: Observations*/}
           <h4 className="formTittle">Observations</h4>
           <Row>
-            <Form.Group as={Col} controlId="formGridAircraftReg">
+            <Form.Group as={Col} controlId="formGridObservations">
               <Form.Control
                 placeholder="Observations..."
                 as="textarea"
@@ -557,7 +557,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  withRouter
-)(FlightEdit);
+export default connect(mapStateToProps, withRouter)(FlightEdit);

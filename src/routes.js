@@ -22,6 +22,8 @@ import FlightList from "./entities/Flight/FlightList";
 import FlightEdit from "./entities/Flight/FlightEdit";
 import FlightNew from "./entities/Flight/FlightNew";
 import FlightDetail from "./entities/Flight/FlightDetail";
+import RouteList from "./entities/Route/RouteList";
+import RouteNew from "./entities/Route/RouteNew";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -83,6 +85,8 @@ const AppRoutes = () => (
             exact
             component={requireAuth(FlightDetail)}
           />
+          <Route exact path="/routes" component={RouteList} />
+          <Route path="/routes/new" exact component={requireAuth(RouteNew)} />
           <Route exact path="/" component={Home} />
           <Route exact component={Page404} />
         </Switch>

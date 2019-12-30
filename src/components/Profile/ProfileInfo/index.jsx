@@ -49,7 +49,6 @@ class ProfileInfo extends Component {
         notify.show("Can`t modify", "error", 3000);
       });
     this.componentDidMount();
-    this.forceUpdate();
   };
 
   showAvatar(login) {

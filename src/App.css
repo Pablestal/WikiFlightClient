@@ -38,10 +38,6 @@ body {
   margin-right: 10%;
 }
 
-#mapid {
-  height: 180px;
-}
-
 .leaflet-container {
   height: 100%;
   width: 100%;
@@ -62,6 +58,10 @@ body {
 .tittle {
   padding-top: 2%;
   padding-bottom: 2%;
+  color: #6b6630;
+}
+
+.modalTitle {
   color: #6b6630;
 }
 

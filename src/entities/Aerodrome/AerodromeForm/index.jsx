@@ -131,6 +131,7 @@ class AerodromeForm extends Component {
         notify.show("This aerodrome already exists.", "error", 3000);
       });
   };
+  z;
 
   renderEdit(aerodrome) {
     if (this.state.aerodrome) {

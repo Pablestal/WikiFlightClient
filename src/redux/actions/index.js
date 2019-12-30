@@ -12,6 +12,9 @@ export const DELETEAIRCRAFT = "delete_aircraft";
 export const INITIALIZEFLIGHT = "initialized_flight";
 export const DELETEFLIGHT = "delete_flight";
 export const FLIGHTERROR = "flight_error";
+export const INITIALIZEROUTE = "initialized_route";
+export const DELETEROUTE = "delete_route";
+export const ROUTEERROR = "route_error";
 
 // AUTHENTICATION ACTIONS
 
@@ -161,6 +164,44 @@ export function deleteFliAction(flight) {
       dispatch({
         type: FLIGHTERROR,
         payload: "Not possible to delete flight."
+      });
+    }
+  };
+}
+
+// ROUTE ACTIONS
+
+export function initializeRouteAction(routes) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: INITIALIZEROUTE,
+        payload: {
+          routes: routes
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: ROUTEERROR,
+        payload: "Not possible to load routes."
+      });
+    }
+  };
+}
+
+export function deleteRouteAction(route) {
+  return async dispatch => {
+    try {
+      dispatch({
+        type: DELETEROUTE,
+        payload: {
+          id: route.id
+        }
+      });
+    } catch (error) {
+      dispatch({
+        type: ROUTEERROR,
+        payload: "Not possible to delete route."
       });
     }
   };
