@@ -1,0 +1,33 @@
+.profileRoutesImage {
+  width: 90px;
+  height: 90px;
+  display: block;
+  margin-right: 1%;
+}
+
+.profileRoutesItem {
+  color: #6d4e1f;
+}
+
+.profileRoutesRow {
+  margin: auto;
+}
+
+.profileRoutesTittle {
+  margin: auto;
+  margin-left: 3%;
+}
+
+.profileRoutesText {
+  margin: auto;
+  margin-top: 2%;
+  margin-left: 3%;
+}
+
+.profileRoutesAerod {
+  margin-left: 3%;
+}
+
+.profileRoutesEmpty {
+  margin-bottom: 30%;
+}

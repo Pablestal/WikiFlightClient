@@ -47,3 +47,14 @@
 .imageRow {
   align-content: center;
 }
+
+.imgModalButtons {
+  margin-left: 2%;
+}
+
+.removeImageText {
+  cursor: pointer;
+  margin: auto;
+  text-align: center;
+  width: fit-content;
+}

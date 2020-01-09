@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-
 import { Form, Row, Col, Button, Image, Modal } from "react-bootstrap";
 import Switch from "react-switch";
 import { connect } from "react-redux";
 import { HTTP } from "../../../common/http-common";
 import { notify } from "react-notify-toast";
 import NewImage from "../NewImage";
-import "./RouteNew.css";
+import Loader from "react-loader-spinner";
 
-class RouteNew extends Component {
+class RouteEdit extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,73 +21,77 @@ class RouteNew extends Component {
           coordinates: [20, 0]
         }
       },
-      imagesShow: [], // Images to show on RouteNew
+      imagesShow: [], // Images to show on RouteEdit
       imagesUpload: [], // Image files to upload to resources
       imagesUploadObject: [], // Image objects with name, description and coordinates
-      modalShow: false,
-      route: {
-        isPublic: false
-      }
+      modalShow: false
     };
 
     this.fileInput = React.createRef();
-    this.handleSubmitNew = this.handleSubmitNew.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleIsPublicChange = this.handleIsPublicChange.bind(this);
     this.goBack = this.goBack.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
-  }
-
-  componentDidMount() {
-    this.getPilot();
   }
 
   goBack() {
     this.props.history.goBack();
   }
 
-  getPilot = async () => {
-    let res = await HTTP.get(`users/${this.props.login}`);
+  componentDidMount() {
+    HTTP.get(`routes/detail/${this.props.match.params.id}`)
+      .then(res => {
+        const route = res.data;
+        let imgShowArray = res.data.images.map(
+          a =>
+            "http://localhost:8080/api/users/image/route" +
+            res.data.id +
+            "Image" +
+            a.id +
+            ".jpg"
+        );
+        this.setState({ route, imagesShow: imgShowArray });
+      })
+      .catch(error => {
+        notify.show("Error loading route.", "error", 3000);
+        this.goBack();
+      });
+  }
 
-    let pilot = res.data;
+  /////// UPLOAD ///////
 
-    this.setState({
-      route: {
-        ...this.state.route,
-        pilot: pilot
-      }
-    });
-  };
-
-  /// UPLOADING ///
-
-  handleSubmitNew(event) {
+  handleSubmitEdit(event) {
     event.preventDefault();
-
-    if (this.fileInput.current.files.length === 0) {
-      notify.show("Please add a GPX file.", "error", 3000);
-    } else {
+    if (this.fileInput.current.files.length > 0) {
       if (this.fileInput.current.files[0].name.endsWith(".gpx") === false) {
         notify.show("File must be in a GPX format.", "error", 3000);
       } else {
         this.setState({
           pathFile: this.fileInput.current.files[0]
         });
-        this.uploadRoute();
+        this.editRoute();
       }
-    }
+    } else this.editRoute();
   }
 
   //Route
-  uploadRoute = async () => {
+  editRoute = async () => {
     const route = this.state.route;
+    const {
+      history: { push }
+    } = this.props;
 
-    await HTTP.post(`/routes`, route)
-      .then(response => this.setState({ imRoute: response.data }))
+    await HTTP.put(`/routes/${route.id}`, route)
+      .then(response => {
+        notify.show("Route edited.", "success", 3000);
+      })
       .catch(function(error) {
         notify.show("Error uploading route.", "error", 3000);
       });
-    this.uploadImageObjects();
-    this.uploadGPX();
+
+    if (this.fileInput.current.files.length > 0) {
+      this.uploadGPX();
+    } else push("/routes");
   };
 
   //ImagesUploadObject
@@ -132,8 +135,7 @@ class RouteNew extends Component {
   //Upload GPX file
   uploadGPX = async () => {
     const file = this.state.pathFile;
-    const id = this.state.imRoute.id;
-
+    const id = this.state.route.id;
     const {
       history: { push }
     } = this.props;
@@ -145,15 +147,15 @@ class RouteNew extends Component {
       "Content-Type": "multipart/form-data"
     })
       .then(function(response) {
-        notify.show("Route successfully created", "success", 3000);
         push("/routes");
+        notify.show("Route successfully created", "success", 3000);
       })
       .catch(function(error) {
         notify.show("Error uploading image file", "error", 3000);
       });
   };
 
-  // GET AERODROMES //
+  /////// GET AERODROMES ///////
   getTakeoffAerodrome = async event => {
     event.preventDefault();
     let res = await HTTP.get(`aerodromes/${event.target.value}`);
@@ -172,15 +174,49 @@ class RouteNew extends Component {
     });
   };
 
-  // IMAGES //
+  /////// IMAGES ///////
+
+  deleteImgObject(id) {
+    HTTP.delete(`images/${id}`)
+      .then(function(response) {
+        notify.show("Image removed", "success");
+      })
+      .catch(function(error) {
+        notify.show("Image cannot be removed", "error");
+      });
+  }
+
+  removeImage(index) {
+    if (this.state.route.images[index]) {
+      let image = this.state.route.images[index];
+      let showArray = this.state.imagesShow;
+      let routeImages = this.state.route.images;
+      routeImages.splice(index, 1); // Image deleted from route
+      showArray.splice(index, 1); // Image deleted from show array
+      this.setState({ imagesShow: showArray });
+
+      this.deleteImgObject(image.id); // Delete image from DB
+      console.log("Removing image >> ", image.id, image);
+      console.log("Imagen de ruta, index: ", index);
+    } else {
+      console.log("Nueva imagen, index: ", index);
+    }
+  }
+
   showImages() {
     let imagesShow = [];
 
     for (let index = 0; index < 6; index++) {
       let source;
-      this.state.imagesShow[index]
-        ? (source = this.state.imagesShow[index])
-        : (source = "/images/defaultPic.jpg");
+      let isDisabled;
+
+      if (this.state.imagesShow[index]) {
+        source = this.state.imagesShow[index];
+        isDisabled = true;
+      } else {
+        source = "/images/defaultPic.jpg";
+        isDisabled = false;
+      }
 
       imagesShow.push(
         <Col key={index}>
@@ -188,9 +224,16 @@ class RouteNew extends Component {
             onClick={this.addImageOpenModal}
             className="routeImage"
             src={source}
-            alt="avatar"
+            alt="image"
             rounded
           />
+          <h6
+            style={{ display: isDisabled ? "block" : "none" }}
+            className="removeImageText"
+            onClick={() => this.removeImage(index)}
+          >
+            remove
+          </h6>
         </Col>
       );
     }
@@ -275,7 +318,7 @@ class RouteNew extends Component {
     }));
   }
 
-  // MODAL //
+  /////// MODAL ///////
   uploadImageModal() {
     return (
       <Modal
@@ -359,7 +402,6 @@ class RouteNew extends Component {
     console.log("Objects >>> ", this.state.imagesUploadObject);
     console.log("Show >>> ", this.state.imagesShow);
     console.log("Route >>> ", this.state.route);
-    console.log("IMROUTE >>> ", this.state.imRoute);
   };
 
   addImageOpenModal = () => {
@@ -368,7 +410,7 @@ class RouteNew extends Component {
     } else this.setState({ modalShow: true });
   };
 
-  _; /////// FORM DATA ///////
+  /////// FORM DATA ///////
 
   handleIsPublicChange(checked) {
     this.setState({
@@ -390,14 +432,17 @@ class RouteNew extends Component {
 
   /////// RENDER ///////
   renderRouteForm() {
+    let route = this.state.route;
+
     return (
-      <Form onSubmit={this.handleSubmitNew}>
+      <Form onSubmit={this.handleSubmitEdit}>
         <Row>
           <Col>
             <Form.Group as={Col} controlId="formGridName">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 required
+                defaultValue={route.name}
                 placeholder="Name"
                 type="text"
                 name="name"
@@ -407,9 +452,8 @@ class RouteNew extends Component {
           </Col>
           <Col>
             <Form.Group as={Col} controlId="formGridGpxFile">
-              <Form.Label>GPX file</Form.Label>
+              <Form.Label>Edit GPX file</Form.Label>
               <Form.Control
-                required
                 className="gpxInput"
                 type="file"
                 name="gpxFile"
@@ -424,7 +468,7 @@ class RouteNew extends Component {
               <Form.Label>Departure airport</Form.Label>
               <Form.Control
                 required
-                defaultValue={1}
+                defaultValue={route.takeoffAerodrome.name}
                 as="select"
                 name="takeoffAerodrome"
                 onChange={this.getTakeoffAerodrome}
@@ -444,7 +488,7 @@ class RouteNew extends Component {
               <Form.Control
                 required
                 as="select"
-                defaultValue={1}
+                defaultValue={route.landingAerodrome.name}
                 name="landingAerodrome"
                 onChange={this.getLandingAerodrome}
               >
@@ -461,7 +505,7 @@ class RouteNew extends Component {
         <Row>
           <Col>
             <Form.Group as={Col} controlId="formGridImages">
-              <Form.Label>Upload images associated with your route</Form.Label>{" "}
+              <Form.Label>Images associated with your route</Form.Label>{" "}
             </Form.Group>
           </Col>
         </Row>
@@ -485,6 +529,7 @@ class RouteNew extends Component {
             <Form.Group as={Col} controlId="formGridDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
+                defaultValue={route.description}
                 placeholder="Describe the route..."
                 as="textarea"
                 name="description"
@@ -547,19 +592,42 @@ class RouteNew extends Component {
   }
 
   render() {
-    return (
-      <div className="container">
-        {this.uploadImageModal()}
-        <h2 className="tittle">
-          Create new route
-          <Button variant="back" onClick={this.goBack}>
-            Back
-          </Button>
-        </h2>
-        <hr />
-        {this.renderRouteForm()}
-      </div>
-    );
+    if (this.state.route) {
+      return (
+        <div className="container">
+          {this.uploadImageModal()}
+          <h2 className="tittle">
+            Edit route
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
+          <hr />
+          {this.renderRouteForm()}
+        </div>
+      );
+    } else {
+      return (
+        <div className="container">
+          <h2 className="tittle">
+            Edit route
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
+          <hr />
+          <div className="loader">
+            <Loader
+              as="span"
+              type="Plane"
+              color="#6b6630"
+              height={20}
+              width={20}
+            />
+          </div>
+        </div>
+      );
+    }
   }
 }
 
@@ -570,4 +638,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(RouteNew);
+export default connect(mapStateToProps)(RouteEdit);

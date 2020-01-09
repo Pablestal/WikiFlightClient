@@ -1,61 +1,51 @@
 import React, { Component } from "react";
 import { Button, ButtonGroup, ButtonToolbar, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { HTTP } from "../../../common/http-common";
 import { connect } from "react-redux";
-import { notify } from "react-notify-toast";
 import {
   initializeRouteAction,
   deleteRouteAction
 } from "../../../redux/actions";
+import RouteListAll from "./RouteListAll";
+import RouteListCreated from "./RouteListCreated";
+import RouteListFavourite from "./RouteListFav";
 
 import "./RouteList.css";
 
 class RouteList extends Component {
   constructor(props) {
     super(props);
-    this.state = { toggle: "all" };
+    this.state = { toggle: "all", tittle: "Public routes" };
   }
 
-  componentDidMount() {
-    HTTP.get(`/routes`)
-      .then(res => {
-        const routes = res.data;
-        this.props.initializeRouteAction(routes);
-      })
-      .catch(function(error) {
-        notify.show("Error loading routes", "error");
-      });
-  }
+  toggleAll = () => {
+    this.setState({ toggle: "all", tittle: "Public routes" });
+  };
 
-  toggleAll() {
-    this.setState({ toggle: "all" });
-  }
+  toggleCreated = () => {
+    this.setState({ toggle: "created", tittle: "My routes" });
+  };
 
-  toggleCreated() {
-    this.setState({ toggle: "created" });
-  }
-
-  toggleFav() {
-    this.setState({ toggle: "fav" });
-  }
+  toggleFav = () => {
+    this.setState({ toggle: "fav", tittle: "My favourite routes" });
+  };
 
   renderRouteListHeader() {
     if (this.props.authenticated === true && this.props.authority === "PILOT") {
       return (
         <div>
-          <h2 className="tittle">Route List</h2>
+          <h2 className="tittle">{this.state.tittle}</h2>
           <Row>
             <Col>
               <ButtonToolbar>
                 <ButtonGroup>
-                  <Button variant="new" onClick={this.toggleStats}>
-                    All
+                  <Button variant="new" onClick={this.toggleAll}>
+                    Public
                   </Button>
-                  <Button variant="new" onClick={this.toggleInfo}>
-                    Created
+                  <Button variant="new" onClick={this.toggleCreated}>
+                    My routes
                   </Button>
-                  <Button variant="new" onClick={this.toggleRoutes}>
+                  <Button variant="new" onClick={this.toggleFav}>
                     Favourite
                   </Button>
                 </ButtonGroup>
@@ -114,14 +104,25 @@ class RouteList extends Component {
     } else return this.renderList();
   }
 
-  renderList() {}
+  renderList() {
+    switch (this.state.toggle) {
+      case "all":
+        return <RouteListAll />;
+      case "created":
+        return <RouteListCreated />;
+      case "fav":
+        return <RouteListFavourite />;
+      default:
+        return <RouteListAll></RouteListAll>;
+    }
+  }
 
   render() {
     return (
       <div className="container">
         {this.renderRouteListHeader()}
         <hr />
-        {this.renderEmpty()}
+        {this.renderList()}
       </div>
     );
   }

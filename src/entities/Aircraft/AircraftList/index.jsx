@@ -25,6 +25,7 @@ class AircraftList extends Component {
         notify.show("Error loading aircrafts.", "error");
       });
   }
+
   handleDelete(aircraft) {
     HTTP.delete(`aircrafts/${aircraft.id}`)
       .then(function(response) {
@@ -103,7 +104,7 @@ function mapStateToProps(state) {
   return { aircrafts: state.airc.aircrafts };
 }
 
-export default connect(
-  mapStateToProps,
-  { initializeAircAction, deleteAircAction }
-)(AircraftList);
+export default connect(mapStateToProps, {
+  initializeAircAction,
+  deleteAircAction
+})(AircraftList);

@@ -10,6 +10,7 @@ import ProfileEdit from "./ProfileEdit";
 import ProfileInfo from "./ProfileInfo";
 import ProfileFollowers from "./ProfileFollowers";
 import ProfileStatistics from "./ProfileStatistics";
+import ProfileRoutes from "./ProfileRoutes";
 import "./Profile.css";
 
 class Profile extends Component {
@@ -131,12 +132,11 @@ class Profile extends Component {
     avatar = this.state.avatar;
 
     if (pilot) {
-      // console.log(avatar);
       switch (this.state.toggle) {
         case "info":
           return <ProfileInfo pilot={pilot} avatar={avatar} />;
         case "routes":
-          return <ProfileInfo pilot={pilot} avatar={avatar} />;
+          return <ProfileRoutes pilot={pilot} />;
         case "stats":
           return <ProfileStatistics pilot={pilot} />;
         case "settings":

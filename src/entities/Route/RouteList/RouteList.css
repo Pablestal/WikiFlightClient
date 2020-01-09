@@ -13,3 +13,32 @@
   float: right;
   margin-right: 10%;
 }
+
+.routeListImage {
+  width: 130px;
+  height: 130px;
+  display: block;
+  /* margin-left: auto;
+  margin-right: auto; */
+}
+
+.routeListItem {
+  color: #6d4e1f;
+}
+
+.routeListRow {
+  margin: auto;
+}
+
+/* .routeListImgCol {
+  width: 0;
+} */
+
+.routeListText {
+  margin: auto;
+  margin-left: 3%;
+}
+
+.routeListEmpty {
+  margin-bottom: 30%;
+}
