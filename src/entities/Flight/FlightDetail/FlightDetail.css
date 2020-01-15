@@ -11,3 +11,12 @@
 .tolnCol {
   margin-right: 3%;
 }
+
+.routeLink {
+  color: #6b6630;
+}
+
+.routeLink:hover {
+  color: #413e1e;
+  text-decoration: underline;
+}

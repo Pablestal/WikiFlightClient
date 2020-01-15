@@ -1,0 +1,181 @@
+.routeTittle {
+  padding-top: 2%;
+  color: #6b6630;
+}
+
+.routeSubtittle {
+  color: #6b6630;
+}
+
+.profileLink {
+  color: #6b6630;
+}
+
+.profileLink:hover {
+  color: #413e1e;
+  text-decoration: underline;
+}
+
+.routeButtonsRow {
+  margin-left: 0px;
+}
+
+.btn-route {
+  margin-right: 2%;
+  box-shadow: none;
+  color: #bc986a;
+  border: 2px solid #bc986a;
+}
+
+.btn-route:hover {
+  color: #53442f;
+  border: 2px solid #bc986a;
+}
+
+.btn-route:active {
+  color: #836b4b;
+  border: 2px solid #bc986a;
+}
+
+.routeDetailImage {
+  margin-bottom: 5%;
+  cursor: pointer;
+  width: 140px;
+  height: 140px;
+  border: 1px solid #bc986a;
+  border-radius: 4px;
+  display: block;
+}
+
+.routeDetailNoImage {
+  margin-bottom: 5%;
+  width: 140px;
+  height: 140px;
+  border: 1px solid #bc986a;
+  border-radius: 4px;
+  display: block;
+}
+
+.routeDescription {
+  margin-top: 2%;
+  margin-left: 15px;
+  color: #6b6630;
+}
+
+.routeDescriptionText {
+  margin-left: 15px;
+  margin-bottom: 3%;
+  color: #6b6630;
+}
+
+.routeComments {
+  margin-left: 15px;
+  margin-bottom: 2%;
+}
+
+.commentWriteLabel {
+  margin-left: 15px;
+  padding-top: 0;
+}
+
+.routeDetailRow {
+  margin-bottom: 2%;
+}
+
+.starDiv {
+  margin-top: 1%;
+  margin-left: 27%;
+}
+
+.starIcon {
+  float: left;
+  width: 35px;
+  height: 35px;
+}
+
+.starIcon:hover {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.ownRouteButtons {
+  text-align: right;
+}
+
+.routeDetailCarouselImage {
+  height: 370px;
+  /* margin-left: 7%; */
+}
+
+.routeImageDetail {
+  background-color: #fbeec1;
+}
+
+.routeImageDetailFooter {
+  background-color: #fbeec1;
+  display: inline;
+}
+
+.carouselCSS {
+  text-align: center;
+}
+
+.alice-carousel__prev-btn,
+.alice-carousel__next-btn {
+  padding-top: 2%;
+  padding-left: 10px;
+}
+
+.alice-carousel__stage-item {
+  text-align: center;
+}
+
+.btn-comment {
+  box-shadow: none;
+  color: #bc986a;
+  border: 2px solid #bc986a;
+}
+
+.btn-comment:hover {
+  color: #53442f;
+  border: 2px solid #bc986a;
+}
+
+.btn-comment:active {
+  color: #836b4b;
+  border: 2px solid #bc986a;
+}
+
+.commentForm {
+  display: inline;
+  margin-right: 40%;
+}
+
+.commentAvatar {
+  width: 55px;
+  height: 55px;
+  /* display: block; */
+}
+
+.commentDescription {
+  position: absolute;
+  margin-right: 0;
+}
+
+.deleteComment {
+  color: #831515;
+  cursor: pointer;
+}
+
+.deleteComment:hover {
+  text-decoration: underline;
+}
+
+.nameLink {
+  color: #6b6630;
+}
+
+.nameLink:hover {
+  color: #413e1e;
+}

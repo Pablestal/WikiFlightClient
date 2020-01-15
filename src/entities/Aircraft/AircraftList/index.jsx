@@ -22,19 +22,19 @@ class AircraftList extends Component {
         this.props.initializeAircAction(aircrafts);
       })
       .catch(function(error) {
-        notify.show("Error loading aircrafts.", "error");
+        notify.show("Error loading aircrafts.", "error", 2000);
       });
   }
 
   handleDelete(aircraft) {
     HTTP.delete(`aircrafts/${aircraft.id}`)
-      .then(function(response) {
-        notify.show("Aircraft removed", "success");
+      .then(response => {
+        notify.show("Aircraft removed", "success", 2000);
+        this.props.deleteAircAction(aircraft);
       })
       .catch(function(error) {
-        notify.show("Aircraft cannot be removed", "error");
+        notify.show("Aircraft can't be removed", "error", 2000);
       });
-    this.props.deleteAircAction(aircraft);
   }
 
   renderEmpty() {

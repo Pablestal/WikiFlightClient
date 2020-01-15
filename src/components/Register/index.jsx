@@ -46,7 +46,10 @@ class Register extends Component {
         notify.show("Successfully registered, you may log in.", "success");
         history.push("/login");
       })
-      .catch(err => (this.error = notify.show("Error", "error")));
+      .catch(err => {
+        console.log(err);
+        notify.show("This user already exists", "error");
+      });
   };
 
   render() {

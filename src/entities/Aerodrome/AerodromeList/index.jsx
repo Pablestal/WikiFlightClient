@@ -19,19 +19,19 @@ class AerodromeList extends Component {
         this.props.initializeAerAction(aerodromes);
       })
       .catch(function(error) {
-        notify.show("Error in get aerodromes", "error");
+        notify.show("Error in get aerodromes", "error", 2000);
       });
   }
 
   handleDelete(aerodrome) {
     HTTP.delete(`aerodromes/${aerodrome.id}`)
-      .then(function(response) {
-        notify.show("Aerodrome removed", "success");
+      .then(response => {
+        notify.show("Aerodrome removed", "success", 2000);
+        this.props.deleteAerAction(aerodrome);
       })
       .catch(function(error) {
-        notify.show("Aerodrome cannot be removed", "error");
+        notify.show("Aerodrome can't be removed", "error", 2000);
       });
-    this.props.deleteAerAction(aerodrome);
   }
 
   renderEmpty() {
@@ -49,8 +49,10 @@ class AerodromeList extends Component {
           return (
             <li key={index}>
               <h3 className="elem">
-                <b>{aerodrome.codIATA} </b>
-                {aerodrome.name}
+                <b>
+                  {aerodrome.codOACI} / {aerodrome.codIATA}{" "}
+                </b>
+                {aerodrome.name} ({aerodrome.city})
                 <div className="btns">
                   <Link
                     to={{
@@ -101,7 +103,7 @@ function mapStateToProps(state) {
   return { aerodromes: state.aerod.aerodromes };
 }
 
-export default connect(
-  mapStateToProps,
-  { initializeAerAction, deleteAerAction }
-)(AerodromeList);
+export default connect(mapStateToProps, {
+  initializeAerAction,
+  deleteAerAction
+})(AerodromeList);

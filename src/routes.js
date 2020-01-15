@@ -25,6 +25,7 @@ import FlightDetail from "./entities/Flight/FlightDetail";
 import RouteList from "./entities/Route/RouteList";
 import RouteNew from "./entities/Route/RouteNew";
 import RouteEdit from "./entities/Route/RouteEdit";
+import RouteDetail from "./entities/Route/RouteDetail";
 
 const AppRoutes = () => (
   <Provider store={store}>
@@ -87,6 +88,7 @@ const AppRoutes = () => (
             component={requireAuth(FlightDetail)}
           />
           <Route exact path="/routes" component={RouteList} />
+          <Route path="/routes/detail/:id" exact component={RouteDetail} />
           <Route path="/routes/new" exact component={requireAuth(RouteNew)} />
           <Route
             path="/routes/edit/:id"

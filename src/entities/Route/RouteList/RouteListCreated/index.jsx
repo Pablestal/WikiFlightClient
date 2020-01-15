@@ -21,9 +21,10 @@ class RouteListCreated extends Component {
     HTTP.get(`users/${this.props.login}`)
       .then(res => {
         const routes = res.data.createdRoutes;
-        // console.log(routes);
+        routes.sort(function(a, b) {
+          return b.id - a.id;
+        });
         this.setState({ routes });
-        // this.props.initializeRouteAction(routes);
       })
       .catch(function(error) {
         notify.show("Error loading pilot routes", "error");
@@ -64,7 +65,7 @@ class RouteListCreated extends Component {
 
   render() {
     let routesArr = this.state.routes;
-    let link = "/route/";
+    let link = "/routes/detail/";
 
     if (routesArr) {
       if (routesArr.length === 0) {

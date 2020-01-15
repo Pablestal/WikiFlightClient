@@ -26,6 +26,7 @@ class RouteNew extends Component {
       imagesUpload: [], // Image files to upload to resources
       imagesUploadObject: [], // Image objects with name, description and coordinates
       modalShow: false,
+      newImage: false,
       route: {
         isPublic: false
       }
@@ -182,6 +183,16 @@ class RouteNew extends Component {
         ? (source = this.state.imagesShow[index])
         : (source = "/images/defaultPic.jpg");
 
+      let isDisabled;
+
+      if (this.state.imagesShow[index]) {
+        source = this.state.imagesShow[index];
+        isDisabled = true;
+      } else {
+        source = "/images/defaultPic.jpg";
+        isDisabled = false;
+      }
+
       imagesShow.push(
         <Col key={index}>
           <Image
@@ -191,11 +202,30 @@ class RouteNew extends Component {
             alt="avatar"
             rounded
           />
+          <h6
+            style={{ display: isDisabled ? "block" : "none" }}
+            className="removeImageText"
+            onClick={() => this.removeImage(index)}
+          >
+            remove
+          </h6>
         </Col>
       );
     }
 
     return imagesShow;
+  }
+
+  removeImage(index) {
+    let imagesShow = this.state.imagesShow;
+    let imagesUpload = this.state.imagesUpload;
+    let imagesUploadObject = this.state.imagesUploadObject;
+
+    imagesUpload.splice(index, 1); // Image deleted from route
+    imagesShow.splice(index, 1); // Image deleted from show array
+    imagesUploadObject.splice(index, 1);
+
+    this.setState({ imagesShow, imagesUpload, imagesUploadObject });
   }
 
   imageDeleted = () => {
@@ -277,6 +307,17 @@ class RouteNew extends Component {
 
   // MODAL //
   uploadImageModal() {
+    let image = this.state.image;
+    let hideSave = false;
+    if (
+      image.name === "" ||
+      image.description === "" ||
+      this.state.newImage === false ||
+      image.position.coordinates === [20, 0]
+    ) {
+      hideSave = true;
+    } else hideSave = false;
+
     return (
       <Modal
         show={this.state.modalShow}
@@ -313,7 +354,7 @@ class RouteNew extends Component {
           <Button
             variant="new"
             className="imgModalButtons"
-            disabled={false}
+            disabled={hideSave}
             onClick={this.handleSaveImage}
           >
             Save
@@ -333,7 +374,8 @@ class RouteNew extends Component {
       this.setState({
         imagesShow: imageShowArray,
         imagesUpload: imageUploadArray,
-        modalShow: false
+        modalShow: false,
+        newImage: false
       });
     } else this.setState({ modalShow: false });
   };
@@ -352,14 +394,6 @@ class RouteNew extends Component {
       }
     });
     imageObjArray.push(this.state.image);
-  };
-
-  showState = () => {
-    console.log("Files >>> ", this.state.imagesUpload);
-    console.log("Objects >>> ", this.state.imagesUploadObject);
-    console.log("Show >>> ", this.state.imagesShow);
-    console.log("Route >>> ", this.state.route);
-    console.log("IMROUTE >>> ", this.state.imRoute);
   };
 
   addImageOpenModal = () => {
@@ -474,9 +508,6 @@ class RouteNew extends Component {
               onClick={this.addImageOpenModal}
             >
               Add Image
-            </Button>
-            <Button className="btn m-3" variant="new" onClick={this.showState}>
-              Show state
             </Button>
           </Col>
         </Row>

@@ -22,8 +22,7 @@ class RouteEdit extends Component {
         }
       },
       imagesShow: [], // Images to show on RouteEdit
-      imagesUpload: [], // Image files to upload to resources
-      imagesUploadObject: [], // Image objects with name, description and coordinates
+      imageUpload: "", // Image file to upload to resources
       modalShow: false
     };
 
@@ -42,6 +41,10 @@ class RouteEdit extends Component {
     HTTP.get(`routes/detail/${this.props.match.params.id}`)
       .then(res => {
         const route = res.data;
+        res.data.images.sort(function(a, b) {
+          return a.id - b.id;
+        });
+
         let imgShowArray = res.data.images.map(
           a =>
             "http://localhost:8080/api/users/image/route" +
@@ -91,7 +94,7 @@ class RouteEdit extends Component {
 
     if (this.fileInput.current.files.length > 0) {
       this.uploadGPX();
-    } else push("/routes");
+    } else push("/routes/detail/" + route.id);
   };
 
   //ImagesUploadObject
@@ -147,8 +150,8 @@ class RouteEdit extends Component {
       "Content-Type": "multipart/form-data"
     })
       .then(function(response) {
-        push("/routes");
-        notify.show("Route successfully created", "success", 3000);
+        notify.show("Route successfully edited", "success", 3000);
+        push("/routes/detail/" + id);
       })
       .catch(function(error) {
         notify.show("Error uploading image file", "error", 3000);
@@ -176,6 +179,7 @@ class RouteEdit extends Component {
 
   /////// IMAGES ///////
 
+  //Petition to delete image from DB
   deleteImgObject(id) {
     HTTP.delete(`images/${id}`)
       .then(function(response) {
@@ -187,25 +191,20 @@ class RouteEdit extends Component {
   }
 
   removeImage(index) {
-    if (this.state.route.images[index]) {
-      let image = this.state.route.images[index];
-      let showArray = this.state.imagesShow;
-      let routeImages = this.state.route.images;
-      routeImages.splice(index, 1); // Image deleted from route
-      showArray.splice(index, 1); // Image deleted from show array
-      this.setState({ imagesShow: showArray });
+    let image = this.state.route.images[index];
+    let showArray = this.state.imagesShow;
+    let routeImages = this.state.route.images;
 
-      this.deleteImgObject(image.id); // Delete image from DB
-      console.log("Removing image >> ", image.id, image);
-      console.log("Imagen de ruta, index: ", index);
-    } else {
-      console.log("Nueva imagen, index: ", index);
-    }
+    routeImages.splice(index, 1); // Image deleted from route
+    showArray.splice(index, 1); // Image deleted from show array
+
+    this.setState({ imagesShow: showArray });
+
+    this.deleteImgObject(image.id); // Delete image from DB
   }
 
   showImages() {
     let imagesShow = [];
-
     for (let index = 0; index < 6; index++) {
       let source;
       let isDisabled;
@@ -242,22 +241,12 @@ class RouteEdit extends Component {
   }
 
   imageDeleted = () => {
-    let imageShowArray = this.state.imagesShow;
-    imageShowArray.pop();
-    let imageUploadArray = this.state.imagesUpload;
-    imageUploadArray.pop();
-    this.setState({ newImage: false });
+    this.setState({ imageUpload: "" });
   };
 
   handleImgFile = picture => {
-    let imageShowArray = this.state.imagesShow;
-    imageShowArray.push(URL.createObjectURL(picture[0]));
-    let imageUploadArray = this.state.imagesUpload;
-    imageUploadArray.push(picture[0]);
-
     this.setState({
-      imagesShow: imageShowArray,
-      imagesUpload: imageUploadArray,
+      imageUpload: picture[0],
       imgModal: URL.createObjectURL(picture[0]),
       newImage: true
     });
@@ -320,6 +309,17 @@ class RouteEdit extends Component {
 
   /////// MODAL ///////
   uploadImageModal() {
+    let image = this.state.image;
+    let displaySave = false;
+    if (
+      image.name === "" ||
+      image.description === "" ||
+      !this.state.imageUpload ||
+      image.position.coordinates === [20, 0]
+    ) {
+      displaySave = true;
+    } else displaySave = false;
+
     return (
       <Modal
         show={this.state.modalShow}
@@ -356,7 +356,7 @@ class RouteEdit extends Component {
           <Button
             variant="new"
             className="imgModalButtons"
-            disabled={false}
+            disabled={displaySave}
             onClick={this.handleSaveImage}
           >
             Save
@@ -367,45 +367,78 @@ class RouteEdit extends Component {
   }
 
   handleCloseModal = () => {
-    let imageShowArray = this.state.imagesShow;
-    let imageUploadArray = this.state.imagesUpload;
-
-    if (this.state.newImage === true) {
-      imageShowArray.pop();
-      imageUploadArray.pop();
-      this.setState({
-        imagesShow: imageShowArray,
-        imagesUpload: imageUploadArray,
-        modalShow: false
-      });
-    } else this.setState({ modalShow: false });
+    this.setState({
+      modalShow: false,
+      image: {
+        name: "",
+        description: "",
+        position: {
+          type: "Point",
+          coordinates: [20, 0]
+        }
+      },
+      imageUpload: null
+    });
   };
 
   handleSaveImage = () => {
-    let imageObjArray = this.state.imagesUploadObject;
-    let path = this.state.image.path + 1;
-
     this.setState({
       modalShow: false,
-      imagesUploadObject: imageObjArray,
-      newImage: false,
-      image: {
-        ...this.state.image,
-        path
-      }
+      newImage: false
     });
-    imageObjArray.push(this.state.image);
+
+    this.uploadImageObject();
   };
 
-  showState = () => {
-    console.log("Files >>> ", this.state.imagesUpload);
-    console.log("Objects >>> ", this.state.imagesUploadObject);
-    console.log("Show >>> ", this.state.imagesShow);
-    console.log("Route >>> ", this.state.route);
+  //ImageUploadObject
+  uploadImageObject = async () => {
+    const route = this.state.route;
+    let thisID;
+    await HTTP.post(`images/${route.id}`, this.state.image)
+      .then(function(response) {
+        thisID = response.data.id;
+      })
+      .catch(function(error) {
+        notify.show("Error uploading image object.", "error", 3000);
+      });
+
+    this.uploadImage(thisID);
+  };
+
+  //ImageUpload (Image file)
+  uploadImage = async id => {
+    const routeId = this.state.route.id;
+    var formData = new FormData(); // FormData images
+    formData.append(
+      "file",
+      this.state.imageUpload,
+      "route" + routeId + "Image" + id + ".jpg"
+    );
+
+    await HTTP.put(`routes/uploadfiles/${routeId}`, formData, {
+      "Content-Type": "multipart/form-data"
+    })
+      .then(function(response) {
+        notify.show("New image saved", "success", 3000);
+      })
+      .catch(function(error) {
+        notify.show("Error uploading image file", "error", 3000);
+      });
+
+    this.setState({
+      image: {
+        ...this.state.image,
+        position: {
+          ...this.state.position,
+          coordinates: [20, 0]
+        }
+      }
+    });
+    this.componentDidMount();
   };
 
   addImageOpenModal = () => {
-    if (this.state.imagesUpload.length === 6) {
+    if (this.state.imagesShow.length === 6) {
       notify.show("You can't upload more than 6 images.", "error", 3000);
     } else this.setState({ modalShow: true });
   };
@@ -518,9 +551,6 @@ class RouteEdit extends Component {
               onClick={this.addImageOpenModal}
             >
               Add Image
-            </Button>
-            <Button className="btn m-3" variant="new" onClick={this.showState}>
-              Show state
             </Button>
           </Col>
         </Row>

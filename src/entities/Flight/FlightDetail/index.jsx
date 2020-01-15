@@ -3,6 +3,11 @@ import { Row, Col } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import "./FlightDetail.css";
 import MapFlight from "../MapFlight";
+import { Link } from "react-router-dom";
+import { HTTP } from "../../../common/http-common";
+import { connect } from "react-redux";
+import { notify } from "react-notify-toast";
+import Loader from "react-loader-spinner";
 
 class FlightDetail extends Component {
   constructor(props) {
@@ -16,6 +21,17 @@ class FlightDetail extends Component {
     this.props.history.goBack();
   }
 
+  componentDidMount() {
+    HTTP.get(`users/${this.props.login}`)
+      .then(res => {
+        const routes = res.data.createdRoutes;
+        this.setState({ routes });
+      })
+      .catch(function(error) {
+        notify.show("Error loading pilot routes", "error");
+      });
+  }
+
   drawFlight() {
     const flight = this.props.location.state.selected;
     let toAer = flight.takeoffAerodrome;
@@ -23,13 +39,26 @@ class FlightDetail extends Component {
     let polyline = [toAer.position.coordinates, ldAer.position.coordinates];
     let bounds;
 
-    if (toAer.name === ldAer.name) {
-      return (
-        <MapFlight
-          initialPosition={flight.takeoffAerodrome.position.coordinates}
-          zoom={10}
-        ></MapFlight>
-      );
+    if (!flight.route) {
+      if (toAer.name === ldAer.name) {
+        return (
+          <MapFlight
+            initialPosition={flight.takeoffAerodrome.position.coordinates}
+            zoom={10}
+          ></MapFlight>
+        );
+      } else {
+        bounds = this.getBounds(flight);
+
+        return (
+          <MapFlight
+            bounds={bounds}
+            zoom={10}
+            marker1={toAer.position.coordinates}
+            polyline={polyline}
+          ></MapFlight>
+        );
+      }
     } else {
       bounds = this.getBounds(flight);
 
@@ -37,34 +66,88 @@ class FlightDetail extends Component {
         <MapFlight
           bounds={bounds}
           zoom={10}
-          marker1={toAer.position.coordinates}
-          marker2={ldAer.position.coordinates}
-          polyline={polyline}
+          marker1={flight.route.path.coordinates[0]}
+          polyline={flight.route.path.coordinates}
         ></MapFlight>
       );
     }
   }
 
-  getRoute(flight) {
-    //CUANDO EXISTAN RUTAS, COMPROBAR SI TIENE
-    return (
-      <div>
-        <Row>
-          <h6 className="detailTitle">ROUTE</h6>
-          <hr></hr>
-        </Row>
-        <Row>
-          <h5>This flight doesn't follow any public route.</h5>
-        </Row>
-      </div>
-    );
+  getBounds(flight) {
+    if (flight.route) {
+      let f1 = flight.route.path.coordinates;
+      let f2 = flight.route.path.coordinates;
+
+      return [f1, f2];
+    } else {
+      let f1 = flight.takeoffAerodrome.position.coordinates;
+      let f2 = flight.landingAerodrome.position.coordinates;
+
+      return [
+        [f1[0], f1[1]],
+        [f2[0], f2[1]]
+      ];
+    }
   }
 
-  getBounds(flight) {
-    let f1 = flight.takeoffAerodrome.position.coordinates;
-    let f2 = flight.landingAerodrome.position.coordinates;
+  isMyRoute(routeCheck) {
+    let routes = this.state.routes;
+    let isThere;
 
-    return [[f1[0], f1[1]], [f2[0], f2[1]]];
+    routes.map(
+      route => (route.id = routeCheck.id ? (isThere = true) : (isThere = false))
+    );
+
+    return isThere;
+  }
+
+  getRoute(flight) {
+    //CUANDO EXISTAN RUTAS, COMPROBAR SI TIENE
+    if (!flight.route) {
+      return (
+        <div>
+          <Row>
+            <h6 className="detailTitle">ROUTE</h6>
+            <hr></hr>
+          </Row>
+          <Row>
+            <h5>This flight doesn't follow any public route.</h5>
+          </Row>
+        </div>
+      );
+    } else {
+      if (flight.route.isPublic || this.isMyRoute(flight.route)) {
+        return (
+          <div>
+            <Row>
+              <h6 className="detailTitle">ROUTE</h6>
+              <hr></hr>
+            </Row>
+            <Row>
+              <h5>
+                <Link
+                  className="routeLink"
+                  to={"/routes/detail/" + flight.route.id}
+                >
+                  {flight.route.name}
+                </Link>
+              </h5>
+            </Row>
+          </div>
+        );
+      } else
+        return (
+          <div>
+            <Row>
+              <h6 className="detailTitle">ROUTE</h6>
+              <hr></hr>
+            </Row>
+            <Row>
+              <h5>{flight.route.name}</h5>
+            </Row>
+          </div>
+        );
+    }
   }
 
   renderDetail(flight) {
@@ -72,13 +155,8 @@ class FlightDetail extends Component {
       <div className="container">
         <h3 className="tittle">
           <b>{flight.departureDate}</b> Flight from{" "}
-          <b>
-            {flight.takeoffAerodrome.name}({flight.takeoffAerodrome.codIATA})
-          </b>{" "}
-          to{" "}
-          <b>
-            {flight.landingAerodrome.name}({flight.landingAerodrome.codIATA})
-          </b>
+          <b>{flight.takeoffAerodrome.city}</b> to{" "}
+          <b>{flight.landingAerodrome.city}</b>
           <Button variant="back" onClick={this.goBack}>
             Back
           </Button>
@@ -223,9 +301,28 @@ class FlightDetail extends Component {
 
   render() {
     const flight = this.props.location.state.selected;
-
-    return this.renderDetail(flight);
+    if (this.state.routes) {
+      return this.renderDetail(flight);
+    } else
+      return (
+        <div className="loader">
+          <Loader
+            as="span"
+            type="Plane"
+            color="#6b6630"
+            height={20}
+            width={20}
+          />
+        </div>
+      );
   }
 }
 
-export default FlightDetail;
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    login: state.auth.login
+  };
+}
+
+export default connect(mapStateToProps)(FlightDetail);

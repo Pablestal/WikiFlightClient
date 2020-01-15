@@ -1,9 +1,6 @@
 import React from "react";
 import L from "leaflet";
-// import "leaflet.motion";
 import "leaflet.motion/dist/leaflet.motion.js";
-
-//NEEDED PROPS: (initialPosition, zoom) || (bounds)
 
 class MapNew extends React.Component {
   componentDidMount() {
@@ -32,7 +29,9 @@ class MapNew extends React.Component {
         color: "#a14655"
       }).addTo(this.map);
     } else {
-      this.map = L.map("mapid").fitBounds(this.props.bounds);
+      this.map = L.map("mapid").fitBounds(this.props.bounds, {
+        padding: [15, 15]
+      });
       this.marker1 = L.marker(this.props.marker1, {
         icon: airportIcon
       }).addTo(this.map);
@@ -45,7 +44,7 @@ class MapNew extends React.Component {
           },
           {
             auto: true,
-            duration: 5000,
+            duration: 6000,
             easing: L.Motion.Ease.easeInOutQuart
           },
           {

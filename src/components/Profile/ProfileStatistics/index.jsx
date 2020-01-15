@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { HTTP } from "../../../common/http-common";
 import { notify } from "react-notify-toast";
 import Loader from "react-loader-spinner";
+import { Row, Col } from "react-bootstrap";
 import "../Profile.css";
 
 class ProfileStatistics extends Component {
@@ -101,26 +102,36 @@ class ProfileStatistics extends Component {
 
   renderStats() {
     return (
-      <div>
-        <h5>
-          Number of flights: <b>{this.state.flights.length} </b>
-        </h5>
-        <h5>
-          Average Flight Time: <b>{this.getAverageTime()} minutes.</b>
-        </h5>
-        <h5>
-          Longest flight: <b>{this.getLongestFlight()} minutes.</b>
-        </h5>
-        <h5>
-          Shortest Flight: <b>{this.getShortestFlight()} minutes.</b>
-        </h5>
-        <h5>
-          Most Used Aerodrome: <b>{this.getMostUsed()[0]}</b>
-        </h5>
-        <h5>
-          Most Used Aircraft Manufacturer: <b>{this.getMostUsed()[1][0]}</b>
-        </h5>
-      </div>
+      <Row>
+        <Col>
+          <h5>
+            Number of flights: <b>{this.state.flights.length} </b>
+          </h5>
+          <h5>
+            Average Flight Time: <b>{this.getAverageTime()} minutes.</b>
+          </h5>
+          <h5>
+            Longest Flight Time: <b>{this.getLongestFlight()} minutes.</b>
+          </h5>
+          <h5>
+            Shortest Flight Time: <b>{this.getShortestFlight()} minutes.</b>
+          </h5>
+          <h5>
+            Most Used Aerodrome: <b>{this.getMostUsed()[0]}</b>
+          </h5>
+          <h5>
+            Most Used Aircraft Manufacturer: <b>{this.getMostUsed()[1][0]}</b>
+          </h5>
+        </Col>
+        <Col>
+          <h5>
+            Number of uploaded routes: <b></b>
+          </h5>
+          <h5>
+            Number of published routes: <b></b>
+          </h5>
+        </Col>
+      </Row>
     );
   }
 
@@ -129,14 +140,27 @@ class ProfileStatistics extends Component {
       if (this.state.flights.length !== 0) {
         return (
           <div>
-            <h5 className="tittle">FLIGHT STATISTICS</h5>
+            <Row>
+              <Col>
+                <h5 className="tittle">
+                  <u>Flight Statistics</u>
+                </h5>
+              </Col>
+              <Col>
+                <h5 className="tittle">
+                  <u>Route Statistics</u>
+                </h5>
+              </Col>
+            </Row>
             {this.renderStats()}
           </div>
         );
       } else
         return (
           <div>
-            <h5 className="tittle">FLIGHT STATISTICS</h5>
+            <h5 className="tittle">
+              <u>Flight Statistics</u>
+            </h5>
             <h5>{this.props.pilot.name} didn't fly yet.</h5>
           </div>
         );

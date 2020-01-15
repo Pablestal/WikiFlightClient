@@ -31,6 +31,7 @@ body {
   margin-left: 10%;
   max-width: 100%;
   width: auto;
+  min-height: 500px;
 }
 
 .innerform {
@@ -156,4 +157,8 @@ body {
 .btn-submit:active {
   color: #836b4b;
   border: 2px solid #bc986a;
+}
+
+.modal-open {
+  overflow: scroll !important;
 }

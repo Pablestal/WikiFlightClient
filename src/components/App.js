@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import "../App.css";
 import Notifications from "react-notify-toast";
 import { connect } from "react-redux";
-
+// import Footer from "../components/Footer/Footer";
 class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired
@@ -21,6 +21,7 @@ class App extends Component {
         </header>
         <Notifications />
         <Content body={children} />
+        {/* <Footer /> */}
       </div>
     );
   }

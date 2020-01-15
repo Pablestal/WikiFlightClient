@@ -18,6 +18,15 @@ class ProfileRoutes extends Component {
       HTTP.get(`users/${this.props.login}`)
         .then(res => {
           const routes = res.data.createdRoutes;
+          routes.map(route => {
+            route.images.sort(function(a, b) {
+              return a.id - b.id;
+            });
+            return null;
+          });
+          routes.sort(function(a, b) {
+            return b.id - a.id;
+          });
           this.setState({ routes });
         })
         .catch(function(error) {
@@ -65,7 +74,17 @@ class ProfileRoutes extends Component {
 
   renderLogedRoutes() {
     let routesArr = this.state.routes;
-    let link = "/routes/edit/";
+    let link = "/routes/detail/";
+    let pilot = this.props.pilot;
+    let text;
+
+    pilot.login === this.props.login
+      ? (text = <h4 className="tittle">Routes created by you</h4>)
+      : (text = (
+          <h4 className="tittle">
+            Routes published by {pilot.name} {pilot.surname1}
+          </h4>
+        ));
 
     if (routesArr) {
       if (routesArr.length === 0) {
@@ -79,6 +98,7 @@ class ProfileRoutes extends Component {
 
         return (
           <div>
+            {text}
             <ul className="list">
               {routes.map(function(route, index) {
                 return (
@@ -125,23 +145,40 @@ class ProfileRoutes extends Component {
   }
 
   renderPublicRoutes() {
-    let routesArr = this.state.routes;
+    let pilot = this.props.pilot;
+    let text;
+
+    pilot.login === this.props.login
+      ? (text = <h4 className="tittle">Routes created by you</h4>)
+      : (text = (
+          <h4 className="tittle">
+            Routes published by {pilot.name} {pilot.surname1}
+          </h4>
+        ));
+
+    let routes = this.state.routes;
     let link = "/routes/edit/";
-    console.log(routesArr);
-    if (routesArr) {
+    let routesArr = [];
+    if (routes) {
+      routes.map(route => {
+        if (route.pilot.login === this.props.pilot.login) {
+          routesArr.push(route);
+        }
+        return null;
+      });
+
       if (routesArr.length === 0) {
         return (
-          <h3 className="profileRoutesEmpty">
-            This user didn't publish any route.
-          </h3>
+          <h4 className="profileRoutesEmpty">
+            This user didn't publish any route yet.
+          </h4>
         );
       } else {
-        let routes = routesArr.sort(routesArr.id);
-
         return (
           <div>
+            {text}
             <ul className="list">
-              {routes.map(function(route, index) {
+              {routesArr.map(function(route, index) {
                 if (route.pilot.login === this.props.pilot.login) {
                   return (
                     <div key={index}>
@@ -185,30 +222,10 @@ class ProfileRoutes extends Component {
       );
   }
 
-  renderRouteList() {
+  render() {
     if (this.props.login === this.props.pilot.login) {
       return this.renderLogedRoutes();
     } else return this.renderPublicRoutes();
-  }
-
-  render() {
-    let pilot = this.props.pilot;
-    let text;
-
-    pilot.login === this.props.login
-      ? (text = <h4 className="tittle">Routes created by you</h4>)
-      : (text = (
-          <h4 className="tittle">
-            Routes published by {pilot.name} {pilot.surname1}
-          </h4>
-        ));
-
-    return (
-      <div>
-        {text}
-        {this.renderRouteList()}
-      </div>
-    );
   }
 }
 

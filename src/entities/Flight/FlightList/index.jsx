@@ -273,6 +273,10 @@ class FlightList extends Component {
     let data = [];
 
     flights.map(function(flight) {
+      let route;
+
+      flight.route ? (route = flight.route.name) : (route = "No route");
+
       return data.push({
         id: flight.id,
         detail: (
@@ -292,7 +296,7 @@ class FlightList extends Component {
         depDate: flight.departureDate,
         departure: flight.takeoffAerodrome.codIATA,
         arrival: flight.landingAerodrome.codIATA,
-        route: "No route",
+        route: route,
         actions: (
           <React.Fragment>
             <Link
@@ -338,12 +342,20 @@ class FlightList extends Component {
 
     const { SearchBar } = Search;
 
+    let searchRoute = "";
+
+    this.props.location.state
+      ? (searchRoute = this.props.location.state.searchRoute)
+      : (searchRoute = "");
+
     return (
       <ToolkitProvider
         keyField="id"
         data={this.getRows()}
         columns={this.getColumns()}
-        search
+        search={{
+          defaultSearch: searchRoute
+        }}
       >
         {props => (
           <PaginationProvider pagination={paginationFactory(options)}>
@@ -372,6 +384,27 @@ class FlightList extends Component {
     return rend;
   }
 
+  renderCSVButton() {
+    if (this.props.flights.length !== 0) {
+      return (
+        <CsvDownloader
+          columns={this.getCSVCol()}
+          datas={this.getCSVData()}
+          filename="WikiFlightData"
+          separator=", "
+        >
+          <Button
+            className="csvButton"
+            title="Download a spreadsheet of your flight list."
+            variant="new"
+          >
+            Download List
+          </Button>
+        </CsvDownloader>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -387,22 +420,7 @@ class FlightList extends Component {
               <Button variant="new">New Flight</Button>
             </Link>
           </Col>
-          <Col>
-            <CsvDownloader
-              columns={this.getCSVCol()}
-              datas={this.getCSVData()}
-              filename="WikiFlightData"
-              separator=", "
-            >
-              <Button
-                className="csvButton"
-                title="Download a spreadsheet of your flight list."
-                variant="new"
-              >
-                Download List
-              </Button>
-            </CsvDownloader>
-          </Col>
+          <Col>{this.renderCSVButton()}</Col>
         </Row>
         <hr />
         {this.renderEmpty()}
@@ -420,7 +438,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { initializeFliAction, deleteFliAction }
-)(FlightList);
+export default connect(mapStateToProps, {
+  initializeFliAction,
+  deleteFliAction
+})(FlightList);

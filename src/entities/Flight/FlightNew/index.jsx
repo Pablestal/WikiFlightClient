@@ -7,6 +7,8 @@ import { withRouter } from "react-router-dom";
 import { notify } from "react-notify-toast";
 import SunIcon from "../../../icons/Sun";
 import MoonIcon from "../../../icons/Moon";
+import { Typeahead } from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.css";
 
 import "./FlightNew.css";
 
@@ -39,6 +41,8 @@ class FlightEdit extends Component {
 
   componentDidMount() {
     this.getPilot();
+
+    this.getRoutes();
     this.setState({
       flight: {
         aircraft: {
@@ -55,11 +59,28 @@ class FlightEdit extends Component {
     let pilot = res.data;
 
     this.setState({
+      routes: pilot.createdRoutes,
       flight: {
         ...this.state.flight,
         picUser: pilot
       }
     });
+  };
+
+  //GET routes to chose (public, own)
+  getRoutes = async () => {
+    await HTTP.get(`routes`)
+      .then(res => {
+        const routes = res.data;
+        routes.sort(function(a, b) {
+          return b.id - a.id;
+        });
+
+        this.setState({ publicRoutes: routes });
+      })
+      .catch(function(error) {
+        notify.show("Error loading public routes", "error");
+      });
   };
 
   handleSubmitNew = event => {
@@ -77,17 +98,47 @@ class FlightEdit extends Component {
     if (!flight.dualTime) flight.dualTime = "00:00";
     if (!flight.instructorTime) flight.instructorTime = "00:00";
 
-    const {
-      history: { push }
-    } = this.props;
-    HTTP.post(`/flights`, flight)
-      .then(function(response) {
-        notify.show("Successfully created", "success", 3000);
-        push("/myLogbook");
-      })
-      .catch(function(error) {
-        notify.show("Error creating flight.", "error", 3000);
-      });
+    if (flight.route && flight.route.id) {
+      if (
+        flight.takeoffAerodrome.id !== flight.route.takeoffAerodrome.id ||
+        flight.landingAerodrome.id !== flight.route.landingAerodrome.id
+      ) {
+        notify.show(
+          "Flight and route aerodromes must be the same.",
+          "error",
+          3000
+        );
+      } else {
+        const {
+          history: { push }
+        } = this.props;
+
+        HTTP.post(`/flights`, flight)
+          .then(function(response) {
+            notify.show("Successfully created", "success", 3000);
+            push("/myLogbook");
+          })
+          .catch(function(error) {
+            notify.show("Error creating flight.", "error", 3000);
+          });
+      }
+    } else {
+      let newState = Object.assign({}, this.state); // Copy state
+      newState.flight.route = null;
+      this.setState({ newState });
+      const {
+        history: { push }
+      } = this.props;
+
+      HTTP.post(`/flights`, flight)
+        .then(function(response) {
+          notify.show("Successfully created", "success", 3000);
+          push("/myLogbook");
+        })
+        .catch(function(error) {
+          notify.show("Error creating flight.", "error", 3000);
+        });
+    }
   };
 
   handleInputObjChange = event => {
@@ -187,361 +238,392 @@ class FlightEdit extends Component {
     let models;
     let defTime = "00:00";
     let defNum = 0;
-
+    let options = [{ name: "No route" }];
     this.state.flight.aircraft.manufacturer
       ? (models = this.getModels(this.state.flight.aircraft.manufacturer))
       : (models = []);
 
-    return (
-      <div className="container">
-        <h2 className="tittle">
-          Create new logbook entry
-          <Button variant="back" onClick={this.goBack}>
-            Back
-          </Button>
-        </h2>
-        <hr />
-        <Form onSubmit={this.handleSubmitNew}>
-          {/* Fila 1 / 2 Departure(Col1: Airport1, Airport2) Arrival(Col2: Date1, Time1, Date2, Time2) */}
-          <h4 className="formTittle">Departure and Arrival Info</h4>
-          <h6>* Both times must be in the same time zone.</h6>
+    if (this.state.publicRoutes && this.state.routes) {
+      let routes = this.state.routes;
+      let publicRoutes = this.state.publicRoutes;
 
-          <Row>
-            <Form.Group md="5" as={Col} controlId="formGridDepAirport">
-              <Form.Label>Departure airport</Form.Label>
-              <Form.Control
-                required
-                defaultValue={1}
-                as="select"
-                name="takeoffAerodrome"
-                onChange={this.getTakeoffAerodrome}
-              >
-                <option value={1} default disabled>
-                  Select an airport...
-                </option>
-                {this.props.aerodromes.map(function(aerodrome, index) {
-                  return <option key={index}>{aerodrome.name}</option>;
-                }, this)}
-              </Form.Control>
-            </Form.Group>
+      let mergedRoutes = routes.concat(publicRoutes);
 
-            <Form.Group md="3" as={Col} controlId="formGridDepDate">
-              <Form.Label>Date</Form.Label>
-              <Form.Control
-                required
-                placeholder="Date"
-                type="Date"
-                name="departureDate"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group md="2" as={Col} controlId="formGridDepTime">
-              <Form.Label>Time</Form.Label>
-              <Form.Control
-                required
-                defaultValue={defTime}
-                type="time"
-                name="departureTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
-          <Row>
-            <Form.Group md="5" as={Col} controlId="formGridArrAirport">
-              <Form.Label>Arrival airport</Form.Label>
-              <Form.Control
-                required
-                as="select"
-                defaultValue={1}
-                name="landingAerodrome"
-                onChange={this.getLandingAerodrome}
-              >
-                <option value={1} default disabled>
-                  Select an airport...
-                </option>
-                {this.props.aerodromes.map(function(aerodrome, index) {
-                  return <option key={index}>{aerodrome.name}</option>;
-                }, this)}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group md="3" as={Col} controlId="formGridArrDate">
-              <Form.Label>Date</Form.Label>
-              <Form.Control
-                required
-                type="Date"
-                placeholder="Date"
-                name="arrivalDate"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group md="2" as={Col} controlId="formGridArrTime">
-              <Form.Label>Time</Form.Label>
-              <Form.Control
-                required
-                type="time"
-                defaultValue={defTime}
-                name="arrivalTime"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
+      let uniqueeRoutes = mergedRoutes.filter(
+        (route, index, self) => index === self.findIndex(r => r.id === route.id)
+      );
+      let uniqueRoutes = options.concat(uniqueeRoutes);
+      return (
+        <div className="container">
+          <h2 className="tittle">
+            Create new logbook entry
+            <Button variant="back" onClick={this.goBack}>
+              Back
+            </Button>
+          </h2>
+          <hr />
+          <Form onSubmit={this.handleSubmitNew}>
+            {/* Fila 1 / 2 Departure(Col1: Airport1, Airport2) Arrival(Col2: Date1, Time1, Date2, Time2) */}
+            <h4 className="formTittle">Departure and Arrival Info</h4>
+            <h6>* Both times must be in the same time zone.</h6>
 
-          {/* Fila 3 TotalTakeoffs(Col1: Day, Night) TotalLandings(Col2: Day, Night) */}
+            <Row>
+              <Form.Group md="5" as={Col} controlId="formGridDepAirport">
+                <Form.Label>Departure airport</Form.Label>
+                <Form.Control
+                  typeahead="true"
+                  required
+                  defaultValue={1}
+                  as="select"
+                  name="takeoffAerodrome"
+                  onChange={this.getTakeoffAerodrome}
+                >
+                  <option value={1} default disabled>
+                    Select an airport...
+                  </option>
+                  {this.props.aerodromes.map(function(aerodrome, index) {
+                    return <option key={index}>{aerodrome.name}</option>;
+                  }, this)}
+                </Form.Control>
+              </Form.Group>
 
-          <Row>
-            <Col xs={2} className="toCol">
-              <h4 className="formTittle">Total takeoffs</h4>
+              <Form.Group md="3" as={Col} controlId="formGridDepDate">
+                <Form.Label>Date</Form.Label>
+                <Form.Control
+                  required
+                  placeholder="Date"
+                  type="Date"
+                  name="departureDate"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group md="2" as={Col} controlId="formGridDepTime">
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  required
+                  defaultValue={defTime}
+                  type="time"
+                  name="departureTime"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group md="5" as={Col} controlId="formGridArrAirport">
+                <Form.Label>Arrival airport</Form.Label>
+                <Form.Control
+                  required
+                  as="select"
+                  defaultValue={1}
+                  name="landingAerodrome"
+                  onChange={this.getLandingAerodrome}
+                >
+                  <option value={1} default disabled>
+                    Select an airport...
+                  </option>
+                  {this.props.aerodromes.map(function(aerodrome, index) {
+                    return <option key={index}>{aerodrome.name}</option>;
+                  }, this)}
+                </Form.Control>
+              </Form.Group>
+              <Form.Group md="3" as={Col} controlId="formGridArrDate">
+                <Form.Label>Date</Form.Label>
+                <Form.Control
+                  required
+                  type="Date"
+                  placeholder="Date"
+                  name="arrivalDate"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group md="2" as={Col} controlId="formGridArrTime">
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  required
+                  type="time"
+                  defaultValue={defTime}
+                  name="arrivalTime"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
 
-              <Row>
-                <Form.Group as={Col} controlId="formGridTakeoffsDay">
-                  <Form.Label>
-                    <SunIcon width="25px" height="25px" />
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    type="number"
-                    defaultValue={defNum}
-                    name="takeoffsDay"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+            {/* Fila 3 TotalTakeoffs(Col1: Day, Night) TotalLandings(Col2: Day, Night) */}
 
-                <Form.Group as={Col} controlId="formGridTakeoffsNight">
-                  <Form.Label>
-                    <MoonIcon width="25px" height="25px" />
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    type="number"
-                    defaultValue={defNum}
-                    name="takeoffsNight"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
-            </Col>
-            <Col xs={2}>
-              <h4 className="formTittle">Total landings</h4>
+            <Row>
+              <Col xs={2} className="toCol">
+                <h4 className="formTittle">Total takeoffs</h4>
 
-              <Row>
-                <Form.Group as={Col} controlId="formGridLandingsDay">
-                  <Form.Label>
-                    <SunIcon width="25px" height="25px" />
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    type="number"
-                    defaultValue={defNum}
-                    name="landingsDay"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridLandingsNight">
-                  <Form.Label>
-                    <MoonIcon width="25px" height="25px" />
-                  </Form.Label>
-                  <Form.Control
-                    required
-                    type="number"
-                    defaultValue={defNum}
-                    name="landingsNight"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
-            </Col>
-          </Row>
+                <Row>
+                  <Form.Group as={Col} controlId="formGridTakeoffsDay">
+                    <Form.Label>
+                      <SunIcon width="25px" height="25px" />
+                    </Form.Label>
+                    <Form.Control
+                      required
+                      type="number"
+                      defaultValue={defNum}
+                      name="takeoffsDay"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-          {/* Fila 4 Single/Multi pilot times SE, ME, MPT */}
-          {/* Fila 5 Operational condition time Night, IFR */}
-          <Row>
-            <Col>
-              <h4 className="formTittle">Single and Multi pilot times</h4>
-              <Row>
-                <Form.Group md="3" as={Col} controlId="formGridSeTime">
-                  <Form.Label>Single Engine</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="seTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+                  <Form.Group as={Col} controlId="formGridTakeoffsNight">
+                    <Form.Label>
+                      <MoonIcon width="25px" height="25px" />
+                    </Form.Label>
+                    <Form.Control
+                      required
+                      type="number"
+                      defaultValue={defNum}
+                      name="takeoffsNight"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                </Row>
+              </Col>
+              <Col xs={2}>
+                <h4 className="formTittle">Total landings</h4>
 
-                <Form.Group md="3" as={Col} controlId="formGridMeTime">
-                  <Form.Label>Multi Engine</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="meTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+                <Row>
+                  <Form.Group as={Col} controlId="formGridLandingsDay">
+                    <Form.Label>
+                      <SunIcon width="25px" height="25px" />
+                    </Form.Label>
+                    <Form.Control
+                      required
+                      type="number"
+                      defaultValue={defNum}
+                      name="landingsDay"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="formGridLandingsNight">
+                    <Form.Label>
+                      <MoonIcon width="25px" height="25px" />
+                    </Form.Label>
+                    <Form.Control
+                      required
+                      type="number"
+                      defaultValue={defNum}
+                      name="landingsNight"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                </Row>
+              </Col>
+            </Row>
 
-                <Form.Group md="3" as={Col} controlId="formGridMpTime">
-                  <Form.Label>Multi Pilot</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="mpTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
-            </Col>
-            <Col>
-              <h4 className="formTittle">Operational condition time</h4>
-              <Row>
-                <Form.Group md="3" as={Col} controlId="formGridNightTime">
-                  <Form.Label>Night</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="nightTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+            {/* Fila 4 Single/Multi pilot times SE, ME, MPT */}
+            {/* Fila 5 Operational condition time Night, IFR */}
+            <Row>
+              <Col>
+                <h4 className="formTittle">Single and Multi pilot times</h4>
+                <Row>
+                  <Form.Group md="3" as={Col} controlId="formGridSeTime">
+                    <Form.Label>Single Engine</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="seTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-                <Form.Group md="3" as={Col} controlId="formGridIfrTime">
-                  <Form.Label>IFR</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="ifrTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
-            </Col>
-          </Row>
+                  <Form.Group md="3" as={Col} controlId="formGridMeTime">
+                    <Form.Label>Multi Engine</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="meTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-          {/* Fila 6 Pilot function time PIC, Coop, Dual, Instr */}
-          <h4 className="formTittle">Pilot function times</h4>
+                  <Form.Group md="3" as={Col} controlId="formGridMpTime">
+                    <Form.Label>Multi Pilot</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="mpTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                </Row>
+              </Col>
+              <Col>
+                <h4 className="formTittle">Operational condition time</h4>
+                <Row>
+                  <Form.Group md="3" as={Col} controlId="formGridNightTime">
+                    <Form.Label>Night</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="nightTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-          <Row>
-            <Col xs={9}>
-              <Row>
-                <Form.Group md="2" as={Col} controlId="formGridpicTime">
-                  <Form.Label>PIC</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="picTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+                  <Form.Group md="3" as={Col} controlId="formGridIfrTime">
+                    <Form.Label>IFR</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="ifrTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                </Row>
+              </Col>
+            </Row>
 
-                <Form.Group md="2" as={Col} controlId="formGridCoopTime">
-                  <Form.Label>Coopilot</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="coopilotTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+            {/* Fila 6 Pilot function time PIC, Coop, Dual, Instr */}
+            <h4 className="formTittle">Pilot function times</h4>
 
-                <Form.Group md="2" as={Col} controlId="formGridDualTime">
-                  <Form.Label>Dual</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="dualTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
+            <Row>
+              <Col xs={9}>
+                <Row>
+                  <Form.Group md="2" as={Col} controlId="formGridpicTime">
+                    <Form.Label>PIC</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="picTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-                <Form.Group md="2" as={Col} controlId="formGridInstrTime">
-                  <Form.Label>Instructor</Form.Label>
-                  <Form.Control
-                    required
-                    type="time"
-                    defaultValue={defTime}
-                    name="instructorTime"
-                    onChange={this.handleInputChange}
-                  />
-                </Form.Group>
-              </Row>
-            </Col>
-          </Row>
+                  <Form.Group md="2" as={Col} controlId="formGridCoopTime">
+                    <Form.Label>Coopilot</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="coopilotTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-          {/* Fila 7: Aircraft, AircReg  */}
-          <h4 className="formTittle">Aircraft info</h4>
+                  <Form.Group md="2" as={Col} controlId="formGridDualTime">
+                    <Form.Label>Dual</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="dualTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
 
-          <Row>
-            <Form.Group as={Col} controlId="formGridAircraftMan">
-              <Form.Label>Manufacturer</Form.Label>
-              <Form.Control
-                required
-                defaultValue={1}
-                as="select"
-                name="manufacturer"
-                onChange={this.handleInputObjChange}
-              >
-                <option value={1} default disabled>
-                  Choose one...
-                </option>
-                {manufacturers.map(function(manufacturer, index) {
-                  return <option key={index}>{manufacturer}</option>;
-                }, this)}
-              </Form.Control>
-            </Form.Group>
+                  <Form.Group md="2" as={Col} controlId="formGridInstrTime">
+                    <Form.Label>Instructor</Form.Label>
+                    <Form.Control
+                      required
+                      type="time"
+                      defaultValue={defTime}
+                      name="instructorTime"
+                      onChange={this.handleInputChange}
+                    />
+                  </Form.Group>
+                </Row>
+              </Col>
+            </Row>
 
-            <Form.Group as={Col} controlId="formGridAircraftMod">
-              <Form.Label>Model</Form.Label>
-              <Form.Control
-                required
-                defaultValue={1}
-                as="select"
-                name="model"
-                onChange={this.getAircraft}
-              >
-                <option value={1} default disabled>
-                  Choose one...
-                </option>
-                {models.map(function(model, index) {
-                  return <option key={index}>{model}</option>;
-                }, this)}
-              </Form.Control>
-            </Form.Group>
+            {/* Fila 7: Aircraft, AircReg  */}
+            <h4 className="formTittle">Aircraft info</h4>
 
-            <Form.Group as={Col} controlId="formGridAircraftReg">
-              <Form.Label>Registration</Form.Label>
-              <Form.Control
-                placeholder="Aircraft Reg."
-                type="text"
-                name="aircraftReg"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
+            <Row>
+              <Form.Group as={Col} controlId="formGridAircraftMan">
+                <Form.Label>Manufacturer</Form.Label>
+                <Form.Control
+                  required
+                  defaultValue={1}
+                  as="select"
+                  name="manufacturer"
+                  onChange={this.handleInputObjChange}
+                >
+                  <option value={1} default disabled>
+                    Choose one...
+                  </option>
+                  {manufacturers.map(function(manufacturer, index) {
+                    return <option key={index}>{manufacturer}</option>;
+                  }, this)}
+                </Form.Control>
+              </Form.Group>
 
-          {/* Fila 8: Observations*/}
-          <h4 className="formTittle">Observations</h4>
-          <Row>
-            <Form.Group as={Col} controlId="formGridObservations">
-              <Form.Control
-                placeholder="Observations..."
-                as="textarea"
-                name="observations"
-                onChange={this.handleInputChange}
-              />
-            </Form.Group>
-          </Row>
-          <Button className="btn m-3" variant="new" type="submit">
-            Save
-          </Button>
-        </Form>
-      </div>
-    );
+              <Form.Group as={Col} controlId="formGridAircraftMod">
+                <Form.Label>Model</Form.Label>
+                <Form.Control
+                  required
+                  defaultValue={1}
+                  as="select"
+                  name="model"
+                  onChange={this.getAircraft}
+                >
+                  <option value={1} default disabled>
+                    Choose one...
+                  </option>
+                  {models.map(function(model, index) {
+                    return <option key={index}>{model}</option>;
+                  }, this)}
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group as={Col} controlId="formGridAircraftReg">
+                <Form.Label>Registration</Form.Label>
+                <Form.Control
+                  placeholder="Aircraft Reg."
+                  type="text"
+                  name="aircraftReg"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
+
+            {/* Nueva fila: RUTA */}
+            <h4 className="formTittle">Route followed</h4>
+            <Row>
+              <Form.Group as={Col} controlId="formGridRoute">
+                <Typeahead
+                  id={1}
+                  clearButton
+                  labelKey="name"
+                  options={uniqueRoutes}
+                  onChange={selected => {
+                    this.setState({
+                      flight: { ...this.state.flight, route: selected[0] }
+                    });
+                  }}
+                  placeholder="Choose a route..."
+                />
+              </Form.Group>
+            </Row>
+
+            {/* Fila 8: Observations*/}
+            <h4 className="formTittle">Observations</h4>
+            <Row>
+              <Form.Group as={Col} controlId="formGridObservations">
+                <Form.Control
+                  placeholder="Observations..."
+                  as="textarea"
+                  name="observations"
+                  onChange={this.handleInputChange}
+                />
+              </Form.Group>
+            </Row>
+            <Button className="btn m-3" variant="new" type="submit">
+              Save
+            </Button>
+          </Form>
+        </div>
+      );
+    } else return null;
   }
 
   render() {

@@ -67,7 +67,7 @@ class RouteList extends Component {
         </div>
       );
     } else {
-      return <h2 className="tittle">Route List</h2>;
+      return <h2 className="tittle">List of public routes</h2>;
     }
   }
 

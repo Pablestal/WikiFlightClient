@@ -39,6 +39,12 @@
   margin-left: 3%;
 }
 
+.routeListAdminComments {
+  margin: auto;
+  margin-left: 3%;
+  color: red;
+}
+
 .routeListEmpty {
   margin-bottom: 30%;
 }

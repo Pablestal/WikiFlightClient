@@ -6,7 +6,7 @@ class Footer extends React.Component {
   render() {
     return (
       <div className="root">
-        <div className="container">
+        <div>
           <span className="text">© Your Company</span>
           <span className="spacer">·</span>
           <Link className="link" to="/">
