@@ -516,6 +516,7 @@ class RouteNew extends Component {
             <Form.Group as={Col} controlId="formGridDescription">
               <Form.Label>Description</Form.Label>
               <Form.Control
+                required
                 placeholder="Describe the route..."
                 as="textarea"
                 name="description"

@@ -21,32 +21,40 @@ class RouteDetail extends Component {
       startingImage: 0
     };
   }
+  goBack = () => {
+    this.props.history.goBack();
+  };
 
   componentDidMount() {
     HTTP.get(`routes/detail/${this.props.match.params.id}`)
       .then(res => {
         const route = res.data;
-        res.data.images.sort(function(a, b) {
-          return a.id - b.id;
-        });
+        if (this.props.login === route.pilot.login || route.isPublic) {
+          res.data.images.sort(function(a, b) {
+            return a.id - b.id;
+          });
 
-        res.data.comments.sort(function(a, b) {
-          return a.id - b.id;
-        });
+          res.data.comments.sort(function(a, b) {
+            return a.id - b.id;
+          });
 
-        let imgShowArray = res.data.images.map(
-          a =>
-            "http://localhost:8080/api/users/image/route" +
-            res.data.id +
-            "Image" +
-            a.id +
-            ".jpg"
-        );
-        this.setState({
-          route,
-          imagesShow: imgShowArray,
-          comment: { ...this.state.comment, route }
-        });
+          let imgShowArray = res.data.images.map(
+            a =>
+              "http://localhost:8080/api/users/image/route" +
+              res.data.id +
+              "Image" +
+              a.id +
+              ".jpg"
+          );
+          this.setState({
+            route,
+            imagesShow: imgShowArray,
+            comment: { ...this.state.comment, route }
+          });
+        } else {
+          notify.show("This route is private.", "error", 3000);
+          this.goBack();
+        }
       })
       .catch(error => {
         notify.show("Error loading route.", "error", 3000);
@@ -193,6 +201,7 @@ class RouteDetail extends Component {
               Flight list
             </Button>
           </Link>
+          {this.renderFavIcon()}
         </React.Fragment>
       );
     }
@@ -305,42 +314,43 @@ class RouteDetail extends Component {
 
   renderImageCarouselModal() {
     let currentImage = this.state.startingImage;
-
-    return (
-      <Modal
-        show={this.state.modalShow}
-        onHide={this.handleCloseModal}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-      >
-        <Modal.Header closeButton className="routeImageDetail">
-          <Modal.Title
-            className="modalTitle"
-            id="contained-modal-title-vcenter"
-          >
-            {this.state.modalTitle}
-            {/* {this.state.route.images[currentImage].name} */}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="routeImageDetail">
-          <AliceCarousel
-            className="carouselCSS scrolling"
-            items={this.getCarouselImages()}
-            fadeOutAnimation={true}
-            onInitialized={this.onInitialized}
-            disableAutoPlayOnAction={true}
-            startIndex={this.state.startingImage}
-            showSlideInfo={true}
-            onSlideChanged={this.onSlideChanged}
-            buttonsDisabled={false}
-            dotsDisabled={true}
-          />
-        </Modal.Body>
-        <Modal.Footer className="routeImageDetailFooter">
-          <h5>{this.state.route.images[currentImage].description}</h5>
-        </Modal.Footer>
-      </Modal>
-    );
+    if (this.state.route.images.length > 0) {
+      return (
+        <Modal
+          show={this.state.modalShow}
+          onHide={this.handleCloseModal}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+        >
+          <Modal.Header closeButton className="routeImageDetail">
+            <Modal.Title
+              className="modalTitle"
+              id="contained-modal-title-vcenter"
+            >
+              {this.state.modalTitle}
+              {/* {this.state.route.images[currentImage].name} */}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="routeImageDetail">
+            <AliceCarousel
+              className="carouselCSS scrolling"
+              items={this.getCarouselImages()}
+              fadeOutAnimation={true}
+              onInitialized={this.onInitialized}
+              disableAutoPlayOnAction={true}
+              startIndex={this.state.startingImage}
+              showSlideInfo={true}
+              onSlideChanged={this.onSlideChanged}
+              buttonsDisabled={false}
+              dotsDisabled={true}
+            />
+          </Modal.Body>
+          <Modal.Footer className="routeImageDetailFooter">
+            <h5>{this.state.route.images[currentImage].description}</h5>
+          </Modal.Footer>
+        </Modal>
+      );
+    } else return null;
   }
 
   handleCloseModal = () => {

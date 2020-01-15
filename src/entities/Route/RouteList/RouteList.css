@@ -39,6 +39,16 @@
   margin-left: 3%;
 }
 
+.routeListDescription {
+  margin: auto;
+  margin-top: 2%;
+  margin-left: 3%;
+}
+
+.routeListCreatedCol {
+  padding-left: 5%;
+}
+
 .routeListAdminComments {
   margin: auto;
   margin-left: 3%;

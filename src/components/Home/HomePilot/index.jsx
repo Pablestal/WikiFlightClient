@@ -1,0 +1,13 @@
+import React, { Component } from "react";
+
+class HomePilot extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  render() {
+    return <h5>This is the homepage for authenticated users.</h5>;
+  }
+}
+
+export default HomePilot;

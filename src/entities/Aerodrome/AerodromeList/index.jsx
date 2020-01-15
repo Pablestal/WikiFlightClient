@@ -6,17 +6,17 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { notify } from "react-notify-toast";
+import Loader from "react-loader-spinner";
 
 class AerodromeList extends Component {
-  state = {
-    aerodromes: []
-  };
+  state = {};
 
   componentDidMount() {
     HTTP.get("/aerodromes")
       .then(res => {
         const aerodromes = res.data;
         this.props.initializeAerAction(aerodromes);
+        this.setState({ aerodromes: res.data });
       })
       .catch(function(error) {
         notify.show("Error in get aerodromes", "error", 2000);
@@ -36,7 +36,7 @@ class AerodromeList extends Component {
 
   renderEmpty() {
     let rend;
-    this.props.aerodromes.length === 0
+    this.state.aerodromes.length === 0
       ? (rend = <h3 className="empty">List is empty, add some aerodromes.</h3>)
       : (rend = this.renderList());
     return rend;
@@ -45,7 +45,7 @@ class AerodromeList extends Component {
   renderList() {
     return (
       <ul className="list">
-        {this.props.aerodromes.map(function(aerodrome, index) {
+        {this.state.aerodromes.map(function(aerodrome, index) {
           return (
             <li key={index}>
               <h3 className="elem">
@@ -81,21 +81,46 @@ class AerodromeList extends Component {
   }
 
   render() {
-    return (
-      <div className="container">
-        <h2 className="tittle">List of registered aerodromes</h2>
-        <Link
-          to={{
-            pathname: `/aerodromes/new`,
-            state: { selected: "" }
-          }}
-        >
-          <Button variant="new">New</Button>
-        </Link>
-        <hr />
-        {this.renderEmpty()}
-      </div>
-    );
+    if (this.state.aerodromes) {
+      return (
+        <div className="container">
+          <h2 className="tittle">List of registered aerodromes</h2>
+          <Link
+            to={{
+              pathname: `/aerodromes/new`,
+              state: { selected: "" }
+            }}
+          >
+            <Button variant="new">New</Button>
+          </Link>
+          <hr />
+          {this.renderEmpty()}
+        </div>
+      );
+    } else
+      return (
+        <div className="container">
+          <h2 className="tittle">List of registered aerodromes</h2>
+          <Link
+            to={{
+              pathname: `/aerodromes/new`,
+              state: { selected: "" }
+            }}
+          >
+            <Button variant="new">New</Button>
+          </Link>
+          <hr />
+          <div className="loader">
+            <Loader
+              as="span"
+              type="Plane"
+              color="#6b6630"
+              height={20}
+              width={20}
+            />
+          </div>
+        </div>
+      );
   }
 }
 

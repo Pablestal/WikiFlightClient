@@ -1,25 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import HomeAdmin from "./HomeAdmin";
+import HomePilot from "./HomePilot";
+import HomeAnonymous from "./HomeAnonymous";
 
 class Home extends Component {
   renderIf() {
-    return this.props.authenticated ? (
-      <h1>
-        of {this.props.login} as {this.props.authority}
-      </h1>
-    ) : (
-      <h1>User is not authenticated.</h1>
-    );
+    if (!this.props.authenticated) {
+      return <HomeAnonymous />;
+    } else if (this.props.authority === "ADMIN") {
+      return <HomeAdmin />;
+    } else return <HomePilot />;
   }
 
   render() {
-    return (
-      <div className="container">
-        <h1>
-          HOME PAGE <span>{this.renderIf()}</span>
-        </h1>
-      </div>
-    );
+    return <div className="container">{this.renderIf()}</div>;
   }
 }
 

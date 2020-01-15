@@ -80,7 +80,9 @@ class RouteListAll extends Component {
     if (routesArr) {
       if (routesArr.length === 0) {
         return (
-          <h3 className="routeListEmpty">List is empty, create a new route.</h3>
+          <h3 className="routeListEmpty tittle">
+            List is empty, create a new route.
+          </h3>
         );
       } else {
         let routes = routesArr.sort(routesArr.id);
@@ -100,10 +102,12 @@ class RouteListAll extends Component {
                             <h5 className="routeListText">
                               <b>{route.name}</b>
                             </h5>
-                            <p className="routeListText">{route.description}</p>
+                            <p className="routeListDescription">
+                              {route.description}
+                            </p>
                           </Col>
 
-                          <Col>
+                          <Col xs={3} className="routeListCreatedCol">
                             <p className="routeListText">
                               <b>Created on {route.publicationDay}</b>
                             </p>

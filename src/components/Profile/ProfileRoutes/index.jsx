@@ -36,6 +36,15 @@ class ProfileRoutes extends Component {
       HTTP.get(`routes`)
         .then(res => {
           const routes = res.data;
+          routes.map(route => {
+            route.images.sort(function(a, b) {
+              return a.id - b.id;
+            });
+            return null;
+          });
+          routes.sort(function(a, b) {
+            return b.id - a.id;
+          });
           this.setState({ routes });
         })
         .catch(function(error) {
@@ -89,9 +98,9 @@ class ProfileRoutes extends Component {
     if (routesArr) {
       if (routesArr.length === 0) {
         return (
-          <h3 className="profileRoutesEmpty">
+          <h4 className="profileRoutesEmpty tittle">
             List is empty, create a new route.
-          </h3>
+          </h4>
         );
       } else {
         let routes = routesArr.sort(routesArr.id);
@@ -169,8 +178,8 @@ class ProfileRoutes extends Component {
 
       if (routesArr.length === 0) {
         return (
-          <h4 className="profileRoutesEmpty">
-            This user didn't publish any route yet.
+          <h4 className="profileRoutesEmpty tittle">
+            {pilot.name} didn't publish any route yet.
           </h4>
         );
       } else {

@@ -19,7 +19,15 @@ class RouteListFavourite extends Component {
   componentDidMount() {
     HTTP.get(`users/${this.props.login}`)
       .then(res => {
-        const routes = res.data.favRoutes;
+        const favRoutes = res.data.favRoutes;
+        let routes = favRoutes.filter(
+          (route, index, self) =>
+            index ===
+            self.findIndex(
+              r => r.isPublic || r.pilot.login === this.props.login
+            )
+        );
+
         routes.sort(function(a, b) {
           return b.id - a.id;
         });
@@ -69,7 +77,7 @@ class RouteListFavourite extends Component {
     if (routesArr) {
       if (routesArr.length === 0) {
         return (
-          <h3 className="routeListEmpty">
+          <h3 className="routeListEmpty tittle">
             List is empty, add a route to your favourite route list.{" "}
           </h3>
         );
@@ -91,10 +99,12 @@ class RouteListFavourite extends Component {
                             <h5 className="routeListText">
                               <b>{route.name}</b>
                             </h5>
-                            <p className="routeListText">{route.description}</p>
+                            <p className="routeListDescription">
+                              {route.description}
+                            </p>
                           </Col>
 
-                          <Col>
+                          <Col xs={3} className="routeListCreatedCol">
                             <p className="routeListText">
                               <b>Created on {route.publicationDay}</b>
                             </p>
