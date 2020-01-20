@@ -13,7 +13,7 @@ class HomeAdmin extends Component {
       <div>
         <Row className="homeAdminRow">
           <h1 className="homeAdminTitle">
-            <b>Administration page of WikiFlight</b>
+            <b>Admin page of WikiFlight</b>
           </h1>
         </Row>
         <Row className="homeAdminCardsRow">

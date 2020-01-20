@@ -9,6 +9,7 @@
     "bootstrap": "^4.3.1",
     "buffer": "^5.4.3",
     "eve": "^0.5.4",
+    "exif-js": "^2.3.0",
     "formik": "^2.0.3",
     "history": "^4.9.0",
     "image-to-base64": "^2.0.1",

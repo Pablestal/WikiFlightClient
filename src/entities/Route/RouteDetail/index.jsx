@@ -346,7 +346,9 @@ class RouteDetail extends Component {
             />
           </Modal.Body>
           <Modal.Footer className="routeImageDetailFooter">
-            <h5>{this.state.route.images[currentImage].description}</h5>
+            <h5 style={{ color: "#6b6630" }}>
+              {this.state.route.images[currentImage].description}
+            </h5>
           </Modal.Footer>
         </Modal>
       );

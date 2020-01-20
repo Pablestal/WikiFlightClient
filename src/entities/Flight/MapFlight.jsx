@@ -29,9 +29,7 @@ class MapNew extends React.Component {
         color: "#a14655"
       }).addTo(this.map);
     } else {
-      this.map = L.map("mapid").fitBounds(this.props.bounds, {
-        padding: [15, 15]
-      });
+      this.map = L.map("mapid").fitBounds(this.props.bounds);
       this.marker1 = L.marker(this.props.marker1, {
         icon: airportIcon
       }).addTo(this.map);
@@ -58,7 +56,7 @@ class MapNew extends React.Component {
       "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",
       {
         attribution:
-          'Imagery from <a href="http://giscience.uni-hd.de/">University of Heidelberg</a> | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          ' | Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }
     ).addTo(this.map);
   }

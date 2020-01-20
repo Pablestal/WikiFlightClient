@@ -55,7 +55,7 @@ class NewImage extends Component {
           buttonText="Upload image"
           onChange={this.onDrop}
           imgExtension={[".jpg", ".jpeg"]}
-          maxFileSize={5242880}
+          maxFileSize={15242880}
           singleImage={true}
           withLabel={true}
           label="Max file size: 5mb Accepted: jpg"

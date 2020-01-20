@@ -156,6 +156,10 @@ class ProfileRoutes extends Component {
   renderPublicRoutes() {
     let pilot = this.props.pilot;
     let text;
+    let link = "link";
+    pilot.login === this.props.login
+      ? (link = "/routes/edit/")
+      : (link = "/routes/detail/");
 
     pilot.login === this.props.login
       ? (text = <h4 className="tittle">Routes created by you</h4>)
@@ -164,9 +168,8 @@ class ProfileRoutes extends Component {
             Routes published by {pilot.name} {pilot.surname1}
           </h4>
         ));
-
     let routes = this.state.routes;
-    let link = "/routes/edit/";
+
     let routesArr = [];
     if (routes) {
       routes.map(route => {

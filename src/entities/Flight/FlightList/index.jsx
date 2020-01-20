@@ -202,7 +202,7 @@ class FlightList extends Component {
                 selected: flight
               }}
             >
-              View Route
+              {flight.route.name}
             </Link>
           </u>
         ))

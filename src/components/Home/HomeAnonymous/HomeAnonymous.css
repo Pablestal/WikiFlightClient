@@ -1,0 +1,38 @@
+.homeTitle {
+  color: #6b6630;
+}
+
+.homeListTitle {
+  color: #6b6630;
+  margin-bottom: 5%;
+}
+
+.homeRow {
+  text-align: center;
+  padding-top: 2%;
+  display: block;
+  padding-bottom: 4%;
+}
+
+.homeRouteItem {
+  color: #6d4e1f;
+}
+
+.homeRouteText {
+  color: #6b6630;
+}
+
+.homeRouteText0 {
+  margin-bottom: 2%;
+  color: #a14655;
+}
+
+.homeRouteText1 {
+  margin-bottom: 2%;
+  color: #24310b;
+}
+
+.homeRouteText2 {
+  margin-bottom: 2%;
+  color: #120b31;
+}

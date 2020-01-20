@@ -12,7 +12,7 @@ import Loader from "react-loader-spinner";
 class FlightDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = { flight: {} };
+    this.state = { flight: undefined };
 
     this.goBack = this.goBack.bind(this);
   }
@@ -30,10 +30,19 @@ class FlightDetail extends Component {
       .catch(function(error) {
         notify.show("Error loading pilot routes", "error");
       });
+
+    HTTP.get(`flights/details/${this.props.match.params.id}`)
+      .then(res => {
+        const flight = res.data;
+        this.setState({ flight });
+      })
+      .catch(function(error) {
+        notify.show("Error loading pilot routes", "error");
+      });
   }
 
   drawFlight() {
-    const flight = this.props.location.state.selected;
+    const flight = this.state.flight;
     let toAer = flight.takeoffAerodrome;
     let ldAer = flight.landingAerodrome;
     let polyline = [toAer.position.coordinates, ldAer.position.coordinates];
@@ -300,8 +309,8 @@ class FlightDetail extends Component {
   }
 
   render() {
-    const flight = this.props.location.state.selected;
-    if (this.state.routes) {
+    if (this.state.flight && this.state.routes) {
+      const flight = this.state.flight;
       return this.renderDetail(flight);
     } else
       return (

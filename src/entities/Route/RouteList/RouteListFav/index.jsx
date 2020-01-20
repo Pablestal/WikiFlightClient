@@ -20,14 +20,16 @@ class RouteListFavourite extends Component {
     HTTP.get(`users/${this.props.login}`)
       .then(res => {
         const favRoutes = res.data.favRoutes;
-        let routes = favRoutes.filter(
-          (route, index, self) =>
-            index ===
-            self.findIndex(
-              r => r.isPublic || r.pilot.login === this.props.login
-            )
-        );
+        let routes = [];
 
+        favRoutes.map(r => {
+          if (r.isPublic || r.pilot.login === this.props.login) {
+            routes.push(r);
+            return null;
+          } else return null;
+        });
+
+        console.log(routes);
         routes.sort(function(a, b) {
           return b.id - a.id;
         });
@@ -71,18 +73,16 @@ class RouteListFavourite extends Component {
   }
 
   render() {
-    let routesArr = this.state.routes;
+    let routes = this.state.routes;
     let link = "/routes/detail/";
-
-    if (routesArr) {
-      if (routesArr.length === 0) {
+    if (routes) {
+      if (routes.length === 0) {
         return (
           <h3 className="routeListEmpty tittle">
             List is empty, add a route to your favourite route list.{" "}
           </h3>
         );
       } else {
-        let routes = routesArr.sort(routesArr.id);
         return (
           <div>
             <ul className="list">

@@ -6,12 +6,16 @@ import { connect } from "react-redux";
 import { HTTP } from "../../../common/http-common";
 import { notify } from "react-notify-toast";
 import NewImage from "../NewImage";
+import EXIF from "exif-js";
 import "./RouteNew.css";
 
 class RouteNew extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      imRoute: {
+        id: 2
+      },
       image: {
         // Modified every time a new image is added
         name: "",
@@ -88,6 +92,7 @@ class RouteNew extends Component {
       .catch(function(error) {
         notify.show("Error uploading route.", "error", 3000);
       });
+
     this.uploadImageObjects();
     this.uploadGPX();
   };
@@ -241,6 +246,15 @@ class RouteNew extends Component {
     imageShowArray.push(URL.createObjectURL(picture[0]));
     let imageUploadArray = this.state.imagesUpload;
     imageUploadArray.push(picture[0]);
+
+    // EXIF.getData(picture[0], function() {
+    //   console.log(picture[0].exifdata);
+    // });
+
+    EXIF.getData(picture[0], function() {
+      let tags = EXIF.getAllTags(picture[0]);
+      console.log(tags);
+    });
 
     this.setState({
       imagesShow: imageShowArray,
@@ -435,6 +449,7 @@ class RouteNew extends Component {
                 placeholder="Name"
                 type="text"
                 name="name"
+                maxLength="64"
                 onChange={this.handleInputChange}
               />
             </Form.Group>
@@ -520,6 +535,7 @@ class RouteNew extends Component {
                 placeholder="Describe the route..."
                 as="textarea"
                 name="description"
+                maxLength="254"
                 onChange={this.handleInputChange}
               />
             </Form.Group>
