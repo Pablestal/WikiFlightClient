@@ -4,10 +4,9 @@ import L from "leaflet";
 //NEEDED PROPS: (initialPosition, zoom)
 class MapImage extends React.Component {
   componentDidMount() {
-    this.map = L.map("mapid").setView(
-      this.props.initialPosition,
-      this.props.zoom
-    );
+    this.map = L.map("mapid", {
+      maxZoom: 14
+    }).setView(this.props.initialPosition, this.props.zoom);
 
     this.tileLayer = L.tileLayer(
       "https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png",

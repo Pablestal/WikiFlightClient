@@ -15,10 +15,9 @@ class MapNew extends React.Component {
       shadowAnchor: [20, 92]
     });
 
-    this.map = L.map("mapid").setView(
-      this.props.initialPosition,
-      this.props.zoom
-    );
+    this.map = L.map("mapid", {
+      maxZoom: 14
+    }).setView(this.props.initialPosition, this.props.zoom);
 
     const handleClick = e => {
       this.props.handleClick(e);

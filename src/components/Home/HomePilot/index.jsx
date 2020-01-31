@@ -117,7 +117,7 @@ class HomePilot extends Component {
 
   renderFlightList() {
     let flights = this.state.flights;
-    let link = "/flights/detail/";
+    let link = "/flights/";
     return (
       <div>
         <ul className="list">
@@ -127,32 +127,40 @@ class HomePilot extends Component {
                 <Link to={link.concat(flight.id)}>
                   <li>
                     <Row>
-                      <Col className="col-sm-3">
+                      <Col md="auto">
                         <h5 className="homeRouteText">
                           {flight.departureDate}&nbsp;&nbsp;&nbsp;
+                        </h5>
+                      </Col>
+                      <Col md="auto">
+                        <h5 className="homeRouteText">
                           <b>
                             {flight.takeoffAerodrome.codIATA}/
                             {flight.takeoffAerodrome.codOACI}
                           </b>
-                        </h5>
-                      </Col>
-                      <Col>
-                        <DepartureIcon
-                          width="30px"
-                          height="30px"
-                        ></DepartureIcon>
-                        <b className="homeRouteText">- - - - - - - - - - -</b>
-                        <ArrivalIcon width="29px" height="29px"></ArrivalIcon>
-                      </Col>
-                      <Col className="col-sm-2">
-                        <h5 className="homeRouteText">
+                          <span>
+                            <DepartureIcon
+                              width="30px"
+                              height="30px"
+                            ></DepartureIcon>
+                          </span>
+                          <b className="homeRouteText">
+                            - - - - - - - - - - - - - -
+                          </b>
+                          <span>
+                            <ArrivalIcon
+                              width="29px"
+                              height="29px"
+                            ></ArrivalIcon>
+                          </span>
                           <b>
                             {flight.landingAerodrome.codIATA}/
                             {flight.landingAerodrome.codOACI}
-                          </b>
+                          </b>{" "}
                         </h5>
                       </Col>
-                      <Col>
+
+                      <Col className="col-sm-2">
                         <h5 className="homeRouteText">
                           {flight.aircraft.manufacturer} {flight.aircraft.model}
                         </h5>
@@ -165,7 +173,7 @@ class HomePilot extends Component {
                     </Row>
                   </li>
                 </Link>
-                {/* <hr></hr> */}
+                <hr></hr>
               </div>
             );
           }, this)}
@@ -189,7 +197,7 @@ class HomePilot extends Component {
           <Row>
             {/* Last routes published list */}
             <Col className="col-sm-5">
-              <h5 className="homeListTitle">
+              <h5 className="homePilotListTitle">
                 {" "}
                 <b>Last routes published</b>
               </h5>
@@ -203,7 +211,7 @@ class HomePilot extends Component {
           </Row>
           <Row className="homeFlightsRow">
             <Col>
-              <h5 className="homeListTitle">
+              <h5 className="homePilotListTitle">
                 {" "}
                 <b>Your last flights</b>
               </h5>

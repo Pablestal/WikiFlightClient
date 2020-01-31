@@ -15,10 +15,9 @@ class MapNew extends React.Component {
     });
 
     if (!this.props.bounds) {
-      this.map = L.map("mapid").setView(
-        this.props.initialPosition,
-        this.props.zoom
-      );
+      this.map = L.map("mapid", {
+        maxZoom: 14
+      }).setView(this.props.initialPosition, this.props.zoom);
 
       this.marker = L.marker(this.props.initialPosition, {
         icon: airportIcon

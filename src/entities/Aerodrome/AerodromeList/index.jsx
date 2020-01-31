@@ -28,6 +28,7 @@ class AerodromeList extends Component {
       .then(response => {
         notify.show("Aerodrome removed", "success", 2000);
         this.props.deleteAerAction(aerodrome);
+        this.setState({ aerodromes: this.props.aerodromes });
       })
       .catch(function(error) {
         notify.show("Aerodrome can't be removed", "error", 2000);

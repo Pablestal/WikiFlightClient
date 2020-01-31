@@ -31,6 +31,7 @@ class AircraftList extends Component {
       .then(response => {
         notify.show("Aircraft removed", "success", 2000);
         this.props.deleteAircAction(aircraft);
+        this.setState({ aircrafts: this.props.aircrafts });
       })
       .catch(function(error) {
         notify.show("Aircraft can't be removed", "error", 2000);

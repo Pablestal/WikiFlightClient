@@ -3,7 +3,10 @@ import L from "leaflet";
 
 class MapRoute extends React.Component {
   componentDidMount() {
-    this.map = L.map("mapid").fitBounds(this.props.bounds);
+    this.map = L.map("mapid", {
+      minZoom: 2,
+      maxZoom: 14
+    }).fitBounds(this.props.bounds);
 
     let airportIcon = new L.Icon({
       iconUrl: require("../../../icons/airport.svg"),

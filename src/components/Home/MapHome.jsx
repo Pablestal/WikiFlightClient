@@ -28,7 +28,9 @@ class MapHome extends React.Component {
     let path2 = this.props.routes[1].path.coordinates;
     let path3 = this.props.routes[2].path.coordinates;
 
-    this.map = L.map("mapid");
+    this.map = L.map("mapid", {
+      maxZoom: 14
+    });
 
     this.pathLine1 = L.polyline(path1, {
       color: "#a14655",
